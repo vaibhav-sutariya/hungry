@@ -4,13 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter_platform_interface/src/types/location.dart';
 import 'package:hunger/components/appBar.dart';
 import 'package:hunger/components/myDrawer.dart';
 import 'package:hunger/constants.dart';
 import 'package:hunger/screens/Add%20Location/LocationDetails.dart';
-import 'package:hunger/screens/intiScreen.dart';
 
 class LocatinConfirmScreen extends StatefulWidget {
   final String firstName;
