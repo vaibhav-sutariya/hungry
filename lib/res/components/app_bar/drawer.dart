@@ -2,9 +2,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/components/app_bar/services/url_launcher.dart';
 import 'package:hungry/res/components/app_bar/widgets/drawer_expansion_tile.dart';
 import 'package:hungry/res/components/app_bar/widgets/drawer_tile.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -98,7 +98,7 @@ class MyDrawer extends StatelessWidget {
             leading: const Icon(Icons.feedback_outlined),
             title: const Text('Feedback'),
             onTap: () {
-              // _launchFeedbackForm();
+              launchFeedbackForm();
             },
           ),
           if (showLogOut) // Conditionally show the LogOut list tile
@@ -188,19 +188,5 @@ class MyDrawer extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _launchFeedbackForm() async {
-    const url =
-        'https://docs.google.com/forms/d/e/1FAIpQLScwD_Bbj022AZa53E2GLj6njmveK0p4nqBXO_r9eaZYg6eVHQ/viewform';
-    try {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      print('Error launching URL: $e');
-    }
   }
 }
