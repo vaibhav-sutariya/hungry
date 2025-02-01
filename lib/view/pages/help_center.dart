@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/view/pages/components/custom_elevated_button.dart';
 
 class HelpCenterScreen extends StatelessWidget {
   const HelpCenterScreen({super.key});
@@ -23,13 +24,13 @@ class HelpCenterScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            // CustomElevatedButton(onPressed: () {}, text: 'FAQ'),
+            CustomElevatedButton(onPressed: () {}, text: 'FAQ'),
             SizedBox(height: 10),
-            // CustomElevatedButton(onPressed: () {}, text: 'Contact Support'),
+            CustomElevatedButton(onPressed: () {}, text: 'Contact Support'),
             SizedBox(height: 10),
-            // CustomElevatedButton(onPressed: () {}, text: 'Live Chat'),
+            CustomElevatedButton(onPressed: () {}, text: 'Live Chat'),
             SizedBox(height: 10),
-            // CustomElevatedButton(onPressed: () {}, text: 'Report a Problem'),
+            CustomElevatedButton(onPressed: () {}, text: 'Report a Problem'),
             SizedBox(height: 10),
           ],
         ),
