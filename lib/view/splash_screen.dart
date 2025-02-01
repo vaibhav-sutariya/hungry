@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hungry/res/assets/icon_assets.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class SplashScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              'assets/icons/splash.svg',
+              IconAssets.spalsh_icon,
               width: 200, // Adjust the width as needed
             ),
             const SizedBox(
