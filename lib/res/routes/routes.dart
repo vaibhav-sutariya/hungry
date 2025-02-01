@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/home/home_screen.dart';
+import 'package:hungry/view/login/login_screen.dart';
 import 'package:hungry/view/pages/about_us.dart';
 import 'package:hungry/view/pages/contact_us.dart';
 import 'package:hungry/view/pages/help_center.dart';
@@ -57,14 +58,16 @@ class AppRoutes {
             milliseconds: 250,
           ),
         ),
-        // GetPage(
-        //   name: RouteName.LoginView,
-        //   page: () => const LoginView(),
-        //   transition: Transition.leftToRightWithFade,
-        //   transitionDuration: const Duration(
-        //     milliseconds: 250,
-        //   ),
-        // ),
+        GetPage(
+          name: RouteName.loginScreen,
+          page: () => const LoginScreen(
+            buttonPressed: '',
+          ),
+          transition: Transition.leftToRightWithFade,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
         // GetPage(
         //   name: RouteName.HomeView,
         //   page: () => const HomeView(),
