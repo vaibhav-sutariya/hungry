@@ -1,3 +1,3 @@
 class IconAssets {
-  static const spalsh_icon = 'assets/icons/splash.svg';
+  static const splashIcon = 'assets/icons/splash.svg';
 }
