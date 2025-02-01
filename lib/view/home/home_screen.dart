@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/components/app_bar.dart';
 import 'package:hungry/view/home/componets/custom_button.dart';
 import 'package:hungry/view/home/componets/custom_text.dart';
 
@@ -11,9 +12,7 @@ class HomeScreen extends StatelessWidget {
     // User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
+      appBar: MyAppBar(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
