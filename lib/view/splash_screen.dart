@@ -13,15 +13,13 @@ class SplashScreen extends StatelessWidget {
         width: double.infinity,
         color: AppColors.kPrimaryColor,
         child: Column(
+          spacing: 30,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SvgPicture.asset(
               IconAssets.splashIcon,
               width: 200, // Adjust the width as needed
-            ),
-            const SizedBox(
-              height: 30,
             ),
             const Text(
               'Meals For Everyone...',

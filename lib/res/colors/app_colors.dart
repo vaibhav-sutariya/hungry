@@ -20,13 +20,10 @@ class AppColors {
     height: 1.5,
   );
 
-  static const fontfamily = "Muli";
-
   static const defaultDuration = Duration(milliseconds: 250);
 
   static const TextStyle kTextStyleB = TextStyle(
     fontSize: 16,
-    fontFamily: 'Muli',
     fontWeight: FontWeight.bold,
     color: Colors.black,
     letterSpacing: 0.5,
@@ -34,7 +31,6 @@ class AppColors {
 
   static const TextStyle kTextStyleN = TextStyle(
     fontSize: 16,
-    fontFamily: 'Muli',
     fontWeight: FontWeight.normal,
     color: Colors.black,
     letterSpacing: 0.5,
