@@ -50,10 +50,7 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
         <service android:name="com.dexterous.flutterlocalnotifications.services.NotificationService" android:permission="android.permission.BIND_JOB_SERVICE" android:exported="false"/>
-        <service android:name="com.dexterous.flutterlocalnotifications.services.ScheduledNotificationBootReceiver" android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
+        
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
