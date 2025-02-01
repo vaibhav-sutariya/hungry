@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/assets/icon_assets.dart';
 import 'package:hungry/res/colors/app_colors.dart';
-import 'package:hungry/view/home/home_screen.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 4), () {
-      Get.to(() => HomeScreen());
+      Get.toNamed(RouteName.homeScreen);
     });
   }
 

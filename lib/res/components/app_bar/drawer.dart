@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/services/url_launcher.dart';
 import 'package:hungry/res/components/app_bar/widgets/drawer_expansion_tile.dart';
 import 'package:hungry/res/components/app_bar/widgets/drawer_tile.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -62,36 +64,21 @@ class MyDrawer extends StatelessWidget {
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const InitScreen(),
-              //   ),
-              // );
+              Get.toNamed(RouteName.homeScreen);
             },
           ),
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: const Text('About'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const AboutUsScreen(),
-              //   ),
-              // );
+              Get.toNamed(RouteName.aboutUsScreen);
             },
           ),
           ListTile(
             leading: const Icon(Icons.contact_page_outlined),
             title: const Text('Contact'),
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const ContactUsScreen(),
-              //   ),
-              // );
+              Get.toNamed(RouteName.contactUsScreen);
             },
           ),
           ListTile(
@@ -111,13 +98,7 @@ class MyDrawer extends StatelessWidget {
                   // Sign out the user
                   FirebaseAuth.instance.signOut();
 
-                  // Navigate to InitScreen
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const InitScreen(),
-                  //   ),
-                  // );
+                  Get.toNamed(RouteName.homeScreen);
                 },
               ),
           // User is not logged in
@@ -144,26 +125,14 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.settings,
                 title: 'Settings & Privacy',
                 onTap: () {
-                  // Handle onTap for Settings & Privacy
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => SettingsPrivacyScreen(),
-                  //   ),
-                  // );
+                  Get.toNamed(RouteName.settingPrivacyScreen);
                 },
               ),
               DrawerTile(
                 icon: Icons.help,
                 title: 'Help Center',
                 onTap: () {
-                  // Handle onTap for Help Center
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => HelpCenterScreen(),
-                  //   ),
-                  // );
+                  Get.toNamed(RouteName.helpCenterScreen);
                 },
               ),
             ],
