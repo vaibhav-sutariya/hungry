@@ -37,4 +37,26 @@ class LoginViewModel extends GetxController {
       }
     }
   }
+
+  // final _formKey = GlobalKey<FormState>();
+  // String? email;
+  // String? password;
+  RxBool remember = false.obs;
+  RxList<String?> errors = <String?>[].obs;
+
+  void addError({String? error}) {
+    if (!errors.contains(error)) {
+      // setState(() {
+      errors.add(error);
+      // });
+    }
+  }
+
+  void removeError({String? error}) {
+    if (errors.contains(error)) {
+      // setState(() {
+      errors.remove(error);
+      // });
+    }
+  }
 }

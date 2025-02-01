@@ -61,7 +61,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.loginScreen,
           page: () => const LoginScreen(
-            buttonPressed: '',
+            buttonPressed: 'intial',
           ),
           transition: Transition.leftToRightWithFade,
           transitionDuration: const Duration(

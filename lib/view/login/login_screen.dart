@@ -3,6 +3,7 @@ import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/res/components/no_account_text.dart';
 import 'package:hungry/res/components/socal_card.dart';
+import 'package:hungry/view/login/components/login_form.dart';
 import 'package:hungry/view_models/controllers/login/sign_in_with_google.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  // SignForm(buttonPressed: widget.buttonPressed),
+                  LoginForm(buttonPressed: widget.buttonPressed),
                   const SizedBox(height: 16),
                   const Row(children: <Widget>[
                     Expanded(child: Divider()),

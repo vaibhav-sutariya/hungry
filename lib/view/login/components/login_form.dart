@@ -89,15 +89,13 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           Row(
             children: [
-              // Checkbox(
-              //   value: remember,
-              //   activeColor: AppColors.kPrimaryColor,
-              //   onChanged: (value) {
-              //     // setState(() {
-              //     // remember = value;
-              //     // });
-              //   },
-              // ),
+              Checkbox(
+                value: loginViewModel.remember.value,
+                activeColor: AppColors.kPrimaryColor,
+                onChanged: (value) {
+                  loginViewModel.remember.value = value!;
+                },
+              ),
               const Text("Remember me"),
               const Spacer(),
               GestureDetector(
