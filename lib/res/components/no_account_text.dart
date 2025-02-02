@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class NoAccountText extends StatelessWidget {
   final String buttonPressed;
@@ -21,14 +23,7 @@ class NoAccountText extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   CupertinoPageRoute(
-            //     builder: (context) => SignUpScreen(
-            //       buttonPressed: buttonPressed,
-            //     ),
-            //   ),
-            // );
+            Get.toNamed(RouteName.signUpScreen);
           },
           child: const Text(
             "Sign Up",

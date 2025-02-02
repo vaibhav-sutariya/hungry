@@ -6,6 +6,7 @@ import 'package:hungry/view/pages/about_us.dart';
 import 'package:hungry/view/pages/contact_us.dart';
 import 'package:hungry/view/pages/help_center.dart';
 import 'package:hungry/view/pages/setting_privacy.dart';
+import 'package:hungry/view/signup/sign_up_screen.dart';
 import 'package:hungry/view/splash_screen.dart';
 
 class AppRoutes {
@@ -61,6 +62,16 @@ class AppRoutes {
         GetPage(
           name: RouteName.loginScreen,
           page: () => const LoginScreen(
+            buttonPressed: 'intial',
+          ),
+          transition: Transition.leftToRightWithFade,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.signUpScreen,
+          page: () => const SignUpScreen(
             buttonPressed: 'intial',
           ),
           transition: Transition.leftToRightWithFade,
