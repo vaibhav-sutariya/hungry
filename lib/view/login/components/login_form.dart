@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
 import 'package:hungry/view_models/controllers/login/login_view_model.dart';
 
@@ -20,10 +21,12 @@ class _LoginFormState extends State<LoginForm> {
       key: loginViewModel.formkey.value,
       child: Column(
         children: [
-          TextFormField(
+          CustomTextField(
             controller: loginViewModel.emailController.value,
-            keyboardType: TextInputType.emailAddress,
-            // onSaved: (newValue) => email = newValue,
+            labelText: 'Enter Email',
+            hintText: 'Enter Valid Email',
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             onChanged: (value) {
               if (value.isNotEmpty) {
                 loginViewModel.removeError(error: AppColors.kEmailNullError);
@@ -42,22 +45,14 @@ class _LoginFormState extends State<LoginForm> {
               }
               return null;
             },
-            decoration: InputDecoration(
-              labelText: "Email",
-              hintText: "Enter your email",
-              suffixIcon:
-                  const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.kTextColor),
-              ),
-            ),
           ),
           const SizedBox(height: 20),
-          TextFormField(
+          CustomTextField(
             controller: loginViewModel.passwordController.value,
-            obscureText: true,
-            // onSaved: (newValue) => password = newValue,
+            labelText: "Password",
+            hintText: "Enter your password",
+            suffixIcon:
+                const CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
             onChanged: (value) {
               if (value.isNotEmpty) {
                 loginViewModel.removeError(error: AppColors.kPassNullError);
@@ -76,16 +71,6 @@ class _LoginFormState extends State<LoginForm> {
               }
               return null;
             },
-            decoration: InputDecoration(
-              labelText: "Password",
-              hintText: "Enter your password",
-              suffixIcon:
-                  const CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: AppColors.kTextColor),
-              ),
-            ),
           ),
           const SizedBox(height: 20),
           Row(
@@ -130,7 +115,9 @@ class _LoginFormState extends State<LoginForm> {
                 }
               },
               child: loginViewModel.loading.value
-                  ? const CircularProgressIndicator() // Show loading indicator if isLoading is true
+                  ? const CircularProgressIndicator(
+                      color: AppColors.kPrimaryColor,
+                    ) // Show loading indicator if isLoading is true
                   : const Text(
                       "Login",
                       style: TextStyle(

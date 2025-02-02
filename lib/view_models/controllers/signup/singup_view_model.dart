@@ -24,6 +24,9 @@ class SingupViewModel extends GetxController {
         passwordController.value.text == '') {
       Get.snackbar(
           'Parameters cannot empty', 'Please fill the email and password');
+    } else if (passwordController.value.text !=
+        cPasswordController.value.text) {
+      Get.snackbar('Error:', 'Password and Confirm Password not match');
     } else {
       try {
         UserCredential userCredential = await FirebaseAuth.instance

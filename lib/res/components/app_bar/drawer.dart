@@ -111,6 +111,8 @@ class MyDrawer extends StatelessWidget {
               leading: const Icon(Icons.login),
               title: const Text('Login'),
               onTap: () {
+                Get.toNamed(RouteName.loginScreen);
+
                 // Navigate to SignInScreen
                 // Navigator.pushReplacement(
                 //   context,

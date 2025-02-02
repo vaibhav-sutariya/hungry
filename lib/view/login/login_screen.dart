@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/res/components/no_account_text.dart';
@@ -60,60 +62,64 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      signInWithGoogle.loading.value
-                          ? const CircularProgressIndicator()
-                          : SocalCard(
-                              icon: "assets/icons/google-icon.svg",
-                              press: () async {
-                                signInWithGoogle.signInWithGoogle();
-                                // await signInWithGoogle();
-                                // if (userCredential.value != null) {
-                                //   print(userCredential.value!.user!.email);
-                                //   switch (widget.buttonPressed) {
-                                //     case "Submit Remaining Food":
-                                //       // Navigator.pushReplacement(
-                                //       //   context,
-                                //       //   CupertinoPageRoute(
-                                //       //     builder: (context) =>
-                                //       //         const AddFoodDetails(),
-                                //       //   ),
-                                //       // );
-                                //       break;
-                                //     case "Add more Locations":
-                                //       // Navigator.pushReplacement(
-                                //       //   context,
-                                //       //   CupertinoPageRoute(
-                                //       //     builder: (context) =>
-                                //       //         const AddLocationDetails(),
-                                //       //   ),
-                                //       // );
-                                //       break;
-                                //     case "Register Food Center":
-                                //       // Navigator.pushReplacement(
-                                //       //   context,
-                                //       //   CupertinoPageRoute(
-                                //       //     builder: (context) =>
-                                //       //         const AddFoodBankDetails(),
-                                //       //   ),
-                                //       // );
-                                //       break;
-                                //     case "Login":
-                                //       // Navigator.pushReplacement(
-                                //       //   context,
-                                //       //   CupertinoPageRoute(
-                                //       //     builder: (context) =>
-                                //       //         const InitScreen(),
-                                //       //   ),
-                                //       // );
-                                //       break;
-                                //     default:
-                                //       // Navigate to a default screen if buttonPressed is not recognized
-                                //       break;
-                                //   }
-                                // }
-                                // print(widget.buttonPressed);
-                              },
-                            ),
+                      Obx(() {
+                        return signInWithGoogle.loading.value
+                            ? const CircularProgressIndicator(
+                                color: AppColors.kPrimaryColor,
+                              )
+                            : SocalCard(
+                                icon: "assets/icons/google-icon.svg",
+                                press: () async {
+                                  signInWithGoogle.signInWithGoogle();
+                                  // await signInWithGoogle();
+                                  // if (userCredential.value != null) {
+                                  //   print(userCredential.value!.user!.email);
+                                  //   switch (widget.buttonPressed) {
+                                  //     case "Submit Remaining Food":
+                                  //       // Navigator.pushReplacement(
+                                  //       //   context,
+                                  //       //   CupertinoPageRoute(
+                                  //       //     builder: (context) =>
+                                  //       //         const AddFoodDetails(),
+                                  //       //   ),
+                                  //       // );
+                                  //       break;
+                                  //     case "Add more Locations":
+                                  //       // Navigator.pushReplacement(
+                                  //       //   context,
+                                  //       //   CupertinoPageRoute(
+                                  //       //     builder: (context) =>
+                                  //       //         const AddLocationDetails(),
+                                  //       //   ),
+                                  //       // );
+                                  //       break;
+                                  //     case "Register Food Center":
+                                  //       // Navigator.pushReplacement(
+                                  //       //   context,
+                                  //       //   CupertinoPageRoute(
+                                  //       //     builder: (context) =>
+                                  //       //         const AddFoodBankDetails(),
+                                  //       //   ),
+                                  //       // );
+                                  //       break;
+                                  //     case "Login":
+                                  //       // Navigator.pushReplacement(
+                                  //       //   context,
+                                  //       //   CupertinoPageRoute(
+                                  //       //     builder: (context) =>
+                                  //       //         const InitScreen(),
+                                  //       //   ),
+                                  //       // );
+                                  //       break;
+                                  //     default:
+                                  //       // Navigate to a default screen if buttonPressed is not recognized
+                                  //       break;
+                                  //   }
+                                  // }
+                                  // print(widget.buttonPressed);
+                                },
+                              );
+                      })
                     ],
                   ),
                   const SizedBox(height: 20),
