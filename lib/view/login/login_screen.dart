@@ -4,7 +4,7 @@ import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/res/components/no_account_text.dart';
 import 'package:hungry/res/components/socal_card.dart';
 import 'package:hungry/view/login/components/login_form.dart';
-import 'package:hungry/view_models/controllers/login/sign_in_with_google.dart';
+import 'package:hungry/view_models/controllers/login_with_google/sign_in_with_google.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
