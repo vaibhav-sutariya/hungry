@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
 import 'package:hungry/view_models/controllers/login/login_view_model.dart';
@@ -89,13 +90,15 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           Row(
             children: [
-              Checkbox(
-                value: loginViewModel.remember.value,
-                activeColor: AppColors.kPrimaryColor,
-                onChanged: (value) {
-                  loginViewModel.remember.value = value!;
-                },
-              ),
+              Obx(() {
+                return Checkbox(
+                  value: loginViewModel.remember.value,
+                  activeColor: AppColors.kPrimaryColor,
+                  onChanged: (value) {
+                    loginViewModel.remember.value = value!;
+                  },
+                );
+              }),
               const Text("Remember me"),
               const Spacer(),
               GestureDetector(
