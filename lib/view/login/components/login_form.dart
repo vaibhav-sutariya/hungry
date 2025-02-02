@@ -25,21 +25,21 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.emailAddress,
             // onSaved: (newValue) => email = newValue,
             onChanged: (value) {
-              // if (value.isNotEmpty) {
-              //   // removeError(error: AppColors.kEmailNullError);
-              // } else if (AppColors.emailValidatorRegExp.hasMatch(value)) {
-              //   // removeError(error: AppColors.kInvalidEmailError);
-              // }
+              if (value.isNotEmpty) {
+                loginViewModel.removeError(error: AppColors.kEmailNullError);
+              } else if (AppColors.emailValidatorRegExp.hasMatch(value)) {
+                loginViewModel.removeError(error: AppColors.kInvalidEmailError);
+              }
               return;
             },
             validator: (value) {
-              // if (value!.isEmpty) {
-              //   addError(error: AppColors.kEmailNullError);
-              //   return "";
-              // } else if (!emailValidatorRegExp.hasMatch(value)) {
-              //   addError(error: AppColors.kInvalidEmailError);
-              //   return "";
-              // }
+              if (value!.isEmpty) {
+                loginViewModel.addError(error: AppColors.kEmailNullError);
+                return "Enter Email";
+              } else if (!AppColors.emailValidatorRegExp.hasMatch(value)) {
+                loginViewModel.addError(error: AppColors.kInvalidEmailError);
+                return "Emter valid Email";
+              }
               return null;
             },
             decoration: InputDecoration(
@@ -59,21 +59,21 @@ class _LoginFormState extends State<LoginForm> {
             obscureText: true,
             // onSaved: (newValue) => password = newValue,
             onChanged: (value) {
-              // if (value.isNotEmpty) {
-              //   removeError(error: AppColors.kPassNullError);
-              // } else if (value.length >= 8) {
-              //   removeError(error: AppColors.kShortPassError);
-              // }
+              if (value.isNotEmpty) {
+                loginViewModel.removeError(error: AppColors.kPassNullError);
+              } else if (value.length >= 8) {
+                loginViewModel.removeError(error: AppColors.kShortPassError);
+              }
               return;
             },
             validator: (value) {
-              // if (value!.isEmpty) {
-              //   addError(error: kPassNullError);
-              //   return "";
-              // } else if (value.length < 8) {
-              //   addError(error: kShortPassError);
-              //   return "";
-              // }
+              if (value!.isEmpty) {
+                loginViewModel.addError(error: AppColors.kPassNullError);
+                return "Enter Valid Password";
+              } else if (value.length < 8) {
+                loginViewModel.addError(error: AppColors.kShortPassError);
+                return "Enter Valid Password";
+              }
               return null;
             },
             decoration: InputDecoration(
@@ -111,35 +111,36 @@ class _LoginFormState extends State<LoginForm> {
           ),
           // FormError(errors: errors),
           const SizedBox(height: 16),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // <-- Radius
-                side:
-                    const BorderSide(color: AppColors.kPrimaryColor, width: 2),
+          Obx(() {
+            return ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // <-- Radius
+                  side: const BorderSide(
+                      color: AppColors.kPrimaryColor, width: 2),
+                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 25.0, vertical: 10.0),
               ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
-            ),
-            onPressed: () {
-              if (loginViewModel.formkey.value.currentState!.validate()) {
-                loginViewModel.formkey.value.currentState!.save();
-                // if all are valid then go to success screen
-                // login();
-              }
-            },
-            child: loginViewModel.loading.value
-                ? const CircularProgressIndicator() // Show loading indicator if isLoading is true
-                : const Text(
-                    "Sign In",
-                    style: TextStyle(
-                      color: AppColors.kPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
+              onPressed: () {
+                if (loginViewModel.formkey.value.currentState!.validate()) {
+                  loginViewModel.formkey.value.currentState!.save();
+                  loginViewModel.login();
+                }
+              },
+              child: loginViewModel.loading.value
+                  ? const CircularProgressIndicator() // Show loading indicator if isLoading is true
+                  : const Text(
+                      "Login",
+                      style: TextStyle(
+                        color: AppColors.kPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
-                  ),
-          ),
+            );
+          })
         ],
       ),
     );

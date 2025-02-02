@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class LoginViewModel extends GetxController {
   final emailController = TextEditingController().obs;
@@ -14,7 +15,6 @@ class LoginViewModel extends GetxController {
   RxBool loading = false.obs;
 
   void login() async {
-    loading.value = true;
     String email = emailController.value.text.trim();
     String password = passwordController.value.text.trim();
     if (emailController.value.text == '' &&
@@ -23,10 +23,13 @@ class LoginViewModel extends GetxController {
           'Parameters cannot empty', 'Please fill the email and password');
     } else {
       try {
+        loading.value = true;
+
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
           Get.snackbar('Success:', 'Login Success');
+          Get.toNamed(RouteName.homeScreen);
         }
       } on FirebaseAuthException catch (e) {
         Get.snackbar('Error:', e.message.toString());

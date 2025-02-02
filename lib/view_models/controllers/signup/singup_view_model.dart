@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class SingupViewModel extends GetxController {
   final emailController = TextEditingController().obs;
@@ -29,6 +30,7 @@ class SingupViewModel extends GetxController {
             .createUserWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
           Get.snackbar('Success:', 'SignUp Success');
+          Get.toNamed(RouteName.loginScreen);
         }
       } on FirebaseAuthException catch (e) {
         Get.snackbar('Error:', e.message.toString());

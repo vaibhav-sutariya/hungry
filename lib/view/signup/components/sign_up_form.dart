@@ -16,7 +16,7 @@ class _SignUpFormState extends State<SignUpForm> {
     SingupViewModel singupViewModel = SingupViewModel();
 
     return Form(
-      // key: _formKey,
+      key: singupViewModel.formkey.value,
       child: Column(
         children: [
           TextFormField(

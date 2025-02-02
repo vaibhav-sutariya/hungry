@@ -37,7 +37,7 @@ class AppColors {
   );
 
 // Form Error
-  final RegExp emailValidatorRegExp =
+  static RegExp emailValidatorRegExp =
       RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   static const String kEmailNullError = "Please Enter your email";
   static const String kInvalidEmailError = "Please Enter Valid Email";
