@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/view/home/componets/address_box.dart';
 import 'package:hungry/view/home/componets/custom_button.dart';
 import 'package:hungry/view/home/componets/custom_text.dart';
 
@@ -46,10 +47,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 25),
-          // AddressBox(
-          //   initialAddress: _currentAddress,
-          // ),
-          // const SizedBox(height: 25),
+          AddressBox(),
+          const SizedBox(height: 25),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
