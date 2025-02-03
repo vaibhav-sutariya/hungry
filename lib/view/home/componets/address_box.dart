@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/services/location_services/location_permission.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 import 'package:shimmer/shimmer.dart';
@@ -86,12 +87,7 @@ class _AddressBoxState extends State<AddressBox> {
                             )
                           : InkWell(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => const SearchScreen(),
-                                //   ),
-                                // );
+                                Get.toNamed(RouteName.searchScreen);
                               },
                               child: Container(
                                 alignment: Alignment.centerLeft,

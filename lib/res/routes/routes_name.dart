@@ -8,4 +8,5 @@ class RouteName {
   static const String contactUsScreen = '/contact_us_screen';
   static const String helpCenterScreen = '/help_center_screen';
   static const String settingPrivacyScreen = '/settings_privacy_screen';
+  static const String searchScreen = '/search_screen';
 }
