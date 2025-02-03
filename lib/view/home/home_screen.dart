@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/home/componets/address_box.dart';
 import 'package:hungry/view/home/componets/custom_button.dart';
 import 'package:hungry/view/home/componets/custom_text.dart';
@@ -63,13 +65,7 @@ class HomeScreen extends StatelessWidget {
                   CustomButton(
                     text: 'Find Food',
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   CupertinoPageRoute(
-                      //     builder: (context) =>
-                      //         HomeScreen(currentAddress: _currentAddress),
-                      //   ),
-                      // );
+                      Get.toNamed(RouteName.findFoodScreen);
                     },
                     background: AppColors.kPrimaryColor,
                     foreground: Colors.white,
