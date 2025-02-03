@@ -42,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     "Complete your details or continue \nwith social media",
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 25),
                   SignUpForm(
                     buttonPressed: 'initial',
                   ),

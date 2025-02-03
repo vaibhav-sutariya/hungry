@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Sign in with your email and password\nor continue with social media",
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 25),
                   LoginForm(buttonPressed: widget.buttonPressed),
                   const SizedBox(height: 16),
                   const Row(children: <Widget>[

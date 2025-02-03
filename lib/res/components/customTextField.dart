@@ -33,15 +33,32 @@ class CustomTextField extends StatelessWidget {
       onSaved: onSaved,
       onChanged: onChanged,
       validator: validator,
+      cursorColor: AppColors.kPrimaryColor,
       decoration: InputDecoration(
         labelText: labelText,
+        labelStyle: const TextStyle(
+          color: AppColors.kPrimaryColor,
+        ),
         hintText: hintText,
+        hintStyle: TextStyle(
+          color: AppColors.kPrimaryColor.withOpacity(0.3),
+        ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: suffixIcon,
         errorText: errorText,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(color: AppColors.kTextColor),
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: AppColors.kPrimaryColor,
+          ),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.kPrimaryColor, width: 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: AppColors.kPrimaryColor, width: 2.0),
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
         ),
       ),
     );

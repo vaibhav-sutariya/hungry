@@ -23,8 +23,8 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           CustomTextField(
             controller: loginViewModel.emailController.value,
-            labelText: 'Enter Email',
-            hintText: 'Enter Valid Email',
+            labelText: 'Email',
+            hintText: 'Enter your Email',
             suffixIcon:
                 const CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             onChanged: (value) {

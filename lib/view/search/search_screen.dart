@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/res/components/customTextField.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(showLogOut: true),
@@ -23,33 +25,14 @@ class SearchScreen extends StatelessWidget {
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.mic,
-                          color: AppColors.kPrimaryColor,
-                          size: 30,
-                        ),
-                      ),
-                      hintText: 'Set Your Location',
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: AppColors.kPrimaryColor, width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: AppColors.kPrimaryColor, width: 2.0),
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: AppColors.kPrimaryColor,
-                        ),
-                      ),
+                  child: CustomTextField(
+                    controller: controller,
+                    labelText: 'Location',
+                    hintText: 'Set Your Location',
+                    suffixIcon: const Icon(
+                      Icons.mic,
+                      color: AppColors.kPrimaryColor,
+                      size: 30,
                     ),
                   ),
                 ),
