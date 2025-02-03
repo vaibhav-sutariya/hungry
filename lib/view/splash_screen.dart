@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -17,9 +18,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    User? user = FirebaseAuth.instance.currentUser;
     super.initState();
     Timer(const Duration(seconds: 4), () {
-      Get.toNamed(RouteName.loginScreen);
+      if (user != null) {
+        Get.toNamed(RouteName.homeScreen);
+      } else {
+        Get.toNamed(RouteName.loginScreen);
+      }
     });
   }
 
