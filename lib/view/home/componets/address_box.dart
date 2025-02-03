@@ -30,83 +30,88 @@ class _AddressBoxState extends State<AddressBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.location_on_outlined,
-                size: 40,
-                color: AppColors.kPrimaryColor,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Obx(() {
-                        return locationServices.isLoading.value
-                            ? Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      width: double.infinity - 200,
-                                      height: 15.0,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: AppColors.kPrimaryColor,
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.location_on_outlined,
+              size: 40,
+              color: AppColors.kPrimaryColor,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      return locationServices.isLoading.value
+                          ? Shimmer.fromColors(
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
+                                    width: double.infinity - 200,
+                                    height: 15.0,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      width: 100,
-                                      height: 15.0,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => const SearchScreen(),
-                                  //   ),
-                                  // );
-                                },
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    locationServices.currentAddress.value,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                    ),
+                                    width: 100,
+                                    height: 15.0,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : InkWell(
+                              onTap: () {
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => const SearchScreen(),
+                                //   ),
+                                // );
+                              },
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  locationServices.currentAddress.value,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black,
                                   ),
                                 ),
-                              );
-                      })
-                    ],
-                  ),
+                              ),
+                            );
+                    })
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

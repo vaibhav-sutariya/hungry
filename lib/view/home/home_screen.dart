@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
@@ -11,18 +13,19 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // User? user = FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: MyAppBar(),
       drawer: MyDrawer(showLogOut: true),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 25),
-          Padding(
-            padding: const EdgeInsets.only(left: 25),
-            child: RichText(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          spacing: 30,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // const SizedBox(height: 1),
+            RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
@@ -32,26 +35,26 @@ class HomeScreen extends StatelessWidget {
                           .kPrimaryColor, // Change the color for "Welcome Back"
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
+                      fontFamily: GoogleFonts.mulish().fontFamily,
                     ),
                   ),
                   TextSpan(
-                    // text: user != null ? user.displayName ?? 'User' : 'Guest',
-                    style: const TextStyle(
-                      color: Colors.grey, // Keep the color for the username
+                    text: user != null ? user.displayName ?? 'User' : 'Guest',
+                    style: TextStyle(
+                      color: AppColors
+                          .kSecondaryColor, // Keep the color for the username
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
+                      fontFamily: GoogleFonts.mulish().fontFamily,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 25),
-          AddressBox(),
-          const SizedBox(height: 25),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
+            // const SizedBox(height: 25),
+            AddressBox(),
+            // const SizedBox(height: 20),
+            Expanded(
               child: Column(
                 // spacing: 8,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -104,8 +107,8 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
