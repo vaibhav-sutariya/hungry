@@ -74,30 +74,27 @@ class HomeScreen extends StatelessWidget {
                   CustomText(text: 'You have leftover Food?'),
                   CustomButton(
                       onPressed: () {
-                        // Get.to(() => user != null
-                        //     ? AddFoodDetails()
-                        //     : SignInScreen(
-                        //         buttonPressed: "Submit Remaining Food"));
+                        Get.toNamed(user != null
+                            ? RouteName.submitLeftoverFoodScreen
+                            : RouteName.loginScreen);
                       },
                       text: 'Submit Leftover Food'),
                   const SizedBox(height: 16),
                   CustomText(text: 'Want to help us?'),
                   CustomButton(
                       onPressed: () {
-                        // Get.to(() => user != null
-                        //     ? AddLocationDetails()
-                        //     : SignInScreen(
-                        //         buttonPressed: "Add more Locations"));
+                        Get.toNamed(user != null
+                            ? RouteName.addLocationScreen
+                            : RouteName.loginScreen);
                       },
                       text: 'Add more Locations'),
                   const SizedBox(height: 16),
                   CustomText(text: 'Want to register your Food Bank or NGO?'),
                   CustomButton(
                       onPressed: () {
-                        // Get.to(() => user != null
-                        //     ? AddFoodBankDetails()
-                        //     : SignInScreen(
-                        //         buttonPressed: "Register Food Center"));
+                        Get.toNamed(user != null
+                            ? RouteName.foodBankScreen
+                            : RouteName.loginScreen);
                       },
                       text: 'Register Food Center'),
                 ],
