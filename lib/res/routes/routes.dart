@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/find_food/find_food_screen.dart';
 import 'package:hungry/view/home/home_screen.dart';
+import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 import 'package:hungry/view/login/login_screen.dart';
 import 'package:hungry/view/pages/about_us.dart';
 import 'package:hungry/view/pages/contact_us.dart';
@@ -92,6 +93,14 @@ class AppRoutes {
         GetPage(
           name: RouteName.findFoodScreen,
           page: () => const FindFoodScreen(),
+          transition: Transition.leftToRightWithFade,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.submitLeftoverFoodScreen,
+          page: () => const SubmitLeftoverFoodScreen(),
           transition: Transition.leftToRightWithFade,
           transitionDuration: const Duration(
             milliseconds: 250,
