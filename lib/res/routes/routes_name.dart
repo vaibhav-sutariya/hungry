@@ -12,4 +12,5 @@ class RouteName {
   static const String findFoodScreen = '/find_food_screen';
   static const String submitLeftoverFoodScreen = '/submit_leftover_food_screen';
   static const String addLocationScreen = '/add_location_screen';
+  static const String foodBankScreen = '/food_bank_screen';
 }
