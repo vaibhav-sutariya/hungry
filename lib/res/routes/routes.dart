@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view/add_locations/add_location_screen.dart';
 import 'package:hungry/view/find_food/find_food_screen.dart';
 import 'package:hungry/view/home/home_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
@@ -101,6 +102,14 @@ class AppRoutes {
         GetPage(
           name: RouteName.submitLeftoverFoodScreen,
           page: () => const SubmitLeftoverFoodScreen(),
+          transition: Transition.leftToRightWithFade,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.addLocationScreen,
+          page: () => const AddLocationScreen(),
           transition: Transition.leftToRightWithFade,
           transitionDuration: const Duration(
             milliseconds: 250,
