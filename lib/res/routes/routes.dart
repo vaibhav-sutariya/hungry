@@ -20,7 +20,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.splashScreen,
           page: () => const SplashScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -28,7 +28,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.homeScreen,
           page: () => const HomeScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -36,7 +36,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.aboutUsScreen,
           page: () => const AboutUsScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -44,7 +44,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.contactUsScreen,
           page: () => const ContactUsScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -52,7 +52,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.helpCenterScreen,
           page: () => const HelpCenterScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -60,7 +60,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.settingPrivacyScreen,
           page: () => const SettingsPrivacyScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -68,7 +68,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.searchScreen,
           page: () => const SearchScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -78,7 +78,7 @@ class AppRoutes {
           page: () => const LoginScreen(
             buttonPressed: 'intial',
           ),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -88,7 +88,7 @@ class AppRoutes {
           page: () => const SignUpScreen(
             buttonPressed: 'intial',
           ),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -96,7 +96,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.findFoodScreen,
           page: () => const FindFoodScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -104,7 +104,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.submitLeftoverFoodScreen,
           page: () => const SubmitLeftoverFoodScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -112,7 +112,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.addLocationScreen,
           page: () => const AddLocationScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
@@ -120,7 +120,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.foodBankScreen,
           page: () => const FoodBankScreen(),
-          transition: Transition.leftToRightWithFade,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
           ),
