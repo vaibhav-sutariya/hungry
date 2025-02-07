@@ -6,9 +6,16 @@ import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
 import 'package:hungry/view_models/controllers/add_location/add_location_view_model.dart';
 
-class LocationDetailsForm extends StatelessWidget {
-  LocationDetailsForm({super.key});
+class LocationDetailsForm extends StatefulWidget {
+  const LocationDetailsForm({super.key});
+
+  @override
+  State<LocationDetailsForm> createState() => _LocationDetailsFormState();
+}
+
+class _LocationDetailsFormState extends State<LocationDetailsForm> {
   AddLocationViewModel addLocationViewModel = Get.put(AddLocationViewModel());
+
   @override
   Widget build(BuildContext context) {
     return Form(
