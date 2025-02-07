@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/view/add_locations/components/location_details_form.dart';
 
 class AddLocationScreen extends StatelessWidget {
   const AddLocationScreen({super.key});
@@ -35,7 +36,7 @@ class AddLocationScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 30),
-              // AddLocationDetailsForm(),
+              LocationDetailsForm(),
             ],
           ),
         ),
