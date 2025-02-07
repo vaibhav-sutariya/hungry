@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/customElevatedButton.dart';
 import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
 import 'package:hungry/view_models/controllers/left_over_food/left_over_food_view_model.dart';
-import 'package:uuid/uuid.dart';
 
 class FoodDetailsForm extends StatefulWidget {
   const FoodDetailsForm({super.key});
@@ -164,19 +162,21 @@ class _FoodDetailsFormState extends State<FoodDetailsForm> {
           // FormError(errors: errors),
           const SizedBox(height: 50),
 
-          Obx(() => leftOverFoodViewModel.loading.value
-              ? const CircularProgressIndicator(
-                  color: AppColors.kPrimaryColor,
-                )
-              : CustomElevatedButton(
-                  onPressed: () async {
-                    if (leftOverFoodViewModel.formkey.value.currentState!
-                        .validate()) {
-                      await leftOverFoodViewModel.saveLeftoverFoodData();
-                    }
-                  },
-                  text: 'Submit',
-                )),
+          Obx(
+            () => leftOverFoodViewModel.loading.value
+                ? const CircularProgressIndicator(
+                    color: AppColors.kPrimaryColor,
+                  )
+                : CustomElevatedButton(
+                    onPressed: () async {
+                      if (leftOverFoodViewModel.formkey.value.currentState!
+                          .validate()) {
+                        await leftOverFoodViewModel.saveLeftoverFoodData();
+                      }
+                    },
+                    text: 'Submit',
+                  ),
+          ),
         ],
       ),
     );
