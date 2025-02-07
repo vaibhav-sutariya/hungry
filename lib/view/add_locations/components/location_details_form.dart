@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
-import 'package:hungry/res/components/app_bar/app_bar.dart';
-import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/res/components/customElevatedButton.dart';
 import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
