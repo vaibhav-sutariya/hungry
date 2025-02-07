@@ -19,31 +19,6 @@ class _FoodDetailsFormState extends State<FoodDetailsForm> {
   LeftOverFoodViewModel leftOverFoodViewModel =
       Get.put(LeftOverFoodViewModel());
 
-  String? userId;
-  Position? _currentPosition;
-
-  // final _formKey = GlobalKey<FormState>();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getCurrentLocation();
-  // }
-
-  // Future<void> _getCurrentLocation() async {
-  //   try {
-  //     final Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high,
-  //     );
-  //     setState(() {
-  //       _currentPosition = position;
-  //     });
-  //   } catch (e) {
-  //     log('Error getting current location: $e');
-  //     // Handle error, such as showing a message to the user
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -189,107 +164,21 @@ class _FoodDetailsFormState extends State<FoodDetailsForm> {
           // FormError(errors: errors),
           const SizedBox(height: 50),
 
-          leftOverFoodViewModel.loading.value
-              ? CircularProgressIndicator()
+          Obx(() => leftOverFoodViewModel.loading.value
+              ? const CircularProgressIndicator(
+                  color: AppColors.kPrimaryColor,
+                )
               : CustomElevatedButton(
                   onPressed: () async {
                     if (leftOverFoodViewModel.formkey.value.currentState!
                         .validate()) {
-                      leftOverFoodViewModel.formkey.value.currentState!.save();
                       await leftOverFoodViewModel.saveLeftoverFoodData();
                     }
                   },
                   text: 'Submit',
-                ),
+                )),
         ],
       ),
     );
-  }
-
-  // void _openMapToSelectLocation() async {
-  //   // Navigate to map screen where user can select location
-  //   LatLng? location = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const MapScreen(
-  //         firstName: '',
-  //         phoneNumber: '',
-  //         details: '',
-  //         persons: '',
-  //         address: '',
-  //       ),
-  //     ),
-  //   );
-
-  //   if (location != null) {
-  //     setState(() {
-  //       selectedLocation = location;
-  //     });
-  //   }
-  // }
-
-  Future<void> saveDataAndNavigate() async {
-    try {
-      // Save data to Firebase
-      String id = const Uuid().v4();
-      // await saveDataToRealtimeDatabase(id);
-
-      // Navigate to confirmation screen with all the data
-      navigateToConfirmationScreen(id);
-    } catch (error) {
-      // Handle error
-      print("Error saving data: $error");
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error saving data. Please try again later.'),
-        ),
-      );
-    }
-  }
-
-  // Future<void> saveDataToRealtimeDatabase(String id) async {
-  //   User? user = FirebaseAuth.instance.currentUser;
-
-  //   if (user != null) {
-  //     String userId = user.uid;
-  //     String fName = FnameController.text.trim();
-  //     String phone = PhoneController.text.trim();
-  //     String address = addressController.text.trim();
-  //     String persons = personNumberController.text.trim();
-  //     String details = detialsController.text.trim();
-  //     String selectedLocationString =
-  //         "${_currentPosition!.latitude},${_currentPosition!.longitude}";
-
-  //     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-
-  //     await databaseReference.child('users').child(userId).child(id).set({
-  //       "fName": fName,
-  //       "phone": phone,
-  //       "address": address,
-  //       "persons": persons,
-  //       "details": details,
-  //       "location": selectedLocationString,
-  //     });
-
-  //     log("User data saved to Realtime Database");
-  //   }
-  // }
-
-  void navigateToConfirmationScreen(String id) {
-    // Navigator.push(
-    //   context,
-    //   CupertinoPageRoute(
-    //     builder: (context) => FoodConfirmationDetails(
-    //       firstName: FnameController.text.trim(),
-    //       phoneNumber: PhoneController.text.trim(),
-    //       address: addressController.text.trim(),
-    //       persons: personNumberController.text.trim(),
-    //       details: detialsController.text.trim(),
-    //       location:
-    //           LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-    //       id: id,
-    //     ),
-    //   ),
-    // );
   }
 }

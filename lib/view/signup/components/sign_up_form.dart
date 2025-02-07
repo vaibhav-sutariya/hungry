@@ -19,7 +19,7 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
-    SingupViewModel singupViewModel = SingupViewModel();
+    SingupViewModel singupViewModel = Get.put(SingupViewModel());
     // String email = singupViewModel.emailController.value.text.trim();
     String password = singupViewModel.passwordController.value.text.trim();
     String confirmPassword =
