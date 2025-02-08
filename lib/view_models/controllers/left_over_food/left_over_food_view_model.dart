@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:hungry/view/leftover_food/food_confirmation_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 import 'package:uuid/uuid.dart';
 
@@ -60,6 +61,14 @@ class LeftOverFoodViewModel extends GetxController {
       log("Error saving user data to Realtime Database: $e");
     } finally {
       loading.value = false;
+      Get.to(() => FoodConfirmationScreen(
+            firstName: fnameController.value.text,
+            phoneNumber: phoneController.value.text,
+            address: addressController.value.text,
+            details: detailsController.value.text,
+            persons: personNumberController.value.text,
+            id: const Uuid().v4(),
+          ));
     }
   }
 
