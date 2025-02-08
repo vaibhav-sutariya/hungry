@@ -1,9 +1,11 @@
 import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:hungry/view/add_locations/location_confirmation_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 import 'package:uuid/uuid.dart';
 
@@ -67,6 +69,12 @@ class AddLocationViewModel extends GetxController {
       log("Error saving location data to Realtime Database: $e");
     } finally {
       loading.value = false;
+      Get.to(() => LocationConfirmationScreen(
+            firstName: fnameController.value.text,
+            phoneNumber: phoneController.value.text,
+            address: addressController.value.text,
+            details: detailsController.value.text,
+          ));
     }
   }
 
