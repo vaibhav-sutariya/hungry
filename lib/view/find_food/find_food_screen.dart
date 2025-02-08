@@ -14,6 +14,12 @@ class FindFoodScreen extends StatefulWidget {
 
 class _FindFoodScreenState extends State<FindFoodScreen> {
   final FindFoodController controller = Get.put(FindFoodController());
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.loadUserLocations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,6 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
       drawer: const MyDrawer(showLogOut: false),
       body: Stack(
         children: <Widget>[
-          // Text('current adress'),
           Positioned.fill(
             top: AppBar().preferredSize.height + 30,
             bottom: 65,
@@ -30,24 +35,29 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
             right: 5,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: GoogleMap(
-                mapToolbarEnabled: true,
-                onMapCreated: controller.onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: controller.initialPosition(),
-                  zoom: 11.0,
-                ),
-                // mapType: controller.currentMapType,
-                markers: controller.markers(),
-                onCameraMove: controller.onCameraMove,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: false,
-                compassEnabled: true,
+              child: GetBuilder<FindFoodController>(
+                builder: (controller) {
+                  return GoogleMap(
+                    mapToolbarEnabled: true,
+                    onMapCreated: controller.onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                      target: controller.initialPosition(),
+                      zoom: 11.0,
+                    ),
+                    mapType: controller.currentMapType(),
+                    markers: controller.markers,
+                    onCameraMove: controller.onCameraMove,
+                    myLocationButtonEnabled: false,
+                    compassEnabled: true,
+                    buildingsEnabled: true,
+                    fortyFiveDegreeImageryEnabled: true,
+                    zoomControlsEnabled: true,
+                  );
+                },
               ),
             ),
           ),
-          // AddressBox(),
-          // Text('current adress'),
+          // Obx(() => AddressBox(initialAddress: controller.currentAddress.value)),
           // const BottomSlider(),
         ],
       ),

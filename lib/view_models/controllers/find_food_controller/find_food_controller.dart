@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:ui' as ui;
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -9,8 +10,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hungry/models/location_model.dart';
 
 class FindFoodController extends GetxController {
-  // late DatabaseReference _databaseRef;
-  // StreamSubscription<DatabaseEvent>? _userDataSubscription;
+  late DatabaseReference _databaseRef;
+  StreamSubscription<DatabaseEvent>? _userDataSubscription;
+  final List<LocationModel> _userDataList = [];
 
   final RxList<LocationModel> userDataList = <LocationModel>[].obs;
   final RxSet<Marker> markers = <Marker>{}.obs;
@@ -26,7 +28,7 @@ class FindFoodController extends GetxController {
   void onInit() {
     super.onInit();
     _loadMarkerIcon();
-    // loadUserLocations();
+    loadUserLocations();
     getUserCurrentLocation(); // Fetch user location on init
   }
 
@@ -61,45 +63,105 @@ class FindFoodController extends GetxController {
     return _center;
   }
 
-  // void loadUserLocations() {
-  //   _databaseRef = FirebaseDatabase.instance.ref().child('locations');
-  //   _userDataSubscription = _databaseRef.onValue.listen((event) {
-  //     if (event.snapshot.value != null && event.snapshot.value is Map) {
-  //       userDataList.clear();
-  //       markers.clear();
-  //       Map<dynamic, dynamic> usersDataMap = event.snapshot.value as Map;
-  //       usersDataMap.forEach((userId, userData) {
-  //         if (userData is Map) {
-  //           userData.forEach((id, data) {
-  //             if (data is Map && data.containsKey('location')) {
-  //               userDataList.add(LocationModel.fromJson(data));
-  //               log('User Data: $data');
+  void loadUserLocations() {
+    _databaseRef = FirebaseDatabase.instance.ref().child('locations');
+    _userDataSubscription = _databaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null && event.snapshot.value is Map) {
+        _userDataList.clear();
 
-  //               final List<String> locationParts =
-  //                   data['location'].toString().split(',');
-  //               if (locationParts.length == 2) {
-  //                 double? latitude = double.tryParse(locationParts[0]);
-  //                 double? longitude = double.tryParse(locationParts[1]);
+        Map<dynamic, dynamic> usersDataMap =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        usersDataMap.forEach((userId, userData) {
+          if (userData is Map<dynamic, dynamic>) {
+            userData.forEach((id, data) {
+              if (data is Map<dynamic, dynamic>) {
+                _userDataList.add(
+                    LocationModel.fromJson(Map<String, dynamic>.from(data)));
+                log('User Data: $data');
 
-  //                 if (latitude != null && longitude != null) {
-  //                   markers.add(Marker(
-  //                     markerId: MarkerId(id.toString()),
-  //                     position: LatLng(latitude, longitude),
-  //                     infoWindow: InfoWindow(
-  //                       title: data['Fname'] ?? 'No Name',
-  //                       snippet: data['address'] ?? 'No Address',
-  //                     ),
-  //                     icon: markerIcon,
-  //                   ));
-  //                 }
-  //               }
-  //             }
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
+                double latitude = 0.0;
+                double longitude = 0.0;
+
+                if (data['location'] is String) {
+                  // Handle location stored as a string (e.g., "23.0225,72.5714")
+                  List<String> latLng = data['location'].split(',');
+                  latitude = double.tryParse(latLng[0]) ?? 0.0;
+                  longitude = double.tryParse(latLng[1]) ?? 0.0;
+                } else if (data['location'] is Map) {
+                  // Handle location stored as a map (e.g., { "latitude": 23.0225, "longitude": 72.5714 })
+                  Map locationMap = data['location'] as Map;
+                  latitude =
+                      (locationMap['latitude'] as num?)?.toDouble() ?? 0.0;
+                  longitude =
+                      (locationMap['longitude'] as num?)?.toDouble() ?? 0.0;
+                }
+
+                markers.add(Marker(
+                  markerId: MarkerId(id.toString()),
+                  position: LatLng(latitude, longitude),
+                  infoWindow: InfoWindow(
+                    title: data['Fname'] ?? 'Unknown',
+                    snippet: data['address'] ?? 'No Address',
+                  ),
+                  icon: markerIcon,
+                ));
+              }
+            });
+          }
+        });
+
+        // setState(() {}); // Refresh the UI
+      }
+    });
+
+    _databaseRef = FirebaseDatabase.instance.ref().child('FoodBanks');
+    _userDataSubscription = _databaseRef.onValue.listen((event) {
+      if (event.snapshot.value != null && event.snapshot.value is Map) {
+        _userDataList.clear();
+
+        Map<dynamic, dynamic> usersDataMap =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        usersDataMap.forEach((userId, userData) {
+          if (userData is Map<dynamic, dynamic>) {
+            userData.forEach((id, data) {
+              if (data is Map<dynamic, dynamic>) {
+                _userDataList.add(
+                    LocationModel.fromJson(Map<String, dynamic>.from(data)));
+                log('User Data: $data');
+
+                double latitude = 0.0;
+                double longitude = 0.0;
+
+                if (data['location'] is String) {
+                  List<String> latLng = data['location'].split(',');
+                  latitude = double.tryParse(latLng[0]) ?? 0.0;
+                  longitude = double.tryParse(latLng[1]) ?? 0.0;
+                } else if (data['location'] is Map) {
+                  Map locationMap = data['location'] as Map;
+                  latitude =
+                      (locationMap['latitude'] as num?)?.toDouble() ?? 0.0;
+                  longitude =
+                      (locationMap['longitude'] as num?)?.toDouble() ?? 0.0;
+                }
+
+                markers.add(Marker(
+                  markerId: MarkerId(id.toString()),
+                  position: LatLng(latitude, longitude),
+                  infoWindow: InfoWindow(
+                    title: data['Fname'] ?? 'Unknown',
+                    snippet: data['address'] ?? 'No Address',
+                  ),
+                  icon: markerIcon,
+                ));
+              }
+            });
+          }
+        });
+
+        // setState(() {}); // Refresh the UI
+      }
+    });
+  }
 
   void toggleMapType() {
     currentMapType.value = currentMapType.value == MapType.normal
