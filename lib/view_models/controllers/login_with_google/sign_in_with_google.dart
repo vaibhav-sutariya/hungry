@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 
 class SignInWithGoogle extends GetxController {
@@ -27,7 +28,10 @@ class SignInWithGoogle extends GetxController {
           await FirebaseAuth.instance.signInWithCredential(credential);
       if (userCredential.user != null) {
         log('Success: Login Success');
-        Get.snackbar('Success', 'Login Success');
+        Get.snackbar(
+            backgroundColor: AppColors.kPrimaryLightColor,
+            'Success',
+            'Login Success');
         Get.toNamed(RouteName.homeScreen);
       }
     } catch (e) {
