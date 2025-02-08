@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 
 class LocationServices extends GetxController {
   RxBool isLoading = false.obs;
-  RxString currentAddress = 'geust'.obs;
+  RxString currentAddress = ''.obs;
   void getCurrentLocation() async {
     try {
       isLoading.value = true;
@@ -20,7 +20,7 @@ class LocationServices extends GetxController {
         log(placemark.toString());
         currentAddress.value = "${placemark.thoroughfare}, "
             "${placemark.subLocality},"
-            " ${placemark.locality}\n"
+            " ${placemark.locality}, "
             "${placemark.administrativeArea}, "
             "${placemark.subAdministrativeArea}"
             "${placemark.country}, "

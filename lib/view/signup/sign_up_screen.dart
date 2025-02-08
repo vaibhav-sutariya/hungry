@@ -20,7 +20,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  SignInWithGoogle signInWithGoogle = SignInWithGoogle();
+  SignInWithGoogle signInWithGoogle = Get.put(SignInWithGoogle());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

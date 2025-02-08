@@ -21,9 +21,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   @override
-  @override
   Widget build(BuildContext context) {
-    final SignInWithGoogle signInWithGoogle = SignInWithGoogle();
+    final SignInWithGoogle signInWithGoogle = Get.put(SignInWithGoogle());
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(

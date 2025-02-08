@@ -13,54 +13,60 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(showLogOut: true),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.location_on_outlined,
-                size: 40,
-                color: AppColors.kPrimaryColor,
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  child: CustomTextField(
-                    controller: controller,
-                    labelText: 'Location',
-                    hintText: 'Set Your Location',
-                    suffixIcon: const Icon(
-                      Icons.mic,
-                      color: AppColors.kPrimaryColor,
-                      size: 30,
+      body: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  size: 40,
+                  color: AppColors.kPrimaryColor,
+                ),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: CustomTextField(
+                      controller: controller,
+                      labelText: 'Location',
+                      hintText: 'Set Your Location',
+                      suffixIcon: const Icon(
+                        Icons.mic,
+                        color: AppColors.kPrimaryColor,
+                        size: 30,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12), // <-- Radius
-                side:
-                    const BorderSide(color: AppColors.kPrimaryColor, width: 2),
-              ),
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+              ],
             ),
-            onPressed: () {},
-            child: const Text(
-              'Use Current Location',
-              style: TextStyle(
-                color: AppColors.kPrimaryColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12), // <-- Radius
+                  side: const BorderSide(
+                      color: AppColors.kPrimaryColor, width: 2),
+                ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 25.0, vertical: 10.0),
+              ),
+              onPressed: () {},
+              child: const Text(
+                'Use Current Location',
+                style: TextStyle(
+                  color: AppColors.kPrimaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

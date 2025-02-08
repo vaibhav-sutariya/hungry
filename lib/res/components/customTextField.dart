@@ -40,9 +40,6 @@ class CustomTextField extends StatelessWidget {
           color: AppColors.kPrimaryColor,
         ),
         hintText: hintText,
-        hintStyle: TextStyle(
-          color: AppColors.kPrimaryColor.withOpacity(0.3),
-        ),
         floatingLabelBehavior: FloatingLabelBehavior.always,
         suffixIcon: suffixIcon,
         errorText: errorText,
