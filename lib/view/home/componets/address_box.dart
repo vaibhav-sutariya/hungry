@@ -18,8 +18,8 @@ class AddressBox extends StatefulWidget {
 
 class _AddressBoxState extends State<AddressBox> {
   LocationPermissionServices locationPermissionServices =
-      LocationPermissionServices();
-  LocationServices locationServices = LocationServices();
+      Get.put(LocationPermissionServices());
+  LocationServices locationServices = Get.put(LocationServices());
 
   @override
   void initState() {

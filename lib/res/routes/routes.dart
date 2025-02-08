@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/add_locations/add_location_screen.dart';
 import 'package:hungry/view/find_food/find_food_screen.dart';
+import 'package:hungry/view/food_bank/food_bank_confirmation_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_screen.dart';
 import 'package:hungry/view/home/home_screen.dart';
-import 'package:hungry/view/leftover_food/food_confirmation_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 import 'package:hungry/view/login/login_screen.dart';
 import 'package:hungry/view/pages/about_us.dart';
@@ -109,21 +109,21 @@ class AppRoutes {
             milliseconds: 250,
           ),
         ),
-        GetPage(
-          name: RouteName.foodConfirmationScreen,
-          page: () => const FoodConfirmationScreen(
-            firstName: '',
-            phoneNumber: '',
-            address: '',
-            details: '',
-            persons: '',
-            id: '',
-          ),
-          transition: Transition.rightToLeft,
-          transitionDuration: const Duration(
-            milliseconds: 250,
-          ),
-        ),
+        // GetPage(
+        //   name: RouteName.foodConfirmationScreen,
+        //   page: () => const FoodConfirmationScreen(
+        //     firstName: '',
+        //     phoneNumber: '',
+        //     address: '',
+        //     details: '',
+        //     persons: '',
+        //     id: '',
+        //   ),
+        //   transition: Transition.rightToLeft,
+        //   transitionDuration: const Duration(
+        //     milliseconds: 250,
+        //   ),
+        // ),
         GetPage(
           name: RouteName.addLocationScreen,
           page: () => const AddLocationScreen(),
@@ -135,6 +135,14 @@ class AppRoutes {
         GetPage(
           name: RouteName.foodBankScreen,
           page: () => const FoodBankScreen(),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.foodBankConfirmationScreen,
+          page: () => FoodBankConfirmationScreen(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,

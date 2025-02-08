@@ -4,6 +4,7 @@ import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/customElevatedButton.dart';
 import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/controllers/add_foodbank/add_foodbank_view_model.dart';
 
 class FoodBankDetailsForm extends StatefulWidget {
@@ -19,7 +20,7 @@ class _FoodBankDetailsFormState extends State<FoodBankDetailsForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: addFoodbankViewModel.formkey.value,
+      key: addFoodbankViewModel.formKey.value,
       child: Column(
         children: [
           CustomTextField(
@@ -191,13 +192,12 @@ class _FoodBankDetailsFormState extends State<FoodBankDetailsForm> {
                   )
                 : CustomElevatedButton(
                     onPressed: () async {
-                      if (addFoodbankViewModel.formkey.value.currentState!
+                      if (addFoodbankViewModel.formKey.value.currentState!
                           .validate()) {
                         // Save the form data
-                        addFoodbankViewModel.formkey.value.currentState!.save();
-                        addFoodbankViewModel.saveFoodBankData();
+                        addFoodbankViewModel.formKey.value.currentState!.save();
 
-                        // Navigate to the map screen to select a location
+                        Get.toNamed(RouteName.foodBankConfirmationScreen);
                       }
                     },
                     text: "Submit",

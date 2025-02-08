@@ -9,17 +9,58 @@ import 'package:hungry/view_models/services/location_services/location_services.
 import 'package:uuid/uuid.dart';
 
 class AddFoodbankViewModel extends GetxController {
+  // Location services instance
   LocationServices locationServices = LocationServices();
+
+  // Controllers for form fields
   final foodNGoNameController = TextEditingController().obs;
   final fNameController = TextEditingController().obs;
   final gmailController = TextEditingController().obs;
   final phoneController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
   final volunteerController = TextEditingController().obs;
-  final formkey = GlobalKey<FormState>().obs;
+  final minPeopleAcceptedController = TextEditingController().obs;
+
+  // Checkbox states
+  RxBool acceptingRemainingFood = false.obs;
+  RxBool distributingToNeedyPerson = false.obs;
+  RxBool freeMealAvailable = false.obs;
+  RxBool acceptingDonations = false.obs;
+  RxBool acceptTermsAndConditions = false.obs;
+
+  // Form validation key
+  final formKey = GlobalKey<FormState>().obs;
+
+  // Loading state
   RxBool loading = false.obs;
 
+  // Toggle checkbox states
+  void toggleAcceptingRemainingFood(bool? value) {
+    acceptingRemainingFood.value = value ?? false;
+  }
+
+  void toggleDistributingToNeedyPerson(bool? value) {
+    distributingToNeedyPerson.value = value ?? false;
+  }
+
+  void toggleFreeMealAvailable(bool? value) {
+    freeMealAvailable.value = value ?? false;
+  }
+
+  void toggleAcceptingDonations(bool? value) {
+    acceptingDonations.value = value ?? false;
+  }
+
+  void toggleAcceptTermsAndConditions(bool? value) {
+    acceptTermsAndConditions.value = value ?? false;
+  }
+
   Future<void> saveFoodBankData() async {
+    if (!acceptTermsAndConditions.value) {
+      Get.snackbar("Error", "You must accept the Terms & Conditions.");
+      return;
+    }
+
     loading.value = true;
     try {
       Position position = await Geolocator.getCurrentPosition();
@@ -35,6 +76,9 @@ class AddFoodbankViewModel extends GetxController {
         String phone = phoneController.value.text.trim();
         String address = addressController.value.text.trim();
         String volunteer = volunteerController.value.text.trim();
+        String minPeople = acceptingRemainingFood.value
+            ? minPeopleAcceptedController.value.text.trim()
+            : '';
 
         await databaseReference.child('FoodBanks').child(userId).child(id).set({
           'FoodNgoName': foodNGOName,
@@ -43,6 +87,11 @@ class AddFoodbankViewModel extends GetxController {
           'phone': phone,
           'volunteers': volunteer,
           'address': address,
+          'acceptingRemainingFood': acceptingRemainingFood.value,
+          'minPeopleAccepted': minPeople,
+          'distributingToNeedyPerson': distributingToNeedyPerson.value,
+          'freeMealAvailable': freeMealAvailable.value,
+          'acceptingDonations': acceptingDonations.value,
           'location': {
             'latitude': position.latitude,
             'longitude': position.longitude,
