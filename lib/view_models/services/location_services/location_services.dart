@@ -26,13 +26,14 @@ class LocationServices extends GetxController {
             "${placemark.country}, "
             "${placemark.postalCode}";
         log(currentAddress.value);
+        isLoading.value = false;
       } else {
         currentAddress.value = "Address not found";
       }
     } catch (e) {
       print(e);
     } finally {
-      isLoading.value = false;
+      // isLoading.value = false;
     }
   }
 }
