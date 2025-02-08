@@ -8,15 +8,13 @@ class LocationConfirmationScreen extends StatefulWidget {
   final String phoneNumber;
   final String address;
   final String details;
-  String status;
   // final LatLng location;
-  LocationConfirmationScreen({
+  const LocationConfirmationScreen({
     super.key,
     required this.firstName,
     required this.phoneNumber,
     required this.address,
     required this.details,
-    this.status = 'Pending',
   });
 
   @override
@@ -26,6 +24,7 @@ class LocationConfirmationScreen extends StatefulWidget {
 
 class _LocationConfirmationScreenState
     extends State<LocationConfirmationScreen> {
+  String status = 'Pending';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +149,7 @@ class _LocationConfirmationScreenState
                                       text: 'Status: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
-                                      text: widget.status,
+                                      text: status,
                                       style: AppColors.kTextStyleN),
                                 ],
                               ),
