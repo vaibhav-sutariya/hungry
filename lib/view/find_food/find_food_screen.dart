@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
-import 'package:hungry/view/find_food/bottom_slidebar.dart';
+import 'package:hungry/view/find_food/components/bottom_slidebar.dart';
 import 'package:hungry/view_models/controllers/find_food_controller/find_food_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
