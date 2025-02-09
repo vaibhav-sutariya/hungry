@@ -30,7 +30,7 @@ class FindFoodController extends GetxController {
   final Rx<MapType> currentMapType = MapType.normal.obs;
   late BitmapDescriptor markerIcon;
 
-  late final PanelController panelController;
+  final PanelController panelController = PanelController();
 
   @override
   void onInit() {
