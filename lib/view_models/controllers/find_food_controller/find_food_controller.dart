@@ -66,10 +66,10 @@ class FindFoodController extends GetxController {
     return _center;
   }
 
-  void fetchAllData() {
-    fetchLocations();
-    fetchFoodBanks();
-  }
+  // void fetchAllData() {
+  //   fetchLocations();
+  //   fetchFoodBanks();
+  // }
 
   void fetchLocations() {
     _locationsRef = FirebaseDatabase.instance.ref().child('locations');
@@ -173,7 +173,7 @@ class FindFoodController extends GetxController {
       position: lastMapPosition.value,
       infoWindow: const InfoWindow(title: 'Your Current Location'),
     ));
-
+    update();
     final GoogleMapController mapController = await controller.future;
     mapController.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(target: lastMapPosition.value, zoom: 14),

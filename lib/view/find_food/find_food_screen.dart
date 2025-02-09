@@ -18,9 +18,11 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.fetchAllData();
+    controller.fetchLocations();
+    controller.fetchFoodBanks();
     controller.loadMarkerIcon().then((_) {
-      controller.fetchAllData();
+      controller.fetchLocations();
+      controller.fetchFoodBanks();
     });
   }
 
@@ -47,7 +49,7 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
                     zoom: 11.0,
                   ),
                   mapType: controller.currentMapType(),
-                  markers: controller.markers,
+                  markers: Set<Marker>.of(controller.markers),
                   onCameraMove: controller.onCameraMove,
                   myLocationButtonEnabled: false,
                   compassEnabled: true,
