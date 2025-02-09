@@ -112,7 +112,7 @@ class FindFoodController extends GetxController {
                     FoodBankModel.fromJson(Map<String, dynamic>.from(data));
                 combinedDataList.add(foodBankModel);
                 addMarker(foodBankModel.latitude, foodBankModel.longitude,
-                    foodBankModel.fName, foodBankModel.address);
+                    foodBankModel.foodNgoName, foodBankModel.address);
                 log(foodBankModel.latitude.toString());
                 log(foodBankModel.longitude.toString());
                 log(foodBankModel.fName.toString());

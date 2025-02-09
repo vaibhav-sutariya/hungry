@@ -18,7 +18,7 @@ class LocationServices extends GetxController {
       if (placemarks.isNotEmpty) {
         Placemark placemark = placemarks.first;
         log(placemark.toString());
-        currentAddress.value = "${placemark.thoroughfare}, "
+        currentAddress.value = "${placemark.name}, "
             "${placemark.subLocality},"
             " ${placemark.locality}, "
             "${placemark.administrativeArea}, "
