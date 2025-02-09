@@ -41,6 +41,13 @@ class FindFoodController extends GetxController {
     getUserCurrentLocation(); // Fetch user location on init
   }
 
+  @override
+  void onClose() {
+    _locationSubscription?.cancel();
+    _foodBankSubscription?.cancel();
+    super.onClose();
+  }
+
   Future<void> loadMarkerIcon() async {
     final Uint8List markerIconBytes =
         await getBytesFromAsset('assets/images/marker_icon.png', 80);

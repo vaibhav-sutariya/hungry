@@ -47,6 +47,8 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
                   zoom: 11.0,
                 ),
                 mapType: controller.currentMapType(),
+                indoorViewEnabled: true,
+                zoomGesturesEnabled: true,
                 markers: Set<Marker>.of(controller.markers),
                 onCameraMove: controller.onCameraMove,
                 myLocationButtonEnabled: false,
