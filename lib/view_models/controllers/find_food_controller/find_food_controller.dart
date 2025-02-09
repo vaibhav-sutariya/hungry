@@ -9,12 +9,16 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hungry/models/food_bank_model.dart';
 import 'package:hungry/models/location_model.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class FindFoodController extends GetxController {
   late DatabaseReference _locationsRef;
   late DatabaseReference _foodBanksRef;
   StreamSubscription<DatabaseEvent>? _locationSubscription;
   StreamSubscription<DatabaseEvent>? _foodBankSubscription;
+
+  final RxList<FoodBankModel> foodBankList = <FoodBankModel>[].obs;
+  final RxList<LocationModel> locationList = <LocationModel>[].obs;
   final RxList<dynamic> combinedDataList = <dynamic>[].obs;
 
   final RxSet<Marker> markers = <Marker>{}.obs;
@@ -25,6 +29,8 @@ class FindFoodController extends GetxController {
   final Rx<LatLng> lastMapPosition = _center.obs;
   final Rx<MapType> currentMapType = MapType.normal.obs;
   late BitmapDescriptor markerIcon;
+
+  late final PanelController panelController;
 
   @override
   void onInit() {
@@ -82,6 +88,7 @@ class FindFoodController extends GetxController {
               try {
                 final locationModel =
                     LocationModel.fromJson(Map<String, dynamic>.from(data));
+                locationList.add(locationModel);
                 combinedDataList.add(locationModel);
                 addMarker(locationModel.latitude, locationModel.longitude,
                     locationModel.fName, locationModel.address);
@@ -110,6 +117,7 @@ class FindFoodController extends GetxController {
               try {
                 final foodBankModel =
                     FoodBankModel.fromJson(Map<String, dynamic>.from(data));
+                foodBankList.add(foodBankModel);
                 combinedDataList.add(foodBankModel);
                 addMarker(foodBankModel.latitude, foodBankModel.longitude,
                     foodBankModel.foodNgoName, foodBankModel.address);
