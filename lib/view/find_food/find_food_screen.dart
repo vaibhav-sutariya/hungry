@@ -18,8 +18,8 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.fetchLocations();
-    controller.fetchFoodBanks();
+    // controller.fetchLocations();
+    // controller.fetchFoodBanks();
     controller.loadMarkerIcon().then((_) {
       controller.fetchLocations();
       controller.fetchFoodBanks();
