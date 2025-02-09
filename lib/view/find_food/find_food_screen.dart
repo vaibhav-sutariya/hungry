@@ -18,7 +18,10 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.loadUserLocations();
+    controller.fetchAllData();
+    controller.loadMarkerIcon().then((_) {
+      controller.fetchAllData();
+    });
   }
 
   @override
@@ -35,29 +38,26 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
             right: 5,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20.0),
-              child: GetBuilder<FindFoodController>(
-                builder: (controller) {
-                  return GoogleMap(
-                    mapToolbarEnabled: true,
-                    onMapCreated: controller.onMapCreated,
-                    initialCameraPosition: CameraPosition(
-                      target: controller.initialPosition(),
-                      zoom: 11.0,
-                    ),
-                    mapType: controller.currentMapType(),
-                    markers: controller.markers,
-                    onCameraMove: controller.onCameraMove,
-                    myLocationButtonEnabled: false,
-                    compassEnabled: true,
-                    buildingsEnabled: true,
-                    fortyFiveDegreeImageryEnabled: true,
-                    zoomControlsEnabled: true,
-                  );
-                },
+              child: Obx(
+                () => GoogleMap(
+                  mapToolbarEnabled: true,
+                  onMapCreated: controller.onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: controller.initialPosition(),
+                    zoom: 11.0,
+                  ),
+                  mapType: controller.currentMapType(),
+                  markers: controller.markers,
+                  onCameraMove: controller.onCameraMove,
+                  myLocationButtonEnabled: false,
+                  compassEnabled: true,
+                  buildingsEnabled: true,
+                  fortyFiveDegreeImageryEnabled: true,
+                  zoomControlsEnabled: true,
+                ),
               ),
             ),
           ),
-          // Obx(() => AddressBox(initialAddress: controller.currentAddress.value)),
           // const BottomSlider(),
         ],
       ),

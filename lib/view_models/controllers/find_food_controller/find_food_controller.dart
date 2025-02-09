@@ -7,14 +7,16 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hungry/models/food_bank_model.dart';
 import 'package:hungry/models/location_model.dart';
 
 class FindFoodController extends GetxController {
-  late DatabaseReference _databaseRef;
-  StreamSubscription<DatabaseEvent>? _userDataSubscription;
-  final List<LocationModel> _userDataList = [];
+  late DatabaseReference _locationsRef;
+  late DatabaseReference _foodBanksRef;
+  StreamSubscription<DatabaseEvent>? _locationSubscription;
+  StreamSubscription<DatabaseEvent>? _foodBankSubscription;
+  final RxList<dynamic> combinedDataList = <dynamic>[].obs;
 
-  final RxList<LocationModel> userDataList = <LocationModel>[].obs;
   final RxSet<Marker> markers = <Marker>{}.obs;
   final Completer<GoogleMapController> controller = Completer();
   final RxString currentAddress = 'Loading...'.obs;
@@ -27,12 +29,13 @@ class FindFoodController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadMarkerIcon();
-    loadUserLocations();
+    // loadMarkerIcon().then((_) {
+    //   fetchAllData();
+    // });
     getUserCurrentLocation(); // Fetch user location on init
   }
 
-  Future<void> _loadMarkerIcon() async {
+  Future<void> loadMarkerIcon() async {
     final Uint8List markerIconBytes =
         await getBytesFromAsset('assets/images/marker_icon.png', 80);
     markerIcon = BitmapDescriptor.fromBytes(markerIconBytes);
@@ -63,104 +66,76 @@ class FindFoodController extends GetxController {
     return _center;
   }
 
-  void loadUserLocations() {
-    _databaseRef = FirebaseDatabase.instance.ref().child('locations');
-    _userDataSubscription = _databaseRef.onValue.listen((event) {
+  void fetchAllData() {
+    fetchLocations();
+    fetchFoodBanks();
+  }
+
+  void fetchLocations() {
+    _locationsRef = FirebaseDatabase.instance.ref().child('locations');
+    _locationSubscription = _locationsRef.onValue.listen((event) {
       if (event.snapshot.value != null && event.snapshot.value is Map) {
-        _userDataList.clear();
-
-        Map<dynamic, dynamic> usersDataMap =
-            event.snapshot.value as Map<dynamic, dynamic>;
-        usersDataMap.forEach((userId, userData) {
-          if (userData is Map<dynamic, dynamic>) {
+        Map<dynamic, dynamic> locationsMap = event.snapshot.value as Map;
+        locationsMap.forEach((userId, userData) {
+          if (userData is Map) {
             userData.forEach((id, data) {
-              if (data is Map<dynamic, dynamic>) {
-                _userDataList.add(
-                    LocationModel.fromJson(Map<String, dynamic>.from(data)));
-                log('User Data: $data');
-
-                double latitude = 0.0;
-                double longitude = 0.0;
-
-                if (data['location'] is String) {
-                  // Handle location stored as a string (e.g., "23.0225,72.5714")
-                  List<String> latLng = data['location'].split(',');
-                  latitude = double.tryParse(latLng[0]) ?? 0.0;
-                  longitude = double.tryParse(latLng[1]) ?? 0.0;
-                } else if (data['location'] is Map) {
-                  // Handle location stored as a map (e.g., { "latitude": 23.0225, "longitude": 72.5714 })
-                  Map locationMap = data['location'] as Map;
-                  latitude =
-                      (locationMap['latitude'] as num?)?.toDouble() ?? 0.0;
-                  longitude =
-                      (locationMap['longitude'] as num?)?.toDouble() ?? 0.0;
-                }
-
-                markers.add(Marker(
-                  markerId: MarkerId(id.toString()),
-                  position: LatLng(latitude, longitude),
-                  infoWindow: InfoWindow(
-                    title: data['Fname'] ?? 'Unknown',
-                    snippet: data['address'] ?? 'No Address',
-                  ),
-                  icon: markerIcon,
-                ));
+              try {
+                final locationModel =
+                    LocationModel.fromJson(Map<String, dynamic>.from(data));
+                combinedDataList.add(locationModel);
+                addMarker(locationModel.latitude, locationModel.longitude,
+                    locationModel.fName, locationModel.address);
+                log(locationModel.latitude.toString());
+                log(locationModel.longitude.toString());
+                log(locationModel.fName.toString());
+                log(locationModel.address.toString());
+              } catch (e) {
+                log('Error parsing location data for ID $id: $e');
               }
             });
           }
         });
-
-        // setState(() {}); // Refresh the UI
       }
     });
+  }
 
-    _databaseRef = FirebaseDatabase.instance.ref().child('FoodBanks');
-    _userDataSubscription = _databaseRef.onValue.listen((event) {
+  void fetchFoodBanks() {
+    _foodBanksRef = FirebaseDatabase.instance.ref().child('FoodBanks');
+    _foodBankSubscription = _foodBanksRef.onValue.listen((event) {
       if (event.snapshot.value != null && event.snapshot.value is Map) {
-        _userDataList.clear();
-
-        Map<dynamic, dynamic> usersDataMap =
-            event.snapshot.value as Map<dynamic, dynamic>;
-        usersDataMap.forEach((userId, userData) {
-          if (userData is Map<dynamic, dynamic>) {
+        Map<dynamic, dynamic> foodBanksMap = event.snapshot.value as Map;
+        foodBanksMap.forEach((userId, userData) {
+          if (userData is Map) {
             userData.forEach((id, data) {
-              if (data is Map<dynamic, dynamic>) {
-                _userDataList.add(
-                    LocationModel.fromJson(Map<String, dynamic>.from(data)));
-                log('User Data: $data');
-
-                double latitude = 0.0;
-                double longitude = 0.0;
-
-                if (data['location'] is String) {
-                  List<String> latLng = data['location'].split(',');
-                  latitude = double.tryParse(latLng[0]) ?? 0.0;
-                  longitude = double.tryParse(latLng[1]) ?? 0.0;
-                } else if (data['location'] is Map) {
-                  Map locationMap = data['location'] as Map;
-                  latitude =
-                      (locationMap['latitude'] as num?)?.toDouble() ?? 0.0;
-                  longitude =
-                      (locationMap['longitude'] as num?)?.toDouble() ?? 0.0;
-                }
-
-                markers.add(Marker(
-                  markerId: MarkerId(id.toString()),
-                  position: LatLng(latitude, longitude),
-                  infoWindow: InfoWindow(
-                    title: data['Fname'] ?? 'Unknown',
-                    snippet: data['address'] ?? 'No Address',
-                  ),
-                  icon: markerIcon,
-                ));
+              try {
+                final foodBankModel =
+                    FoodBankModel.fromJson(Map<String, dynamic>.from(data));
+                combinedDataList.add(foodBankModel);
+                addMarker(foodBankModel.latitude, foodBankModel.longitude,
+                    foodBankModel.fName, foodBankModel.address);
+                log(foodBankModel.latitude.toString());
+                log(foodBankModel.longitude.toString());
+                log(foodBankModel.fName.toString());
+                log(foodBankModel.address.toString());
+              } catch (e) {
+                log('Error parsing food bank data for ID $id: $e');
               }
             });
           }
         });
-
-        // setState(() {}); // Refresh the UI
       }
     });
+  }
+
+  void addMarker(
+      double latitude, double longitude, String title, String snippet) {
+    markers.add(Marker(
+      markerId: MarkerId(title),
+      position: LatLng(latitude, longitude),
+      infoWindow: InfoWindow(title: title, snippet: snippet),
+      icon: markerIcon,
+    ));
+    update();
   }
 
   void toggleMapType() {
