@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 4), () {
       if (user != null) {
-        Get.toNamed(RouteName.homeScreen);
+        Get.toNamed(RouteName.bottomBar);
       } else {
         Get.toNamed(RouteName.loginScreen);
       }

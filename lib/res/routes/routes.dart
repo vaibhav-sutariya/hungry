@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/add_locations/add_location_screen.dart';
+import 'package:hungry/view/bottom_bar.dart';
 import 'package:hungry/view/find_food/find_food_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_confirmation_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_screen.dart';
@@ -17,6 +18,14 @@ import 'package:hungry/view/splash_screen.dart';
 
 class AppRoutes {
   static appRoutes() => [
+        GetPage(
+          name: RouteName.bottomBar,
+          page: () => BottomBar(),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
         GetPage(
           name: RouteName.splashScreen,
           page: () => const SplashScreen(),
@@ -96,9 +105,9 @@ class AppRoutes {
         GetPage(
           name: RouteName.findFoodScreen,
           page: () => const FindFoodScreen(),
-          transition: Transition.rightToLeft,
+          transition: Transition.downToUp,
           transitionDuration: const Duration(
-            milliseconds: 250,
+            milliseconds: 1000,
           ),
         ),
         GetPage(

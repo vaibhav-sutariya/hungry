@@ -57,6 +57,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   google_fonts: ^6.2.1
   sliding_up_panel: ^2.0.0+1
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

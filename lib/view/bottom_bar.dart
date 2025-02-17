@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view/events/event_screen.dart';
+import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -8,41 +13,61 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
-  int _selectedIndex = 2; // Home is selected by default
+  int _selectedIndex = 0; // Home is selected by default
+  final List<Widget> _pages = [
+    EventScreen(),
+    SubmitLeftoverFoodScreen(),
+    // FindFoodScreen(),
+    SubmitLeftoverFoodScreen(),
+    EventScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    if (index == 2) {
+      // Navigate to FindFoodScreen and hide the bottom navbar
+      Get.toNamed(RouteName.findFoodScreen);
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text("Selected Index: $_selectedIndex")),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.black,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(Icons.live_tv, "Live", 0),
-              _buildNavItem(Icons.article, "News", 1),
-              const SizedBox(width: 50), // Space for floating button
-              _buildNavItem(Icons.front_hand, "Niyams", 3),
-              _buildNavItem(Icons.grid_view, "More", 4),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _selectedIndex = 2;
-          });
-        },
-        backgroundColor: Colors.redAccent,
-        shape: const CircleBorder(),
-        elevation: 5,
-        child: const Icon(Icons.home, color: Colors.white, size: 30),
-      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: _selectedIndex == 2
+          ? null // Hide Bottom Navigation Bar when on FindFoodScreen
+          : BottomAppBar(
+              color: AppColors.kPrimaryColor,
+              shape: const CircularNotchedRectangle(),
+              notchMargin: 8.0,
+              child: SizedBox(
+                height: 60,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildNavItem(Icons.event, "Events", 0),
+                    _buildNavItem(Icons.article, "Volunteer", 1),
+                    const SizedBox(width: 50), // Space for floating button
+                    _buildNavItem(Icons.front_hand, "Niyams", 3),
+                    _buildNavItem(Icons.person, "Profile", 4),
+                  ],
+                ),
+              ),
+            ),
+      floatingActionButton: _selectedIndex == 2
+          ? null // Hide FAB when on FindFoodScreen
+          : FloatingActionButton(
+              onPressed: () => _onItemTapped(2),
+              backgroundColor: AppColors.kPrimaryColor,
+              tooltip: "Find Food",
+              shape: const CircleBorder(),
+              elevation: 5,
+              child: const Icon(Icons.find_in_page_outlined,
+                  color: Colors.white, size: 30),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
@@ -50,19 +75,15 @@ class _BottomBarState extends State<BottomBar> {
   Widget _buildNavItem(IconData icon, String label, int index) {
     bool isSelected = _selectedIndex == index;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
-      },
+      onTap: () => _onItemTapped(index),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: isSelected ? Colors.white : Colors.grey, size: 28),
+          Icon(icon, color: isSelected ? Colors.black : Colors.white, size: 28),
           Text(label,
               style: TextStyle(
                 fontSize: 12,
-                color: isSelected ? Colors.white : Colors.grey,
+                color: isSelected ? Colors.black : Colors.white,
               )),
         ],
       ),

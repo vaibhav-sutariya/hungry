@@ -16,4 +16,5 @@ class RouteName {
   static const String foodConfirmationScreen = '/food_confirmation_screen';
   static const String foodBankConfirmationScreen =
       '/food_bank_confirmation_screen';
+  static const String bottomBar = '/bottom_bar';
 }
