@@ -1,0 +1,2 @@
+C:/Users/vsuta/src/flutter/hungry/android/app/.cxx/Debug/3m5y5n1z/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/vsuta/src/flutter/hungry/android/app/.cxx/Debug/3m5y5n1z/x86_64/CMakeFiles/rebuild_cache.dir
