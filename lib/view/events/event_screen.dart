@@ -42,6 +42,12 @@ class _EventScreenState extends State<EventScreen> {
       "date": "Wed 8th May",
       "image":
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+    },
+    {
+      "title": "Community Gathering",
+      "date": "Wed 8th May",
+      "image":
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
     }
   ];
 
@@ -134,7 +140,7 @@ class _EventScreenState extends State<EventScreen> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Image.asset(
+          child: Image.network(
             event["image"]!,
             fit: BoxFit.cover,
             width: double.infinity,
@@ -184,7 +190,7 @@ class _EventScreenState extends State<EventScreen> {
       child: ListTile(
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.asset(event["image"]!,
+          child: Image.network(event["image"]!,
               width: 60, height: 60, fit: BoxFit.cover),
         ),
         title: Text(event["title"]!,
