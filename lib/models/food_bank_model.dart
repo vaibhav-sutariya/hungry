@@ -7,6 +7,7 @@ class FoodBankModel {
   final double longitude;
   final String phone;
   final int volunteers;
+  double distance = 0.0;
 
   FoodBankModel({
     required this.fName,
@@ -17,6 +18,7 @@ class FoodBankModel {
     required this.longitude,
     required this.phone,
     required this.volunteers,
+    required this.distance,
   });
 
   // Factory constructor to create an instance from a JSON object
@@ -37,6 +39,7 @@ class FoodBankModel {
       phone: json['phone'] ?? '',
       volunteers: int.tryParse(json['volunteers'].toString()) ??
           0, // Convert to integer safely
+      distance: json['distance'] ?? 0.0,
     );
   }
 
@@ -53,6 +56,7 @@ class FoodBankModel {
       },
       'phone': phone,
       'volunteers': volunteers.toString(),
+      'distance': distance,
     };
   }
 }

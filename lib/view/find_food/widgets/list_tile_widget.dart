@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
-import 'package:hungry/view/find_food/widgets/button_style_widget.dart';
 import 'package:hungry/view_models/controllers/find_food_controller/find_food_controller.dart';
 
 final FindFoodController controller = Get.put(FindFoodController());
@@ -30,7 +29,7 @@ Widget buildListTile(dynamic data) {
     child: ListTile(
       leading: const Icon(
         Icons.location_on_outlined,
-        size: 50,
+        size: 40,
         color: AppColors.kPrimaryColor,
       ),
       title: Row(
@@ -44,10 +43,16 @@ Widget buildListTile(dynamic data) {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          ElevatedButton(
-            style: buttonStyle(),
-            onPressed: () {},
-            child: Text(' km',
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+              border: Border.all(
+                color: AppColors.kPrimaryColor,
+                width: 1.0,
+              ),
+            ),
+            child: Text('${data.distance?.toStringAsFixed(2)} km',
                 style: const TextStyle(
                     fontSize: 16, color: AppColors.kPrimaryColor)),
           ),
@@ -89,7 +94,7 @@ Widget buildListTile(dynamic data) {
                 ),
               )
             ],
-          )
+          ),
         ],
       ),
     ),

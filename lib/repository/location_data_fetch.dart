@@ -68,6 +68,15 @@ class LocationDataRepository extends GetxController {
                     LocationModel.fromJson(Map<String, dynamic>.from(data));
                 if (_isWithinRange(
                     locationModel.latitude, locationModel.longitude)) {
+                  double distance = Geolocator.distanceBetween(
+                        _currentPosition!.latitude,
+                        _currentPosition!.longitude,
+                        locationModel.latitude,
+                        locationModel.longitude,
+                      ) /
+                      1000; // distance in kilometers
+
+                  locationModel.distance = distance; // Store distance
                   locationList.add(locationModel);
                   combinedDataList.add(locationModel);
                   findFoodController.addMarker(
@@ -101,6 +110,15 @@ class LocationDataRepository extends GetxController {
                     FoodBankModel.fromJson(Map<String, dynamic>.from(data));
                 if (_isWithinRange(
                     foodBankModel.latitude, foodBankModel.longitude)) {
+                  double distance = Geolocator.distanceBetween(
+                        _currentPosition!.latitude,
+                        _currentPosition!.longitude,
+                        foodBankModel.latitude,
+                        foodBankModel.longitude,
+                      ) /
+                      1000; // distance in kilometers
+
+                  foodBankModel.distance = distance; // Store distance
                   foodBankList.add(foodBankModel);
                   combinedDataList.add(foodBankModel);
                   findFoodController.addMarker(

@@ -6,6 +6,7 @@ class LocationModel {
   final double latitude;
   final double longitude;
   final String phone;
+  double distance = 0.0;
 
   LocationModel({
     required this.address,
@@ -15,6 +16,7 @@ class LocationModel {
     required this.latitude,
     required this.longitude,
     required this.phone,
+    required this.distance,
   });
 
   // Factory constructor to create an instance from a JSON object
@@ -36,6 +38,7 @@ class LocationModel {
               ? (json['location']['longitude'] as num).toDouble()
               : 0.0,
       phone: json['phone'] ?? '',
+      distance: json['distance'] ?? 0.0,
     );
   }
 
@@ -51,6 +54,7 @@ class LocationModel {
         'longitude': longitude,
       },
       'phone': phone,
+      'distance': distance,
     };
   }
 }
