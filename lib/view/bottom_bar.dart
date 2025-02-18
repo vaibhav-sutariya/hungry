@@ -4,6 +4,8 @@ import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/events/event_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
+import 'package:hungry/view_models/services/location_services/location_permission.dart';
+import 'package:hungry/view_models/services/location_services/location_services.dart';
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
@@ -13,6 +15,9 @@ class BottomBar extends StatefulWidget {
 }
 
 class _BottomBarState extends State<BottomBar> {
+  LocationPermissionServices locationPermissionServices =
+      Get.put(LocationPermissionServices());
+  LocationServices locationServices = Get.put(LocationServices());
   int _selectedIndex = 0; // Home is selected by default
   final List<Widget> _pages = [
     EventScreen(),
@@ -31,6 +36,15 @@ class _BottomBarState extends State<BottomBar> {
         _selectedIndex = index;
       });
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    locationPermissionServices.getLocationPermission(context);
+    // _getLocationPermission();
+    locationServices.getCurrentLocation();
   }
 
   @override

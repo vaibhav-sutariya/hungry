@@ -7,19 +7,17 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hungry/models/food_bank_model.dart';
-import 'package:hungry/models/location_model.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class FindFoodController extends GetxController {
-  late DatabaseReference _locationsRef;
-  late DatabaseReference _foodBanksRef;
+  // late DatabaseReference _locationsRef;
+  // late DatabaseReference _foodBanksRef;
   StreamSubscription<DatabaseEvent>? _locationSubscription;
   StreamSubscription<DatabaseEvent>? _foodBankSubscription;
 
-  final RxList<FoodBankModel> foodBankList = <FoodBankModel>[].obs;
-  final RxList<LocationModel> locationList = <LocationModel>[].obs;
-  final RxList<dynamic> combinedDataList = <dynamic>[].obs;
+  // final RxList<FoodBankModel> foodBankList = <FoodBankModel>[].obs;
+  // final RxList<LocationModel> locationList = <LocationModel>[].obs;
+  // final RxList<dynamic> combinedDataList = <dynamic>[].obs;
 
   final RxSet<Marker> markers = <Marker>{}.obs;
   final Completer<GoogleMapController> controller = Completer();
@@ -84,63 +82,63 @@ class FindFoodController extends GetxController {
   //   fetchFoodBanks();
   // }
 
-  void fetchLocations() {
-    _locationsRef = FirebaseDatabase.instance.ref().child('locations');
-    _locationSubscription = _locationsRef.onValue.listen((event) {
-      if (event.snapshot.value != null && event.snapshot.value is Map) {
-        Map<dynamic, dynamic> locationsMap = event.snapshot.value as Map;
-        locationsMap.forEach((userId, userData) {
-          if (userData is Map) {
-            userData.forEach((id, data) {
-              try {
-                final locationModel =
-                    LocationModel.fromJson(Map<String, dynamic>.from(data));
-                locationList.add(locationModel);
-                combinedDataList.add(locationModel);
-                addMarker(locationModel.latitude, locationModel.longitude,
-                    locationModel.fName, locationModel.address);
-                log(locationModel.latitude.toString());
-                log(locationModel.longitude.toString());
-                log(locationModel.fName.toString());
-                log(locationModel.address.toString());
-              } catch (e) {
-                log('Error parsing location data for ID $id: $e');
-              }
-            });
-          }
-        });
-      }
-    });
-  }
+  // void fetchLocations() {
+  //   _locationsRef = FirebaseDatabase.instance.ref().child('locations');
+  //   _locationSubscription = _locationsRef.onValue.listen((event) {
+  //     if (event.snapshot.value != null && event.snapshot.value is Map) {
+  //       Map<dynamic, dynamic> locationsMap = event.snapshot.value as Map;
+  //       locationsMap.forEach((userId, userData) {
+  //         if (userData is Map) {
+  //           userData.forEach((id, data) {
+  //             try {
+  //               final locationModel =
+  //                   LocationModel.fromJson(Map<String, dynamic>.from(data));
+  //               locationList.add(locationModel);
+  //               combinedDataList.add(locationModel);
+  //               addMarker(locationModel.latitude, locationModel.longitude,
+  //                   locationModel.fName, locationModel.address);
+  //               log(locationModel.latitude.toString());
+  //               log(locationModel.longitude.toString());
+  //               log(locationModel.fName.toString());
+  //               log(locationModel.address.toString());
+  //             } catch (e) {
+  //               log('Error parsing location data for ID $id: $e');
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
-  void fetchFoodBanks() {
-    _foodBanksRef = FirebaseDatabase.instance.ref().child('FoodBanks');
-    _foodBankSubscription = _foodBanksRef.onValue.listen((event) {
-      if (event.snapshot.value != null && event.snapshot.value is Map) {
-        Map<dynamic, dynamic> foodBanksMap = event.snapshot.value as Map;
-        foodBanksMap.forEach((userId, userData) {
-          if (userData is Map) {
-            userData.forEach((id, data) {
-              try {
-                final foodBankModel =
-                    FoodBankModel.fromJson(Map<String, dynamic>.from(data));
-                foodBankList.add(foodBankModel);
-                combinedDataList.add(foodBankModel);
-                addMarker(foodBankModel.latitude, foodBankModel.longitude,
-                    foodBankModel.foodNgoName, foodBankModel.address);
-                log(foodBankModel.latitude.toString());
-                log(foodBankModel.longitude.toString());
-                log(foodBankModel.fName.toString());
-                log(foodBankModel.address.toString());
-              } catch (e) {
-                log('Error parsing food bank data for ID $id: $e');
-              }
-            });
-          }
-        });
-      }
-    });
-  }
+  // void fetchFoodBanks() {
+  //   _foodBanksRef = FirebaseDatabase.instance.ref().child('FoodBanks');
+  //   _foodBankSubscription = _foodBanksRef.onValue.listen((event) {
+  //     if (event.snapshot.value != null && event.snapshot.value is Map) {
+  //       Map<dynamic, dynamic> foodBanksMap = event.snapshot.value as Map;
+  //       foodBanksMap.forEach((userId, userData) {
+  //         if (userData is Map) {
+  //           userData.forEach((id, data) {
+  //             try {
+  //               final foodBankModel =
+  //                   FoodBankModel.fromJson(Map<String, dynamic>.from(data));
+  //               foodBankList.add(foodBankModel);
+  //               combinedDataList.add(foodBankModel);
+  //               addMarker(foodBankModel.latitude, foodBankModel.longitude,
+  //                   foodBankModel.foodNgoName, foodBankModel.address);
+  //               log(foodBankModel.latitude.toString());
+  //               log(foodBankModel.longitude.toString());
+  //               log(foodBankModel.fName.toString());
+  //               log(foodBankModel.address.toString());
+  //             } catch (e) {
+  //               log('Error parsing food bank data for ID $id: $e');
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   void addMarker(
       double latitude, double longitude, String title, String snippet) {

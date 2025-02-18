@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hungry/repository/location_data_fetch.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/view/find_food/components/bottom_slidebar.dart';
@@ -14,17 +15,20 @@ class FindFoodScreen extends StatefulWidget {
 }
 
 class _FindFoodScreenState extends State<FindFoodScreen> {
-  final FindFoodController controller = Get.put(FindFoodController());
+  final LocationDataRepository locationDataRepository =
+      Get.put(LocationDataRepository());
+
+  final FindFoodController findFoodController = Get.put(FindFoodController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // controller.fetchLocations();
     // controller.fetchFoodBanks();
-    controller.panelController;
-    controller.loadMarkerIcon().then((_) {
-      controller.fetchLocations();
-      controller.fetchFoodBanks();
+    findFoodController.panelController;
+    findFoodController.loadMarkerIcon().then((_) {
+      locationDataRepository.fetchLocations();
+      locationDataRepository.fetchFoodBanks();
     });
   }
 
@@ -40,16 +44,16 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
             child: Obx(
               () => GoogleMap(
                 mapToolbarEnabled: true,
-                onMapCreated: controller.onMapCreated,
+                onMapCreated: findFoodController.onMapCreated,
                 initialCameraPosition: CameraPosition(
-                  target: controller.initialPosition(),
+                  target: findFoodController.initialPosition(),
                   zoom: 11.0,
                 ),
-                mapType: controller.currentMapType(),
+                mapType: findFoodController.currentMapType(),
                 indoorViewEnabled: true,
                 zoomGesturesEnabled: true,
-                markers: Set<Marker>.of(controller.markers),
-                onCameraMove: controller.onCameraMove,
+                markers: Set<Marker>.of(findFoodController.markers),
+                onCameraMove: findFoodController.onCameraMove,
                 myLocationButtonEnabled: false,
                 compassEnabled: true,
                 buildingsEnabled: true,

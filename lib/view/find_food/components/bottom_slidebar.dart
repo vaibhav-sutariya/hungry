@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry/repository/location_data_fetch.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/view_models/controllers/find_food_controller/find_food_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class BottomSlider extends StatelessWidget {
-  final FindFoodController controller = Get.find<FindFoodController>();
+  final FindFoodController controller = Get.put(FindFoodController());
+  final LocationDataRepository locationDataRepository =
+      Get.find<LocationDataRepository>();
 
   BottomSlider({super.key});
 
@@ -75,11 +78,11 @@ class BottomSlider extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Expanded(
-                child: controller.combinedDataList.isEmpty
+                child: locationDataRepository.combinedDataList.isEmpty
                     ? const Center(child: Text('No data available'))
                     : ListView(
                         controller: sc,
-                        children: controller.combinedDataList
+                        children: locationDataRepository.combinedDataList
                             .map((data) => _buildListTile(data))
                             .toList(),
                       ),
