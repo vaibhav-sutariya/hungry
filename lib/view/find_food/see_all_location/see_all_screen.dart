@@ -22,13 +22,15 @@ class SeeAllScreen extends StatelessWidget {
         child: Obx(
           () {
             final dataList = locationDataRepository.combinedDataList;
-            return dataList.isEmpty
-                ? const Center(child: Text('No data available'))
-                : ListView.builder(
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) =>
-                        buildListTile(dataList[index]),
-                  );
+            return locationDataRepository.isLoading.value
+                ? Center(child: CircularProgressIndicator())
+                : dataList.isEmpty
+                    ? const Center(child: Text('No data available'))
+                    : ListView.builder(
+                        itemCount: dataList.length,
+                        itemBuilder: (context, index) =>
+                            buildListTile(dataList[index]),
+                      );
           },
         ),
       ),
