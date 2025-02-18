@@ -24,13 +24,11 @@ class SeeAllScreen extends StatelessWidget {
             final dataList = locationDataRepository.combinedDataList;
             return locationDataRepository.isLoading.value
                 ? Center(child: CircularProgressIndicator())
-                : dataList.isEmpty
-                    ? const Center(child: Text('No data available'))
-                    : ListView.builder(
-                        itemCount: dataList.length,
-                        itemBuilder: (context, index) =>
-                            buildListTile(dataList[index]),
-                      );
+                : ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: (context, index) =>
+                        buildListTile(dataList[index]),
+                  );
           },
         ),
       ),

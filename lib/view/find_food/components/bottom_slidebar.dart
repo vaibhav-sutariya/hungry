@@ -21,7 +21,7 @@ class BottomSlider extends StatelessWidget {
       borderRadius: BorderRadius.circular(24.0),
       controller: controller.panelController,
       minHeight: 200,
-      maxHeight: MediaQuery.of(context).size.height * 0.5,
+      maxHeight: MediaQuery.of(context).size.height * 0.7,
       isDraggable: true,
       parallaxEnabled: true,
       defaultPanelState: PanelState.CLOSED,
