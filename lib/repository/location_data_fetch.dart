@@ -50,7 +50,7 @@ class LocationDataRepository extends GetxController {
           lat,
           lon,
         ) /
-        1000; // Convert to km
+        1000;
     log("Distance: $distance");
     return distance < 20;
   }

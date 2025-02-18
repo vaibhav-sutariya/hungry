@@ -108,15 +108,15 @@ class AppRoutes {
           page: () => const FindFoodScreen(),
           transition: Transition.downToUp,
           transitionDuration: const Duration(
-            milliseconds: 1000,
+            milliseconds: 700,
           ),
         ),
         GetPage(
           name: RouteName.seeAllScreen,
           page: () => const SeeAllScreen(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
-            milliseconds: 1000,
+            milliseconds: 250,
           ),
         ),
         GetPage(

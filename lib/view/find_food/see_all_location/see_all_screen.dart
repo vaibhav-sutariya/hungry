@@ -21,16 +21,14 @@ class SeeAllScreen extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Obx(
           () {
-            return Expanded(
-              child: locationDataRepository.combinedDataList.isEmpty
-                  ? const Center(child: Text('No data available'))
-                  : ListView(
-                      // controller: sc,
-                      children: locationDataRepository.combinedDataList
-                          .map((data) => buildListTile(data))
-                          .toList(),
-                    ),
-            );
+            final dataList = locationDataRepository.combinedDataList;
+            return dataList.isEmpty
+                ? const Center(child: Text('No data available'))
+                : ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: (context, index) =>
+                        buildListTile(dataList[index]),
+                  );
           },
         ),
       ),
