@@ -23,9 +23,7 @@ class FindFoodController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // loadMarkerIcon().then((_) {
-    //   fetchAllData();
-    // });
+
     getUserLocation(); // Fetch user location on init
   }
 
@@ -93,40 +91,4 @@ class FindFoodController extends GetxController {
       CameraPosition(target: lastMapPosition.value, zoom: 14),
     ));
   }
-
-  // Future<void> getUserCurrentLocation() async {
-  //   bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     log('Location services are disabled.');
-  //     return;
-  //   }
-
-  //   LocationPermission permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       log('Location permission denied.');
-  //       return;
-  //     }
-  //   }
-
-  //   if (permission == LocationPermission.deniedForever) {
-  //     log('Location permissions are permanently denied.');
-  //     return;
-  //   }
-
-  //   Position position = await Geolocator.getCurrentPosition();
-  //   lastMapPosition.value = LatLng(position.latitude, position.longitude);
-
-  //   markers.add(Marker(
-  //     markerId: const MarkerId("currentLocation"),
-  //     position: lastMapPosition.value,
-  //     infoWindow: const InfoWindow(title: 'Your Current Location'),
-  //   ));
-  //   update();
-  //   final GoogleMapController mapController = await controller.future;
-  //   mapController.animateCamera(CameraUpdate.newCameraPosition(
-  //     CameraPosition(target: lastMapPosition.value, zoom: 14),
-  //   ));
-  // }
 }
