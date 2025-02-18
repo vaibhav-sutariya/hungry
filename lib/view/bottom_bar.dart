@@ -44,7 +44,7 @@ class _BottomBarState extends State<BottomBar> {
     super.initState();
     locationPermissionServices.getLocationPermission(context);
     // _getLocationPermission();
-    locationServices.getCurrentLocation();
+    locationServices.getCurrentAddress();
   }
 
   @override

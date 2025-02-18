@@ -26,7 +26,7 @@ class _AddressBoxState extends State<AddressBox> {
     super.initState();
     locationPermissionServices.getLocationPermission(context);
     // _getLocationPermission();
-    locationServices.getCurrentLocation();
+    locationServices.getCurrentAddress();
   }
 
   @override
