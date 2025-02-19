@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/controllers/find_food_controller/find_food_controller.dart';
 
 final FindFoodController controller = Get.put(FindFoodController());
@@ -80,7 +81,8 @@ Widget buildListTile(dynamic data) {
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () =>
+                    Get.toNamed(RouteName.viewDetailsScreen, arguments: data),
                 child: const Padding(
                   padding: EdgeInsets.only(right: 12.0),
                   child: Text(

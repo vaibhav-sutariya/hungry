@@ -25,6 +25,7 @@ class _BottomBarState extends State<BottomBar> {
     // FindFoodScreen(),
     SubmitLeftoverFoodScreen(),
     EventScreen(),
+    SubmitLeftoverFoodScreen(),
   ];
 
   void _onItemTapped(int index) {

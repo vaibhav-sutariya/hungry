@@ -16,6 +16,7 @@ import 'package:hungry/view/pages/setting_privacy.dart';
 import 'package:hungry/view/search/search_screen.dart';
 import 'package:hungry/view/signup/sign_up_screen.dart';
 import 'package:hungry/view/splash_screen.dart';
+import 'package:hungry/view/view_details/view_details_screen.dart';
 
 class AppRoutes {
   static appRoutes() => [
@@ -122,6 +123,14 @@ class AppRoutes {
         GetPage(
           name: RouteName.submitLeftoverFoodScreen,
           page: () => const SubmitLeftoverFoodScreen(),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.viewDetailsScreen,
+          page: () => const ViewDetailsScreen(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,

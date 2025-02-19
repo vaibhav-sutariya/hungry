@@ -18,4 +18,5 @@ class RouteName {
       '/food_bank_confirmation_screen';
   static const String bottomBar = '/bottom_bar';
   static const String seeAllScreen = '/see_all_screen';
+  static const String viewDetailsScreen = '/view_details_screen';
 }
