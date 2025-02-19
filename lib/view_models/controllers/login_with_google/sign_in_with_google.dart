@@ -32,7 +32,7 @@ class SignInWithGoogle extends GetxController {
             backgroundColor: AppColors.kPrimaryLightColor,
             'Success',
             'Login Success');
-        Get.toNamed(RouteName.homeScreen);
+        Get.toNamed(RouteName.bottomBar);
       }
     } catch (e) {
       log(e.toString());
