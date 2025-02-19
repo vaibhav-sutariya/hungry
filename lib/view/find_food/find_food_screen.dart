@@ -30,6 +30,14 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
       locationDataRepository.fetchLocations();
       locationDataRepository.fetchFoodBanks();
     });
+    _setDestinationMarker();
+  }
+
+  void _setDestinationMarker() {
+    final dynamic args = Get.arguments;
+    if (args != null) {
+      findFoodController.setDestinationMarker(args['lat'], args['lng']);
+    }
   }
 
   @override
@@ -54,6 +62,8 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
                 zoomGesturesEnabled: true,
                 markers: Set<Marker>.of(findFoodController.markers),
                 onCameraMove: findFoodController.onCameraMove,
+                polylines: findFoodController.polylines,
+                // polygons: findFoodController.polygons,
                 myLocationButtonEnabled: false,
                 compassEnabled: true,
                 buildingsEnabled: true,

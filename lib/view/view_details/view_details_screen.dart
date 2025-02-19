@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class ViewDetailsScreen extends StatelessWidget {
   const ViewDetailsScreen({super.key});
@@ -196,8 +197,10 @@ class ViewDetailsScreen extends StatelessWidget {
                             backgroundColor: AppColors.kPrimaryColor,
                           ),
                           onPressed: () {
-                            // _launchMapsApp(
-                            //     data.locationLat!, data.locationLon!);
+                            Get.to(RouteName.findFoodScreen, arguments: {
+                              'lat': data.latitude,
+                              'lng': data.longitude,
+                            });
                           },
                           icon: const Icon(
                             Icons.directions,
