@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -36,7 +38,12 @@ class _FindFoodScreenState extends State<FindFoodScreen> {
   void _setDestinationMarker() {
     final dynamic args = Get.arguments;
     if (args != null) {
+      log('Arguments received');
+      log('Latitude: ${args['lat']}, Longitude: ${args['lng']}');
+      debugPrint('Latitude: ${args['lat']}, Longitude: ${args['lng']}');
       findFoodController.setDestinationMarker(args['lat'], args['lng']);
+    } else {
+      debugPrint('No arguments received');
     }
   }
 

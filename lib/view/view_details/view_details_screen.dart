@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
-import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view/find_food/find_food_screen.dart';
 
 class ViewDetailsScreen extends StatelessWidget {
   const ViewDetailsScreen({super.key});
@@ -182,6 +184,8 @@ class ViewDetailsScreen extends StatelessWidget {
                         ),
                         Text('Any min. Price for food? : 0 Rs.',
                             style: AppColors.kTextStyleB),
+                        Text(data.latitude.toString()),
+                        Text(data.longitude.toString()),
 
                         const SizedBox(
                           height: 20,
@@ -197,7 +201,8 @@ class ViewDetailsScreen extends StatelessWidget {
                             backgroundColor: AppColors.kPrimaryColor,
                           ),
                           onPressed: () {
-                            Get.to(RouteName.findFoodScreen, arguments: {
+                            log('Get Directions');
+                            Get.to(() => FindFoodScreen(), arguments: {
                               'lat': data.latitude,
                               'lng': data.longitude,
                             });

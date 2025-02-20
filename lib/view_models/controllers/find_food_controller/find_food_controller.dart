@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui' as ui;
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -12,6 +13,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 class FindFoodController extends GetxController {
   final LocationServices locationService = Get.put(LocationServices());
   final RxSet<Marker> markers = <Marker>{}.obs;
+  final RxSet<Marker> markers2 = <Marker>{}.obs;
   final RxSet<Polyline> polylines = <Polyline>{}.obs;
   final Completer<GoogleMapController> controller = Completer();
   final RxString currentAddress = 'Loading...'.obs;
@@ -22,13 +24,15 @@ class FindFoodController extends GetxController {
   late BitmapDescriptor markerIcon;
 
   final PanelController panelController = PanelController();
-  final String googleAPIKey = "YOUR_GOOGLE_API_KEY";
+  final String googleAPIKey = "AIzaSyDq65X-7zP0W7_a8eYY3Yv5DoT-OKOJT2M";
 
   @override
   void onInit() {
     super.onInit();
 
-    getUserLocation(); // Fetch user location on init
+    Future.delayed(Duration(milliseconds: 100), () async {
+      await getUserLocation();
+    }); // Fetch user location on init
   }
 
   Future<void> loadMarkerIcon() async {
@@ -49,9 +53,14 @@ class FindFoodController extends GetxController {
         .asUint8List();
   }
 
+  GoogleMapController? _mapController; // Store controller instance
+
   void onMapCreated(GoogleMapController googleMapController) async {
-    controller.complete(googleMapController);
-    await getUserLocation();
+    _mapController ??= googleMapController;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getUserLocation();
+    });
   }
 
   void onCameraMove(CameraPosition position) {
@@ -88,7 +97,7 @@ class FindFoodController extends GetxController {
       position: lastMapPosition.value,
       infoWindow: const InfoWindow(title: 'Your Current Location'),
     ));
-    update();
+    markers.refresh();
 
     final GoogleMapController mapController = await controller.future;
     mapController.animateCamera(CameraUpdate.newCameraPosition(
@@ -100,7 +109,13 @@ class FindFoodController extends GetxController {
   void setDestinationMarker(double lat, double lng) {
     LatLng destination = LatLng(lat, lng);
 
-    markers.add(Marker(
+    markers2.add(Marker(
+      markerId: const MarkerId("origin"),
+      position: lastMapPosition.value,
+      infoWindow: const InfoWindow(title: 'Origin'),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    ));
+    markers2.add(Marker(
       markerId: const MarkerId("destination"),
       position: destination,
       infoWindow: const InfoWindow(title: 'Destination'),
@@ -117,18 +132,34 @@ class FindFoodController extends GetxController {
         "origin=${origin.latitude},${origin.longitude}"
         "&destination=${destination.latitude},${destination.longitude}"
         "&key=$googleAPIKey"
-        "&mode=walking"; // You can change mode to "driving" or "bicycling"
+        "&mode=driving"; // Change "walking", "bicycling", or "transit" as needed
 
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final decodedData = json.decode(response.body);
+      if (decodedData["status"] == "ZERO_RESULTS") {
+        Get.snackbar("Error", "No route found between locations.");
+        return;
+      }
+
+      if (decodedData["status"] != "OK") {
+        Get.snackbar("Error", "Google API Error: ${decodedData["status"]}");
+        return;
+      }
 
       if (decodedData["routes"].isNotEmpty) {
         final points = decodedData["routes"][0]["overview_polyline"]["points"];
         final List<LatLng> polylineCoordinates = _decodePolyline(points);
 
         _addPolyline(polylineCoordinates);
+
+        // Adjust Camera to Fit Route
+        _fitMapToPolyline(origin, destination);
+      } else {
+        Get.snackbar("Error", "No route found.");
       }
+    } else {
+      Get.snackbar("Error", "Failed to fetch directions.");
     }
   }
 
@@ -167,13 +198,42 @@ class FindFoodController extends GetxController {
   void _addPolyline(List<LatLng> polylineCoordinates) {
     final Polyline polyline = Polyline(
       polylineId: const PolylineId("route"),
-      color: const Color(0xFF42A5F5), // Blue color
-      width: 5,
+      color: Colors.blueAccent, // Visible Google Maps-like color
+      width: 6,
       points: polylineCoordinates,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      jointType: JointType.round,
     );
 
     polylines.clear();
     polylines.add(polyline);
     update();
+  }
+
+  /// Adjust Camera to Fit Entire Route
+  void _fitMapToPolyline(LatLng origin, LatLng destination) {
+    LatLngBounds bounds = LatLngBounds(
+      southwest: LatLng(
+        origin.latitude < destination.latitude
+            ? origin.latitude
+            : destination.latitude,
+        origin.longitude < destination.longitude
+            ? origin.longitude
+            : destination.longitude,
+      ),
+      northeast: LatLng(
+        origin.latitude > destination.latitude
+            ? origin.latitude
+            : destination.latitude,
+        origin.longitude > destination.longitude
+            ? origin.longitude
+            : destination.longitude,
+      ),
+    );
+
+    controller.future.then((mapController) {
+      mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
+    });
   }
 }
