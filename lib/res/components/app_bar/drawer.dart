@@ -68,7 +68,7 @@ class MyDrawer extends StatelessWidget {
             leading: const Icon(Icons.home_outlined),
             title: const Text('Home'),
             onTap: () {
-              Get.toNamed(RouteName.homeScreen);
+              Get.toNamed(RouteName.bottomBar);
             },
           ),
           ListTile(

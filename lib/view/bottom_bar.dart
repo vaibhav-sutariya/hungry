@@ -4,6 +4,7 @@ import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/events/event_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
+import 'package:hungry/view/profile/profile_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_permission.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 
@@ -25,7 +26,7 @@ class _BottomBarState extends State<BottomBar> {
     // FindFoodScreen(),
     SubmitLeftoverFoodScreen(),
     EventScreen(),
-    SubmitLeftoverFoodScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
