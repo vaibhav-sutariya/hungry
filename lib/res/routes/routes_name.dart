@@ -20,4 +20,5 @@ class RouteName {
   static const String seeAllScreen = '/see_all_screen';
   static const String viewDetailsScreen = '/view_details_screen';
   static const String profileScreen = '/profile_screen';
+  static const String donationScreen = '/donation_screen';
 }

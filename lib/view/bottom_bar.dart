@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view/donations/donation_screen.dart';
 import 'package:hungry/view/events/event_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 import 'package:hungry/view/profile/profile_screen.dart';
@@ -25,7 +26,7 @@ class _BottomBarState extends State<BottomBar> {
     SubmitLeftoverFoodScreen(),
     // FindFoodScreen(),
     SubmitLeftoverFoodScreen(),
-    EventScreen(),
+    DonationScreen(),
     ProfileScreen(),
   ];
 
@@ -67,7 +68,7 @@ class _BottomBarState extends State<BottomBar> {
                     _buildNavItem(Icons.event, "Events", 0),
                     _buildNavItem(Icons.article, "Volunteer", 1),
                     const SizedBox(width: 50), // Space for floating button
-                    _buildNavItem(Icons.front_hand, "Niyams", 3),
+                    _buildNavItem(Icons.food_bank, "Donations", 3),
                     _buildNavItem(Icons.person, "Profile", 4),
                   ],
                 ),

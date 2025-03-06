@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/add_locations/add_location_screen.dart';
 import 'package:hungry/view/bottom_bar.dart';
+import 'package:hungry/view/donations/donation_screen.dart';
 import 'package:hungry/view/find_food/find_food_screen.dart';
 import 'package:hungry/view/find_food/see_all_location/see_all_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_confirmation_screen.dart';
@@ -140,6 +141,14 @@ class AppRoutes {
         GetPage(
           name: RouteName.profileScreen,
           page: () => const ProfileScreen(),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.donationScreen,
+          page: () => const DonationScreen(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
