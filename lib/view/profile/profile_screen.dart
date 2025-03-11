@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry/res/components/app_bar/app_bar.dart';
+import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/view/profile/widgets/action_tiles_grid_widget.dart';
 import 'package:hungry/view/profile/widgets/contributions_card_widget.dart';
 import 'package:hungry/view/profile/widgets/donations_list_widget.dart';
 import 'package:hungry/view/profile/widgets/profile_actions_widget.dart';
 import 'package:hungry/view/profile/widgets/profile_header_widget.dart';
 import 'package:hungry/view_models/controllers/profile_view_model/profile_view_model.dart';
-
-import '../../res/components/app_bar/app_bar.dart';
-import '../../res/components/app_bar/drawer.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -23,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Obx(() => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Profile Header with user info
                 ProfileHeaderWidget(user: viewModel.user.value),
@@ -31,6 +32,12 @@ class ProfileScreen extends StatelessWidget {
                 // User Statistics Card
                 ContributionsCardWidget(
                   totalDonations: viewModel.totalDonations.value,
+                ),
+                const SizedBox(height: 20),
+
+                // Action Tiles Grid
+                ActionTilesGridWidget(
+                  actionTiles: viewModel.actionTiles,
                 ),
                 const SizedBox(height: 20),
 
@@ -47,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
                   },
                   onLogout: () async {
                     await viewModel.signOut();
-                    Get.offAllNamed('/login');
+                    // Get.offAllNamed('/login');
                   },
                 ),
               ],
