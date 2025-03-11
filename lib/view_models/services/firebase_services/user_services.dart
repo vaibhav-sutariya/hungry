@@ -36,7 +36,10 @@ class FirebaseService extends GetxService {
       if (data != null && data is Map) {
         data.forEach((key, value) {
           donations.add(DonationModel.fromMap(
-              Map<String, dynamic>.from(value as Map), key));
+            Map<String, dynamic>.from(value as Map),
+            key,
+            userId,
+          ));
         });
       }
 
