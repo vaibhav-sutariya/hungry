@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hungry/models/action_tile_model.dart';
 import 'package:hungry/models/donation_model.dart';
 import 'package:hungry/models/user_model.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/services/firebase_services/user_services.dart';
 
 class ProfileViewModel extends GetxController {
@@ -29,13 +30,13 @@ class ProfileViewModel extends GetxController {
         title: 'Register Food Bank',
         icon: Icons.store_mall_directory,
         color: Colors.blue,
-        onTap: () => Get.toNamed('/register-food-bank'),
+        onTap: () => Get.toNamed(RouteName.foodBankScreen),
       ),
       ActionTileModel(
         title: 'Add Location',
         icon: Icons.add_location_alt,
         color: Colors.green,
-        onTap: () => Get.toNamed('/add-location'),
+        onTap: () => Get.toNamed(RouteName.addLocationScreen),
       ),
       ActionTileModel(
         title: 'Volunteer',

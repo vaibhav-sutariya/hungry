@@ -25,36 +25,26 @@ class ProfileScreen extends StatelessWidget {
         child: Obx(() => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Profile Header with user info
                 ProfileHeaderWidget(user: viewModel.user.value),
                 const SizedBox(height: 24),
-
-                // User Statistics Card
                 ContributionsCardWidget(
                   totalDonations: viewModel.totalDonations.value,
                 ),
                 const SizedBox(height: 20),
-
-                // Action Tiles Grid
                 ActionTilesGridWidget(
                   actionTiles: viewModel.actionTiles,
                 ),
                 const SizedBox(height: 20),
-
-                // User Donations List
                 DonationsListWidget(
                   donations: viewModel.donations,
                 ),
                 const SizedBox(height: 20),
-
-                // Action Buttons
                 ProfileActionsWidget(
                   onEditProfile: () {
                     // Navigate to Edit Profile Screen
                   },
                   onLogout: () async {
                     await viewModel.signOut();
-                    // Get.offAllNamed('/login');
                   },
                 ),
               ],
