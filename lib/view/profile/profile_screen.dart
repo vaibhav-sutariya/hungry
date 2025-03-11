@@ -97,6 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             // User Statistics
             Card(
+              color: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
               elevation: 4,
