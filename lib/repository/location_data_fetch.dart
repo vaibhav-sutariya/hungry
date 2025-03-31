@@ -72,7 +72,8 @@ class LocationDataRepository extends GetxController {
               userData.forEach((id, data) {
                 try {
                   final locationModel =
-                      LocationModel.fromJson(Map<String, dynamic>.from(data));
+                      LocationModel.fromJson(_sanitizeData(data));
+                  log("Location Model: ${locationModel.fName}");
                   if (_isWithinRange(
                       locationModel.latitude, locationModel.longitude)) {
                     double distance = Geolocator.distanceBetween(
@@ -86,6 +87,7 @@ class LocationDataRepository extends GetxController {
                     locationModel.distance = distance; // Store distance
                     locationList.add(locationModel);
                     combinedDataList.add(locationModel);
+                    log("Combined Data List: $combinedDataList");
                     findFoodController.addMarker(
                       locationModel.latitude,
                       locationModel.longitude,
@@ -121,7 +123,8 @@ class LocationDataRepository extends GetxController {
               userData.forEach((id, data) {
                 try {
                   final foodBankModel =
-                      FoodBankModel.fromJson(Map<String, dynamic>.from(data));
+                      FoodBankModel.fromJson(_sanitizeData(data));
+                  log('Food Bank Model: ${foodBankModel.foodNgoName}');
                   if (_isWithinRange(
                       foodBankModel.latitude, foodBankModel.longitude)) {
                     double distance = Geolocator.distanceBetween(
@@ -135,6 +138,7 @@ class LocationDataRepository extends GetxController {
                     foodBankModel.distance = distance; // Store distance
                     foodBankList.add(foodBankModel);
                     combinedDataList.add(foodBankModel);
+                    log("Combined Data List: $combinedDataList");
                     findFoodController.addMarker(
                       foodBankModel.latitude,
                       foodBankModel.longitude,
@@ -163,5 +167,24 @@ class LocationDataRepository extends GetxController {
     _locationSubscription?.cancel();
     _foodBankSubscription?.cancel();
     super.onClose();
+  }
+
+  /// Ensures data types are correct for parsing
+  Map<String, dynamic> _sanitizeData(dynamic data) {
+    return {
+      'latitude': _parseDouble(data['latitude']),
+      'longitude': _parseDouble(data['longitude']),
+      'fName': data['fName']?.toString() ?? '',
+      'address': data['address']?.toString() ?? '',
+    };
+  }
+
+  /// Converts value to double safely
+  double _parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
   }
 }
