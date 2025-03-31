@@ -62,25 +62,28 @@ class ActionTilesGridWidget extends StatelessWidget {
             ),
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              tile.icon,
-              size: 36,
-              color: Colors.white,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              tile.title,
-              style: const TextStyle(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                tile.icon,
+                size: 36,
                 color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              const SizedBox(height: 12),
+              Text(
+                tile.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
