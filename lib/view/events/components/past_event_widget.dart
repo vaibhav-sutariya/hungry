@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hungry/res/colors/app_colors.dart';
 
 /// Builds a Card for Past Events
 Widget buildPastEventCard(Map<String, String> event) {
   return Card(
-    color: Colors.white,
+    color: AppColors.kWhiteColor,
     margin: const EdgeInsets.symmetric(vertical: 8),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     child: ListTile(

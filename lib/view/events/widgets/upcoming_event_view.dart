@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/view_models/controllers/event_view_model.dart/event_view_model.dart';
 
 Widget buildUpcomingEventsList(EventViewModel viewModel) {
   return Column(
     children: viewModel.upcomingEvents.map((event) {
       return Card(
+        color: AppColors.kWhiteColor,
         margin: const EdgeInsets.symmetric(vertical: 8),
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -14,17 +16,31 @@ Widget buildUpcomingEventsList(EventViewModel viewModel) {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: Colors.orange.withOpacity(0.2),
+              color: AppColors.kPrimaryLightColor,
               borderRadius: BorderRadius.circular(8),
             ),
             alignment: Alignment.center,
-            child: Text(
-              event["date"]!.split(" ")[1],
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepOrange,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  event["date"]!.split(" ")[1],
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.kPrimaryColor,
+                  ),
+                ),
+                Text(
+                  event["date"]!.split(" ")[2],
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.kPrimaryColor,
+                  ),
+                ),
+              ],
             ),
           ),
           title: Text(
@@ -44,7 +60,7 @@ Widget buildUpcomingEventsList(EventViewModel viewModel) {
               viewModel.reminderEvents.contains(event["title"])
                   ? Icons.notifications_active
                   : Icons.notifications_none,
-              color: Colors.orange,
+              color: AppColors.kPrimaryColor,
             ),
             onPressed: () => viewModel.toggleEventReminder(event["title"]!),
           ),

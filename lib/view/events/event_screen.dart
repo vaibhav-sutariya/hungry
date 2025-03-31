@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/view/events/components/event_card_widget.dart';
@@ -76,24 +77,6 @@ class EventScreen extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-
-                const SizedBox(height: 20),
-
-                /// PAST EVENTS SECTION
-                const Text(
-                  "PAST EVENTS",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-
-                const SizedBox(height: 10),
-
-                /// List of Past Events
-                Column(
-                  children: viewModel.pastEvents
-                      .map((event) => buildPastEventCard(event))
-                      .toList(),
-                ),
-
                 const SizedBox(height: 30),
 
                 /// UPCOMING EVENTS SECTION
@@ -115,25 +98,94 @@ class EventScreen extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 10),
-
-                /// Calendar View Toggle
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const Text("Calendar View"),
-                    Switch(
-                      value: viewModel.showCalendarView.value,
-                      onChanged: (value) => viewModel.toggleCalendarView(),
-                      activeColor: Colors.orange,
-                    ),
-                  ],
+                const SizedBox(height: 5),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month_rounded,
+                            color: AppColors.kPrimaryColor.withOpacity(0.7),
+                            size: 22,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            "Calendar View",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Obx(() => Transform.scale(
+                            scale: 0.8,
+                            child: Switch.adaptive(
+                              value: viewModel.showCalendarView.value,
+                              onChanged: (value) {
+                                // HapticFeedback.lightImpact();
+                                viewModel.toggleCalendarView();
+                              },
+                              activeColor: Colors.white,
+                              activeTrackColor: AppColors.kPrimaryColor,
+                              inactiveThumbColor: Colors.white,
+                              inactiveTrackColor: Colors.grey.shade300,
+                              thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+                                (Set<WidgetState> states) {
+                                  if (states.contains(WidgetState.selected)) {
+                                    return Icon(Icons.calendar_view_month,
+                                        color: AppColors.kPrimaryColor);
+                                  }
+                                  return Icon(Icons.list, color: Colors.grey);
+                                },
+                              ),
+                            ),
+                          )),
+                    ],
+                  ),
                 ),
 
                 /// Conditional Calendar or List View
                 Obx(() => viewModel.showCalendarView.value
                     ? buildCalendarView(viewModel)
                     : buildUpcomingEventsList(viewModel)),
+
+                /// Calendar View Toggle
+
+                const SizedBox(height: 20),
+
+                /// PAST EVENTS SECTION
+                const Text(
+                  "PAST EVENTS",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+
+                const SizedBox(height: 10),
+
+                /// List of Past Events
+                Column(
+                  children: viewModel.pastEvents
+                      .map((event) => buildPastEventCard(event))
+                      .toList(),
+                ),
 
                 const SizedBox(height: 30),
 
@@ -153,7 +205,7 @@ class EventScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.deepOrange,
+                          color: AppColors.kPrimaryColor,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -184,12 +236,14 @@ class EventScreen extends StatelessWidget {
                             onPressed: () =>
                                 viewModel.registerForNotifications(),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              backgroundColor:
+                                  AppColors.kPrimaryColor.withOpacity(0.8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 12),
                             ),
                             child: const Text(
                               "Subscribe",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppColors.kWhiteColor),
                             ),
                           ),
                         ],
@@ -219,14 +273,14 @@ class EventScreen extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () => viewModel.showFeedbackDialog(context),
                     icon: const Icon(Icons.feedback_outlined,
-                        color: Colors.orange),
+                        color: AppColors.kPrimaryColor),
                     label: const Text(
                       "Share Your Event Experience",
                       style: TextStyle(color: Colors.black),
                     ),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: const BorderSide(color: Colors.orange),
+                      side: const BorderSide(color: AppColors.kPrimaryColor),
                     ),
                   ),
                 ),

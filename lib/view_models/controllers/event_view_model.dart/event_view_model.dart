@@ -152,14 +152,14 @@ class EventViewModel extends GetxController {
       Get.snackbar(
         "Reminder Removed",
         "You will not receive notifications for this event",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
     } else {
       reminderEvents.add(eventTitle);
       Get.snackbar(
         "Reminder Set",
         "You will be notified before this event starts",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.green.withOpacity(0.7),
         colorText: Colors.white,
       );
