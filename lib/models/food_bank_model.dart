@@ -1,70 +1,114 @@
 class FoodBankModel {
-  final String name;
-  final String foodNgoName;
-  final String address;
-  final String gmail;
-  final double latitude;
-  final double longitude;
-  final String phone;
-  final int volunteers;
-  double distance = 0.0;
-  final String createdAt;
-  final String updatedAt;
+  String? email;
+  String? createdAt;
+  String? foodBankName;
+  String? address;
+  String? phone;
+  String? name;
+  Location? location;
+  Services? services;
+  int? volunteers;
+  String? updatedAt;
+  double? distance;
 
-  FoodBankModel({
-    required this.name,
-    required this.foodNgoName,
-    required this.address,
-    required this.gmail,
-    required this.latitude,
-    required this.longitude,
-    required this.phone,
-    required this.volunteers,
-    required this.distance,
-    required this.createdAt,
-    required this.updatedAt,
-  });
+  FoodBankModel(
+      {this.email,
+      this.createdAt,
+      this.foodBankName,
+      this.address,
+      this.phone,
+      this.name,
+      this.location,
+      this.services,
+      this.volunteers,
+      this.updatedAt,
+      this.distance});
 
-  // Factory constructor to create an instance from a JSON object
-  factory FoodBankModel.fromJson(Map<String, dynamic> json) {
-    return FoodBankModel(
-      name: json['name'] ?? '',
-      foodNgoName: json['FoodNgoName'] ?? '',
-      address: json['address'] ?? '',
-      gmail: json['gmail'] ?? '',
-      latitude:
-          (json['location'] != null && json['location']['latitude'] != null)
-              ? (json['location']['latitude'] as num).toDouble()
-              : 0.0,
-      longitude:
-          (json['location'] != null && json['location']['longitude'] != null)
-              ? (json['location']['longitude'] as num).toDouble()
-              : 0.0,
-      phone: json['phone'] ?? '',
-      volunteers: int.tryParse(json['volunteers'].toString()) ??
-          0, // Convert to integer safely
-      distance: json['distance'] ?? 0.0,
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-    );
+  FoodBankModel.fromJson(Map<String, dynamic> json) {
+    email = json['email'];
+    createdAt = json['createdAt'];
+    foodBankName = json['FoodBankName'];
+    address = json['address'];
+    phone = json['phone'];
+    name = json['name'];
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
+    services =
+        json['services'] != null ? Services.fromJson(json['services']) : null;
+    volunteers = json['volunteers'];
+    updatedAt = json['updatedAt'];
+    distance = json['distance'] ?? 0.0;
   }
 
-  // Method to convert the model instance to JSON
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'FoodNgoName': foodNgoName,
-      'address': address,
-      'gmail': gmail,
-      'location': {
-        'latitude': latitude,
-        'longitude': longitude,
-      },
-      'phone': phone,
-      'volunteers': volunteers.toString(),
-      'distance': distance,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['email'] = email;
+    data['createdAt'] = createdAt;
+    data['foodBankName'] = foodBankName;
+    data['address'] = address;
+    data['phone'] = phone;
+    data['name'] = name;
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    if (services != null) {
+      data['services'] = services!.toJson();
+    }
+    data['volunteers'] = volunteers;
+    data['updatedAt'] = updatedAt;
+    data['distance'] = distance;
+    return data;
+  }
+}
+
+class Location {
+  double? latitude;
+  double? longitude;
+
+  Location({this.latitude, this.longitude});
+
+  Location.fromJson(Map<String, dynamic> json) {
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    return data;
+  }
+}
+
+class Services {
+  bool? freeMealAvailable;
+  bool? minPeopleAccepted;
+  bool? acceptingRemainingFood;
+  bool? acceptingDonations;
+  bool? distributingToNeedyPerson;
+
+  Services(
+      {this.freeMealAvailable,
+      this.minPeopleAccepted,
+      this.acceptingRemainingFood,
+      this.acceptingDonations,
+      this.distributingToNeedyPerson});
+
+  Services.fromJson(Map<String, dynamic> json) {
+    freeMealAvailable = json['freeMealAvailable'];
+    minPeopleAccepted = json['minPeopleAccepted'];
+    acceptingRemainingFood = json['acceptingRemainingFood'];
+    acceptingDonations = json['acceptingDonations'];
+    distributingToNeedyPerson = json['distributingToNeedyPerson'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['freeMealAvailable'] = freeMealAvailable;
+    data['minPeopleAccepted'] = minPeopleAccepted;
+    data['acceptingRemainingFood'] = acceptingRemainingFood;
+    data['acceptingDonations'] = acceptingDonations;
+    data['distributingToNeedyPerson'] = distributingToNeedyPerson;
+    return data;
   }
 }

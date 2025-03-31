@@ -54,6 +54,7 @@ Widget buildListTile(dynamic data) {
               ),
             ),
             child: Text('${data.distance?.toStringAsFixed(2)} km',
+                // child: Text(' km',
                 style: const TextStyle(
                     fontSize: 16, color: AppColors.kPrimaryColor)),
           ),

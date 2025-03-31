@@ -1,68 +1,74 @@
 class LocationModel {
-  final String address;
-  final List<String> categories;
-  final String details;
-  final String name;
-  final double latitude;
-  final double longitude;
-  final String phone;
-  double distance = 0.0;
-  final String createdAt;
-  final String updatedAt;
+  String? createdAt;
+  String? address;
+  String? phone;
+  String? name;
+  String? details;
+  Location? location;
+  List<String>? categories;
+  String? updatedAt;
+  double? distance = 0.0;
 
   LocationModel({
-    required this.address,
-    required this.categories,
-    required this.details,
-    required this.name,
-    required this.latitude,
-    required this.longitude,
-    required this.phone,
-    required this.distance,
-    required this.createdAt,
-    required this.updatedAt,
+    this.createdAt,
+    this.address,
+    this.phone,
+    this.name,
+    this.details,
+    this.location,
+    this.categories,
+    this.updatedAt,
+    this.distance,
   });
 
-  // Factory constructor to create an instance from a JSON object
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-      address: json['address'] ?? '',
-      categories: (json['categories'] as List<dynamic>?)
-              ?.map((e) => e.toString())
-              .toList() ??
-          [],
-      details: json['details'] ?? '',
-      name: json['name'] ?? '',
-      latitude:
-          (json['location'] != null && json['location']['latitude'] != null)
-              ? (json['location']['latitude'] as num).toDouble()
-              : 0.0,
-      longitude:
-          (json['location'] != null && json['location']['longitude'] != null)
-              ? (json['location']['longitude'] as num).toDouble()
-              : 0.0,
-      phone: json['phone'] ?? '',
-      distance: json['distance'] ?? 0.0,
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-    );
+  LocationModel.fromJson(Map<String, dynamic> json) {
+    createdAt = json['createdAt'];
+    address = json['address'];
+    phone = json['phone'];
+    name = json['name'];
+    details = json['details'];
+    location =
+        json['location'] != null ? Location.fromJson(json['location']) : null;
+    // Handle categories safely
+    categories = json['categories'] != null
+        ? List<String>.from(json['categories'])
+        : <String>[];
+    updatedAt = json['updatedAt'];
+    distance = json['distance'] ?? 0.0;
   }
 
-  // Method to convert the model instance to JSON
   Map<String, dynamic> toJson() {
-    return {
-      'address': address,
-      'categories': categories,
-      'details': details,
-      'fName': name,
-      'location': {
-        'latitude': latitude,
-        'longitude': longitude,
-      },
-      'phone': phone,
-      'distance': distance,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['createdAt'] = createdAt;
+    data['address'] = address;
+    data['phone'] = phone;
+    data['name'] = name;
+    data['details'] = details;
+    if (location != null) {
+      data['location'] = location!.toJson();
+    }
+    data['categories'] = categories;
+    data['updatedAt'] = updatedAt;
+    data['distance'] = distance;
+    return data;
+  }
+}
+
+class Location {
+  double? latitude;
+  double? longitude;
+
+  Location({this.latitude, this.longitude});
+
+  Location.fromJson(Map<String, dynamic> json) {
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    return data;
   }
 }
