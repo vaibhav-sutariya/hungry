@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/view_models/services/event_services/event_services.dart';
 
 class EventViewModel extends GetxController {
@@ -32,70 +34,79 @@ class EventViewModel extends GetxController {
   }
 
   void fetchEvents() {
-    // This would typically come from a service/repository
+    // Live food donation events happening now
     liveEvents.value = [
       {
-        "title": "Maninagar Evening Katha",
+        "title": "Community Free Meal Drive",
         "date": "Sat 14th May",
-        "time": "7.45pm IST",
+        "time": "12:00 PM - 3:00 PM",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://images.stockcake.com/public/4/f/4/4f4dd440-2d5e-4c15-9109-f9d0cebf5148_large/community-food-drive-stockcake.jpg"
       },
       {
-        "title": "Temple Morning Aarti",
+        "title": "Temple Prasadam Distribution",
         "date": "Sun 15th May",
-        "time": "6.00am IST",
+        "time": "6:00 AM - 9:00 AM",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6MBiBVDDJMHFnPAv7k_0wt9McwdlkbO7veg&s"
+      },
+      {
+        "title": "Free Breakfast for the Needy",
+        "date": "Sun 15th May",
+        "time": "6:00 AM - 9:00 AM",
+        "image":
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzXMLT5df848EIaoxp0t7UAEHM_z4m5H78tQ&s"
       }
     ];
 
+    // Past food donation and hunger relief events
     pastEvents.value = [
       {
-        "title": "Charity Food Drive",
+        "title": "Homeless Food Donation Drive",
         "date": "Fri 10th May",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT41KHWKbWXpm5kbJgQjTSiT5WOK3DiC5Btjg&s"
       },
       {
-        "title": "Community Gathering",
+        "title": "School Mid-Day Meal Program",
         "date": "Wed 8th May",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzoDlRhTMTmmLPYngWWGREGCNi-acR6tWeHg&s"
       },
       {
-        "title": "Community Gathering",
-        "date": "Wed 8th May",
+        "title": "Orphanage Food Support",
+        "date": "Wed 9th May",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_315,w_420/v1521807714/production/images/campaign/33419/Fooding_wof6ts_1521807712.jpg"
       }
     ];
 
+    // Upcoming food donation and awareness events
     upcomingEvents.value = [
       {
-        "title": "Monthly Community Meeting",
+        "title": "Monthly Food Bank Collection",
         "date": "Mon 20th May",
-        "time": "4.00pm IST",
+        "time": "10:00 AM - 4:00 PM",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ19c_UnIuJ-ciRSChjT2S5TkAZHRZOCzjCag&s"
       },
       {
-        "title": "Youth Workshop",
+        "title": "Hunger Awareness Workshop",
         "date": "Wed 22nd May",
-        "time": "2.30pm IST",
+        "time": "2:30 PM - 5:00 PM",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://c8.alamy.com/comp/2FKT5E2/world-hunger-day-food-prevention-and-awareness-vector-concept-banner-poster-world-hunger-day-awareness-campaign-template-2FKT5E2.jpg"
       },
       {
-        "title": "Weekend Kirtan",
+        "title": "Free Meal Distribution",
         "date": "Sat 25th May",
-        "time": "6.00pm IST",
+        "time": "6:00 PM - 9:00 PM",
         "image":
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxxayvVBVrSvFSO2nfVrnJaNNC6QLTwG70fw&s"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSODmgWXZ5HeqBxVYFAwc8jxDe8wuUJ3lcRoQ&s"
       },
     ];
 
-    // Days that have events
+    // Days that have food-related events
     daysWithEvents.value = [14, 15, 20, 22, 25];
   }
 
@@ -252,10 +263,12 @@ class EventViewModel extends GetxController {
               const Text("Which event did you attend?"),
               const SizedBox(height: 8),
               DropdownButtonFormField<String>(
+                focusColor: AppColors.kPrimaryColor,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide:
+                          BorderSide(width: 1, color: AppColors.kPrimaryColor)),
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
@@ -277,7 +290,7 @@ class EventViewModel extends GetxController {
                     max: 5.0,
                     divisions: 4,
                     label: ratingValue.value.toString(),
-                    activeColor: Colors.orange,
+                    activeColor: AppColors.kPrimaryColor,
                     onChanged: (value) {
                       ratingValue.value = value;
                     },
@@ -291,8 +304,8 @@ class EventViewModel extends GetxController {
                           return Icon(
                             Icons.star,
                             color: index < ratingValue.value
-                                ? Colors.orange
-                                : Colors.grey,
+                                ? AppColors.kPrimaryColor
+                                : AppColors.kPrimaryLightColor,
                             size: 20,
                           );
                         }),
@@ -301,15 +314,13 @@ class EventViewModel extends GetxController {
                 ],
               ),
               const SizedBox(height: 16),
-              const Text("Your feedback:"),
-              const SizedBox(height: 8),
-              TextField(
+              CustomTextField(
                 controller: feedbackController,
-                decoration: InputDecoration(
-                  hintText: "Share your thoughts about the event...",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                labelText: 'Your Feedback',
+                hintText: 'Share your thoughts about the event...',
+                suffixIcon: Icon(
+                  Icons.feedback,
+                  color: AppColors.kPrimaryColor,
                 ),
                 maxLines: 3,
               ),
@@ -319,7 +330,10 @@ class EventViewModel extends GetxController {
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text("Cancel"),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(color: AppColors.kPrimaryColor),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -332,14 +346,14 @@ class EventViewModel extends GetxController {
                 "Your feedback has been submitted successfully",
                 snackPosition: SnackPosition.BOTTOM,
                 backgroundColor: Colors.green.withOpacity(0.7),
-                colorText: Colors.white,
+                colorText: AppColors.kWhiteColor,
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
+              backgroundColor: AppColors.kPrimaryColor,
             ),
             child: const Text("Submit Feedback",
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(color: AppColors.kWhiteColor)),
           ),
         ],
       ),

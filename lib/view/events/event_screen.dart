@@ -99,6 +99,8 @@ class EventScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 5),
+
+                /// Calendar View Toggle
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -167,8 +169,6 @@ class EventScreen extends StatelessWidget {
                 Obx(() => viewModel.showCalendarView.value
                     ? buildCalendarView(viewModel)
                     : buildUpcomingEventsList(viewModel)),
-
-                /// Calendar View Toggle
 
                 const SizedBox(height: 20),
 
