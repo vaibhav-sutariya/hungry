@@ -2,21 +2,25 @@ class LocationModel {
   final String address;
   final List<String> categories;
   final String details;
-  final String fName;
+  final String name;
   final double latitude;
   final double longitude;
   final String phone;
   double distance = 0.0;
+  final String createdAt;
+  final String updatedAt;
 
   LocationModel({
     required this.address,
     required this.categories,
     required this.details,
-    required this.fName,
+    required this.name,
     required this.latitude,
     required this.longitude,
     required this.phone,
     required this.distance,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   // Factory constructor to create an instance from a JSON object
@@ -28,7 +32,7 @@ class LocationModel {
               .toList() ??
           [],
       details: json['details'] ?? '',
-      fName: json['fName'] ?? '',
+      name: json['name'] ?? '',
       latitude:
           (json['location'] != null && json['location']['latitude'] != null)
               ? (json['location']['latitude'] as num).toDouble()
@@ -39,6 +43,8 @@ class LocationModel {
               : 0.0,
       phone: json['phone'] ?? '',
       distance: json['distance'] ?? 0.0,
+      createdAt: json['createdAt'] ?? '',
+      updatedAt: json['updatedAt'] ?? '',
     );
   }
 
@@ -48,13 +54,15 @@ class LocationModel {
       'address': address,
       'categories': categories,
       'details': details,
-      'fName': fName,
+      'fName': name,
       'location': {
         'latitude': latitude,
         'longitude': longitude,
       },
       'phone': phone,
       'distance': distance,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 }

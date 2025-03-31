@@ -63,7 +63,12 @@ class AddFoodbankViewModel extends GetxController {
 
     loading.value = true;
     try {
-      Position position = await Geolocator.getCurrentPosition();
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 0,
+        ),
+      );
       User? user = FirebaseAuth.instance.currentUser;
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
       String id = const Uuid().v4();
@@ -81,21 +86,25 @@ class AddFoodbankViewModel extends GetxController {
             : '';
 
         await databaseReference.child('FoodBanks').child(userId).child(id).set({
-          'FoodNgoName': foodNGOName,
-          'Fname': fName,
+          'name': fName,
+          'FoodBankName': foodNGOName,
           'gmail': gmail,
           'phone': phone,
           'volunteers': volunteer,
           'address': address,
-          'acceptingRemainingFood': acceptingRemainingFood.value,
-          'minPeopleAccepted': minPeople,
-          'distributingToNeedyPerson': distributingToNeedyPerson.value,
-          'freeMealAvailable': freeMealAvailable.value,
-          'acceptingDonations': acceptingDonations.value,
+          'services': {
+            'acceptingRemainingFood': acceptingRemainingFood.value,
+            'minPeopleAccepted': minPeople,
+            'distributingToNeedyPerson': distributingToNeedyPerson.value,
+            'freeMealAvailable': freeMealAvailable.value,
+            'acceptingDonations': acceptingDonations.value,
+          },
           'location': {
             'latitude': position.latitude,
             'longitude': position.longitude,
           },
+          'createdAt': DateTime.now().toIso8601String(),
+          'updatedAt': DateTime.now().toIso8601String(),
         });
 
         log("Location data saved to Realtime Database");

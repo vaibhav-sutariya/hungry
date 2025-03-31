@@ -23,9 +23,9 @@ class LocationDataRepository extends GetxController {
   final RxList<LocationModel> locationList = <LocationModel>[].obs;
   final RxList<dynamic> combinedDataList = <dynamic>[].obs;
 
-  final RxBool isLoading = false.obs; // Loading state
+  final RxBool isLoading = false.obs;
 
-  Position? _currentPosition;
+  Position? currentPosition;
 
   @override
   void onInit() {
@@ -35,130 +35,126 @@ class LocationDataRepository extends GetxController {
 
   void _getCurrentLocation() async {
     try {
-      isLoading.value = true; // Start loading
-      _currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      isLoading.value = true;
+      currentPosition = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 0,
+        ),
+      );
       await fetchLocations();
       await fetchFoodBanks();
     } catch (e) {
       log("Error getting user location: $e");
     } finally {
-      isLoading.value = false; // Stop loading
+      isLoading.value = false;
     }
   }
 
   bool _isWithinRange(double lat, double lon) {
-    if (_currentPosition == null) return false;
+    if (currentPosition == null) return false;
     double distance = Geolocator.distanceBetween(
-          _currentPosition!.latitude,
-          _currentPosition!.longitude,
+          currentPosition!.latitude,
+          currentPosition!.longitude,
           lat,
           lon,
         ) /
         1000;
     log("Distance: $distance");
-    return distance < 20;
+    return distance < 200000; // 20 km radius
   }
 
   Future<void> fetchLocations() async {
     try {
-      isLoading.value = true; // Start loading
+      isLoading.value = true;
+      _locationSubscription?.cancel(); // Cancel any existing subscription
+      locationList.clear(); // Clear list before fetching
+
       _locationSubscription = _locationsRef.onValue.listen((event) {
-        locationList.clear();
         if (event.snapshot.value != null && event.snapshot.value is Map) {
           Map<dynamic, dynamic> locationsMap = event.snapshot.value as Map;
-          locationsMap.forEach((userId, userData) {
+          for (var userData in locationsMap.values) {
             if (userData is Map) {
-              userData.forEach((id, data) {
+              for (var data in userData.values) {
                 try {
                   final locationModel =
                       LocationModel.fromJson(_sanitizeData(data));
-                  log("Location Model: ${locationModel.fName}");
+
                   if (_isWithinRange(
                       locationModel.latitude, locationModel.longitude)) {
-                    double distance = Geolocator.distanceBetween(
-                          _currentPosition!.latitude,
-                          _currentPosition!.longitude,
-                          locationModel.latitude,
-                          locationModel.longitude,
-                        ) /
-                        1000;
-
-                    locationModel.distance = distance; // Store distance
-                    locationList.add(locationModel);
-                    combinedDataList.add(locationModel);
-                    log("Combined Data List: $combinedDataList");
-                    findFoodController.addMarker(
-                      locationModel.latitude,
-                      locationModel.longitude,
-                      locationModel.fName,
-                      locationModel.address,
-                    );
-                    log("Location Added: ${locationModel.fName}");
+                    // Ensure data is not duplicated
+                    if (!locationList.any((l) =>
+                        l.latitude == locationModel.latitude &&
+                        l.longitude == locationModel.longitude)) {
+                      locationList.add(locationModel);
+                      combinedDataList.add(locationModel);
+                      findFoodController.addMarker(
+                        locationModel.latitude,
+                        locationModel.longitude,
+                        locationModel.name,
+                        locationModel.address,
+                      );
+                    }
                   }
                 } catch (e) {
-                  log('Error parsing location data for ID $id: $e');
+                  log('Error parsing location data: $e');
                 }
-              });
+              }
             }
-          });
+          }
         }
       });
     } catch (e) {
       log("Error fetching locations: $e");
     } finally {
-      isLoading.value = false; // Stop loading
+      isLoading.value = false;
     }
   }
 
   Future<void> fetchFoodBanks() async {
     try {
-      isLoading.value = true; // Start loading
+      isLoading.value = true;
+      _foodBankSubscription?.cancel(); // Cancel any existing subscription
+      foodBankList.clear(); // Clear list before fetching
+
       _foodBankSubscription = _foodBanksRef.onValue.listen((event) {
-        foodBankList.clear();
         if (event.snapshot.value != null && event.snapshot.value is Map) {
           Map<dynamic, dynamic> foodBanksMap = event.snapshot.value as Map;
-          foodBanksMap.forEach((userId, userData) {
+          for (var userData in foodBanksMap.values) {
             if (userData is Map) {
-              userData.forEach((id, data) {
+              for (var data in userData.values) {
                 try {
                   final foodBankModel =
                       FoodBankModel.fromJson(_sanitizeData(data));
-                  log('Food Bank Model: ${foodBankModel.foodNgoName}');
+
                   if (_isWithinRange(
                       foodBankModel.latitude, foodBankModel.longitude)) {
-                    double distance = Geolocator.distanceBetween(
-                          _currentPosition!.latitude,
-                          _currentPosition!.longitude,
-                          foodBankModel.latitude,
-                          foodBankModel.longitude,
-                        ) /
-                        1000;
-
-                    foodBankModel.distance = distance; // Store distance
-                    foodBankList.add(foodBankModel);
-                    combinedDataList.add(foodBankModel);
-                    log("Combined Data List: $combinedDataList");
-                    findFoodController.addMarker(
-                      foodBankModel.latitude,
-                      foodBankModel.longitude,
-                      foodBankModel.foodNgoName,
-                      foodBankModel.address,
-                    );
-                    log("Food Bank Added: ${foodBankModel.foodNgoName}");
+                    // Ensure data is not duplicated
+                    if (!foodBankList.any((f) =>
+                        f.latitude == foodBankModel.latitude &&
+                        f.longitude == foodBankModel.longitude)) {
+                      foodBankList.add(foodBankModel);
+                      combinedDataList.add(foodBankModel);
+                      findFoodController.addMarker(
+                        foodBankModel.latitude,
+                        foodBankModel.longitude,
+                        foodBankModel.foodNgoName,
+                        foodBankModel.address,
+                      );
+                    }
                   }
                 } catch (e) {
-                  log('Error parsing food bank data for ID $id: $e');
+                  log('Error parsing food bank data: $e');
                 }
-              });
+              }
             }
-          });
+          }
         }
       });
     } catch (e) {
       log("Error fetching food banks: $e");
     } finally {
-      isLoading.value = false; // Stop loading
+      isLoading.value = false;
     }
   }
 
@@ -174,7 +170,7 @@ class LocationDataRepository extends GetxController {
     return {
       'latitude': _parseDouble(data['latitude']),
       'longitude': _parseDouble(data['longitude']),
-      'fName': data['fName']?.toString() ?? '',
+      'name': data['name']?.toString() ?? '',
       'address': data['address']?.toString() ?? '',
     };
   }

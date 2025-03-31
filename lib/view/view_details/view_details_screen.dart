@@ -62,7 +62,7 @@ class ViewDetailsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                data.fName,
+                                data.name,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,

@@ -38,7 +38,7 @@ Widget buildListTile(dynamic data) {
         children: [
           Expanded(
             child: Text(
-              data.fName,
+              data.name,
               style: const TextStyle(fontWeight: FontWeight.bold),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

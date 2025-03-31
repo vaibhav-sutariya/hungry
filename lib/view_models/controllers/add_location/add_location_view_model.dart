@@ -34,7 +34,12 @@ class AddLocationViewModel extends GetxController {
   Future<void> saveLocationData() async {
     loading.value = true;
     try {
-      Position position = await Geolocator.getCurrentPosition();
+      Position position = await Geolocator.getCurrentPosition(
+        locationSettings: LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 0,
+        ),
+      );
       User? user = FirebaseAuth.instance.currentUser;
       DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
       String id = const Uuid().v4();
@@ -52,7 +57,7 @@ class AddLocationViewModel extends GetxController {
             .toList();
 
         await databaseReference.child('locations').child(userId).child(id).set({
-          'fName': fName,
+          'name': fName,
           'phone': phone,
           'address': address,
           'details': details,
@@ -61,6 +66,8 @@ class AddLocationViewModel extends GetxController {
             'latitude': position.latitude,
             'longitude': position.longitude,
           },
+          'createdAt': DateTime.now().toIso8601String(),
+          'updatedAt': DateTime.now().toIso8601String(),
         });
 
         log("Location data saved to Realtime Database");

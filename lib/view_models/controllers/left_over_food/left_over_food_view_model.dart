@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -47,12 +48,14 @@ class LeftOverFoodViewModel extends GetxController {
           'fName': fName,
           'phone': phone,
           'address': address,
-          'persons': persons,
+          'numberOfPersons': persons,
           'details': details,
           'location': {
             'latitude': position.latitude,
             'longitude': position.longitude,
-          }, // Store location as a map
+          },
+          'createdAt': Timestamp.now(),
+          'updatedAt': Timestamp.now(),
         });
 
         log("User data saved to Realtime Database");
