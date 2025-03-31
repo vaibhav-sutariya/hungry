@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/models/donation_model.dart';
 
@@ -9,28 +12,27 @@ class DonationService extends GetxService {
 
   User? get currentUser => _auth.currentUser;
 
-  // Add a new donation
-  Future<bool> addDonation(String title, String description) async {
+  Future<bool> addDonation(List<String> donations) async {
     final user = currentUser;
-    if (user == null || title.isEmpty || description.isEmpty) {
-      return false;
-    }
+    if (user == null) return false;
 
     try {
       DatabaseReference donationRef = _database.child('donations').push();
       await donationRef.set({
-        'title': title,
-        'description': description,
+        'donations': donations,
         'timestamp': ServerValue.timestamp,
         'userId': user.uid,
       });
+      log('Donation added: ${donationRef.key}');
       return true;
     } catch (e) {
+      log('Error adding donation: $e');
+      Get.snackbar("Error", "Failed to add donation!",
+          backgroundColor: Colors.red, colorText: Colors.white);
       return false;
     }
   }
 
-  // Get all donations stream
   Stream<List<DonationModel>> getAllDonations() {
     return _database.child('donations').onValue.map((event) {
       final data = event.snapshot.value;
@@ -38,13 +40,12 @@ class DonationService extends GetxService {
 
       if (data != null && data is Map) {
         data.forEach((key, value) {
-          // Extract the userId from the donation data
           final userId = value['userId'] ?? '';
           donations.add(DonationModel.fromMap(value, key, userId));
         });
+        log('Fetched donations: ${donations.length}');
       }
 
-      // Sort by timestamp (newest first)
       donations.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       return donations;
     });

@@ -21,36 +21,49 @@ class DonationListWidget extends StatelessWidget {
       return const Center(child: Text("No donations available 😔"));
     }
 
-    return ListView.builder(
-      physics: const BouncingScrollPhysics(),
-      itemCount: donations.length,
-      itemBuilder: (context, index) {
-        var donation = donations[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Card(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        itemCount: donations.length,
+        itemBuilder: (context, index) {
+          var donation = donations[index];
+          return Card(
             color: Colors.white,
             elevation: 4,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: ListTile(
               contentPadding: const EdgeInsets.all(12),
-              title: Text(
-                donation.title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade100,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.fastfood_rounded,
+                  color: Colors.green,
+                  size: 28,
+                ),
               ),
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Text(donation.description,
-                    style: const TextStyle(fontSize: 14)),
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: donation.items
+                    .map((item) =>
+                        Text("- $item", style: const TextStyle(fontSize: 14)))
+                    .toList(),
               ),
-              trailing: const Icon(Icons.fastfood_rounded,
-                  color: Colors.green, size: 28),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.grey,
+                size: 18,
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

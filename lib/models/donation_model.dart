@@ -1,14 +1,12 @@
 class DonationModel {
   final String id;
-  final String title;
-  final String description;
+  final List<String> items;
   final int timestamp;
   final String userId;
 
   DonationModel({
     required this.id,
-    required this.title,
-    required this.description,
+    required this.items,
     required this.timestamp,
     required this.userId,
   });
@@ -17,8 +15,10 @@ class DonationModel {
       Map<dynamic, dynamic> map, String id, String userId) {
     return DonationModel(
       id: id,
-      title: map['title'] ?? '',
-      description: map['description'] ?? '',
+      items: (map['donations'] as List<dynamic>?)
+              ?.map((item) => item.toString())
+              .toList() ??
+          [],
       timestamp: map['timestamp'] ?? 0,
       userId: userId,
     );
@@ -26,8 +26,7 @@ class DonationModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'title': title,
-      'description': description,
+      'donations': items,
       'timestamp': timestamp,
       'userId': userId,
     };
