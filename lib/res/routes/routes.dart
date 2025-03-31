@@ -21,6 +21,7 @@ import 'package:hungry/view/search/search_screen.dart';
 import 'package:hungry/view/signup/sign_up_screen.dart';
 import 'package:hungry/view/splash_screen.dart';
 import 'package:hungry/view/view_details/view_details_screen.dart';
+import 'package:hungry/view/volunteer_registration/volunteer_registration_screen.dart';
 
 class AppRoutes {
   static appRoutes() => [
@@ -161,6 +162,14 @@ class AppRoutes {
           page: () => DonationHistoryScreen(
             donations: Get.arguments as List<DonationModel>,
           ),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.donationScreen,
+          page: () => const VolunteerRegistrationScreen(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,

@@ -6,6 +6,7 @@ import 'package:hungry/view/donations/donation_screen.dart';
 import 'package:hungry/view/events/event_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 import 'package:hungry/view/profile/profile_screen.dart';
+import 'package:hungry/view/volunteer_registration/volunteer_registration_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_permission.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 
@@ -23,7 +24,7 @@ class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0; // Home is selected by default
   final List<Widget> _pages = [
     EventScreen(),
-    SubmitLeftoverFoodScreen(),
+    VolunteerRegistrationScreen(),
     // FindFoodScreen(),
     SubmitLeftoverFoodScreen(),
     DonationScreen(),
