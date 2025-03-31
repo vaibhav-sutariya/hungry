@@ -1,19 +1,19 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/view/volunteer_registration/volunteer_details_confirmation_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class VolunteerRegistrationViewModel extends GetxController {
   LocationServices locationServices = LocationServices();
   final fnameController = TextEditingController().obs;
-  final dobController = TextEditingController().obs;
-  final genderController = TextEditingController().obs;
+  var selectedDOB = Rxn<DateTime>();
+  RxString selectedGender = ''.obs; // Reactive variable
   final phoneController = TextEditingController().obs;
   final emailController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
@@ -23,6 +23,25 @@ class VolunteerRegistrationViewModel extends GetxController {
   final formkey = GlobalKey<FormState>().obs;
 
   RxBool loading = false.obs;
+  // Method to set the DOB
+  void setDOB(DateTime dob) {
+    selectedDOB.value = dob;
+  }
+
+  // Method to get formatted DOB
+  String get formattedDOB {
+    return selectedDOB.value != null
+        ? DateFormat('dd-MM-yyyy').format(selectedDOB.value!)
+        : DateFormat('dd-MM-yyyy').format(DateTime.now());
+  }
+
+  var genderOptions = ["Male", "Female", "Other"].obs; // List of genders
+// Reactive variable for selected gender
+
+  // Method to update the selected gender
+  void setGender(String gender) {
+    selectedGender.value = gender;
+  }
 
   Future<void> saveVolunteerData() async {
     loading.value = true; // Show loading while fetching location
@@ -35,8 +54,8 @@ class VolunteerRegistrationViewModel extends GetxController {
       if (user != null) {
         String userId = user.uid;
         String fName = fnameController.value.text.trim();
-        String dob = dobController.value.text.trim();
-        String gender = genderController.value.text.trim();
+        String dob = formattedDOB;
+        String gender = selectedGender.string;
         String phone = phoneController.value.text.trim();
         String email = emailController.value.text.trim();
         String address = addressController.value.text.trim();
@@ -54,8 +73,8 @@ class VolunteerRegistrationViewModel extends GetxController {
           'email': email,
           'address': address,
           'reason': reason,
-          'createdAt': Timestamp.now(),
-          'updatedAt': Timestamp.now(),
+          'createdAt': DateTime.now().toIso8601String(),
+          'updatedAt': DateTime.now().toIso8601String(),
         });
 
         log("Volunteer data saved to Realtime Database");
@@ -66,8 +85,8 @@ class VolunteerRegistrationViewModel extends GetxController {
       loading.value = false;
       Get.to(() => VolunteerDetailConfirmationScreen(
             firstName: fnameController.value.text,
-            dob: dobController.value.text,
-            gender: genderController.value.text,
+            dob: formattedDOB,
+            gender: selectedGender.string,
             phoneNumber: phoneController.value.text,
             email: emailController.value.text,
             address: addressController.value.text,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class FoodConfirmationScreen extends StatefulWidget {
   final String firstName;
@@ -172,20 +174,8 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
                     horizontal: 25.0, vertical: 10.0),
               ),
               onPressed: () {
-                // Navigator.pushReplacement(
-                //   context,
-                //   CupertinoPageRoute(
-                //     builder: (context) => ThankYouScreen(
-                //       firstName: widget.firstName,
-                //       phoneNumber: widget.phoneNumber,
-                //       address: widget.address,
-                //       details: widget.details,
-                //       persons: widget.persons,
-                //       location: widget.location,
-                //       id: widget.id,
-                //     ),
-                //   ),
-                // );
+                Get.toNamed(RouteName.bottomBar);
+
                 // sendNotification();
               },
               child: const Text(

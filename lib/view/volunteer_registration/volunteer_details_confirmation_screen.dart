@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 
 class VolunteerDetailConfirmationScreen extends StatefulWidget {
   final String firstName;
@@ -122,10 +124,34 @@ class _VolunteerDetailConfirmationScreenState
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
-                                      text: 'Persons: ',
+                                      text: 'DOB: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
-                                      text: widget.address,
+                                      text: widget.dob,
+                                      style: AppColors.kTextStyleN),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Gender: ',
+                                      style: AppColors.kTextStyleB),
+                                  TextSpan(
+                                      text: widget.gender,
+                                      style: AppColors.kTextStyleN),
+                                ],
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Email: ',
+                                      style: AppColors.kTextStyleB),
+                                  TextSpan(
+                                      text: widget.email,
                                       style: AppColors.kTextStyleN),
                                 ],
                               ),
@@ -135,7 +161,7 @@ class _VolunteerDetailConfirmationScreenState
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
-                                      text: 'Food Details: ',
+                                      text: 'Reason: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
                                       text: widget.reason,
@@ -178,21 +204,7 @@ class _VolunteerDetailConfirmationScreenState
                     horizontal: 25.0, vertical: 10.0),
               ),
               onPressed: () {
-                // Navigator.pushReplacement(
-                //   context,
-                //   CupertinoPageRoute(
-                //     builder: (context) => ThankYouScreen(
-                //       firstName: widget.firstName,
-                //       phoneNumber: widget.phoneNumber,
-                //       address: widget.address,
-                //       details: widget.details,
-                //       persons: widget.persons,
-                //       location: widget.location,
-                //       id: widget.id,
-                //     ),
-                //   ),
-                // );
-                // sendNotification();
+                Get.toNamed(RouteName.bottomBar);
               },
               child: const Text(
                 'Confirm',

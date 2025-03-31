@@ -5,6 +5,7 @@ import 'package:hungry/res/components/customElevatedButton.dart';
 import 'package:hungry/res/components/customTextField.dart';
 import 'package:hungry/res/components/custom_suffix_icon.dart';
 import 'package:hungry/view_models/controllers/volunteer_registration/volunteer_registration_view_model.dart';
+import 'package:intl/intl.dart';
 
 class VolunteerDetailsForm extends StatefulWidget {
   const VolunteerDetailsForm({super.key});
@@ -50,58 +51,104 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
             },
           ),
           const SizedBox(height: 25),
-          CustomTextField(
-            controller: volunteerRegistrationViewModel.dobController.value,
-            labelText: "DOB",
-            hintText: "Enter your DOB",
-            suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-            // onSaved: (newValue) => firstName = newValue,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kNamelNullError);
-              }
-            },
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kNamelNullError)
-                ? AppColors.kNamelNullError
-                : null,
-            validator: (value) {
-              if (value!.isEmpty) {
-                volunteerRegistrationViewModel.addError(
-                    error: AppColors.kNamelNullError);
-                return AppColors.kNamelNullError;
-              }
-              return null;
-            },
-          ),
-          const SizedBox(height: 25),
-          CustomTextField(
-            controller: volunteerRegistrationViewModel.genderController.value,
-            labelText: "Gender",
-            hintText: "Enter your Gender",
-            suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
-            // onSaved: (newValue) => firstName = newValue,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kNamelNullError);
-              }
-            },
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kNamelNullError)
-                ? AppColors.kNamelNullError
-                : null,
-            validator: (value) {
-              if (value!.isEmpty) {
-                volunteerRegistrationViewModel.addError(
-                    error: AppColors.kNamelNullError);
-                return AppColors.kNamelNullError;
-              }
-              return null;
-            },
+          Row(
+            children: [
+              Expanded(
+                child: Obx(
+                  () => GestureDetector(
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
+
+                      if (pickedDate != null) {
+                        volunteerRegistrationViewModel.setDOB(pickedDate);
+                      }
+                    },
+                    child: Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.kPrimaryColor),
+                        borderRadius: BorderRadius.circular(35),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            volunteerRegistrationViewModel.selectedDOB != null
+                                ? DateFormat('dd-MM-yyyy').format(
+                                    volunteerRegistrationViewModel
+                                            .selectedDOB.value ??
+                                        DateTime.now())
+                                : DateFormat('dd-MM-yyyy')
+                                    .format(DateTime.now()),
+                            style: TextStyle(
+                              color: AppColors.kTextColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.calendar_today_outlined,
+                            color: AppColors.kPrimaryColor,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.kPrimaryColor),
+                    borderRadius: BorderRadius.circular(35),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: Obx(
+                      () => DropdownButton<String>(
+                        value: volunteerRegistrationViewModel
+                                .selectedGender.value.isNotEmpty
+                            ? volunteerRegistrationViewModel
+                                .selectedGender.value
+                            : volunteerRegistrationViewModel.genderOptions[0],
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: AppColors.kPrimaryColor,
+                        ),
+                        isExpanded: true,
+                        onChanged: (String? newValue) {
+                          if (newValue != null) {
+                            volunteerRegistrationViewModel.setGender(newValue);
+                          }
+                        },
+                        items: volunteerRegistrationViewModel.genderOptions
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                color: AppColors.kTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 25),
           CustomTextField(
