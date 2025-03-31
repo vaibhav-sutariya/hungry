@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hungry/models/donation_model.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view/add_locations/add_location_screen.dart';
 import 'package:hungry/view/bottom_bar.dart';
@@ -14,6 +15,7 @@ import 'package:hungry/view/pages/about_us.dart';
 import 'package:hungry/view/pages/contact_us.dart';
 import 'package:hungry/view/pages/help_center.dart';
 import 'package:hungry/view/pages/setting_privacy.dart';
+import 'package:hungry/view/profile/donation_history/donation_history_screen.dart';
 import 'package:hungry/view/profile/profile_screen.dart';
 import 'package:hungry/view/search/search_screen.dart';
 import 'package:hungry/view/signup/sign_up_screen.dart';
@@ -149,6 +151,16 @@ class AppRoutes {
         GetPage(
           name: RouteName.donationScreen,
           page: () => const DonationScreen(),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.donationHistoryScreen,
+          page: () => DonationHistoryScreen(
+            donations: Get.arguments as List<DonationModel>,
+          ),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,

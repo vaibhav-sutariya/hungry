@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const kPrimaryColor = Color(0xFFFF7A00);
   static const kPrimaryLightColor = Color(0xFFFFECDF);
+  static const kWhiteColor = Color(0xFFFFFFFF);
+
   static const kPrimaryGradientColor = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,

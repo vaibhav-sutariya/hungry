@@ -27,22 +27,22 @@ class ProfileViewModel extends GetxController {
   void _initializeActionTiles() {
     actionTiles.value = [
       ActionTileModel(
-        title: 'Register Food Bank',
+        title: 'Register Food Bank or NGO',
         icon: Icons.store_mall_directory,
         color: Colors.blue,
         onTap: () => Get.toNamed(RouteName.foodBankScreen),
       ),
       ActionTileModel(
-        title: 'Add Location',
+        title: 'Add Free Food Location',
         icon: Icons.add_location_alt,
         color: Colors.green,
         onTap: () => Get.toNamed(RouteName.addLocationScreen),
       ),
       ActionTileModel(
-        title: 'Volunteer',
-        icon: Icons.people,
+        title: 'Submit Leftover Food',
+        icon: Icons.restaurant_menu,
         color: Colors.orange,
-        onTap: () => Get.toNamed('/volunteer'),
+        onTap: () => Get.toNamed(RouteName.submitLeftoverFoodScreen),
       ),
       ActionTileModel(
         title: 'Schedule Pickup',
@@ -54,7 +54,10 @@ class ProfileViewModel extends GetxController {
         title: 'Donation History',
         icon: Icons.history,
         color: Colors.teal,
-        onTap: () => Get.toNamed('/donation-history'),
+        onTap: () => Get.toNamed(
+          RouteName.donationHistoryScreen,
+          arguments: donations,
+        ),
       ),
       ActionTileModel(
         title: 'Impact Report',
