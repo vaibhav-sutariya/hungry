@@ -45,7 +45,8 @@ Widget buildUpcomingEventsList(EventViewModel viewModel) {
           ),
           title: Text(
             event["title"]!,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

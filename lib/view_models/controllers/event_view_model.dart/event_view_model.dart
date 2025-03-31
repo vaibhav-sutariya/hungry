@@ -266,18 +266,32 @@ class EventViewModel extends GetxController {
                 focusColor: AppColors.kPrimaryColor,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide:
-                          BorderSide(width: 1, color: AppColors.kPrimaryColor)),
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      width: 1,
+                      color: AppColors.kPrimaryColor,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.03,
+                    vertical: MediaQuery.of(context).size.height * 0.01,
+                  ),
                 ),
-                items: [
-                  ...pastEvents.map((event) => DropdownMenuItem(
-                        value: event["title"],
-                        child: Text(event["title"]!),
-                      )),
-                ],
+                isExpanded: true, // Ensures dropdown takes full width
+                items: pastEvents.map((event) {
+                  return DropdownMenuItem(
+                    value: event["title"],
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown, // Prevents overflow
+                      child: Text(
+                        event["title"]!,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
                 onChanged: (value) {},
                 hint: const Text("Select an event"),
               ),
