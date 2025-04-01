@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/models/donation_model.dart';
 import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view/donations/widgets/shimmer_widget.dart';
 import 'package:hungry/view_models/controllers/donation_view_model/recipe_view_model/recipe_view_model.dart';
 
 class DonationListWidget extends StatelessWidget {
@@ -17,7 +18,7 @@ class DonationListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return buildListTileShimmerEffect();
     }
 
     if (donations.isEmpty) {

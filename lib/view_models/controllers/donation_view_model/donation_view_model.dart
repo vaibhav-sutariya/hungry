@@ -55,8 +55,11 @@ class DonationViewModel extends GetxController {
   }
 
   void _fetchDonations() {
+    isLoading.value = true;
+
     _donationService.getAllDonations().listen((donationsList) {
       donations.value = donationsList;
+      isLoading.value = false;
     });
   }
 }

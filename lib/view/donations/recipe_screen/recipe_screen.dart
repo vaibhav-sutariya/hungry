@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
+import 'package:hungry/view/donations/recipe_screen/widgets/text_shimmer_widget.dart';
 import 'package:hungry/view_models/controllers/donation_view_model/recipe_view_model/recipe_view_model.dart';
-import 'package:shimmer/shimmer.dart';
 
 class RecipeScreen extends StatelessWidget {
   const RecipeScreen({
@@ -26,13 +26,7 @@ class RecipeScreen extends StatelessWidget {
             Expanded(
               child: Obx(() {
                 if (viewModel.isLoading.value) {
-                  return Column(
-                    children: [
-                      buildShimmerEffect(height: 50, width: double.infinity),
-                      const SizedBox(height: 16),
-                      buildShimmerEffect(height: 20, width: 200),
-                    ],
-                  );
+                  return buildShimmerEffect();
                 } else if (viewModel.isRecipeGenerated.value) {
                   return _buildTypingEffect(viewModel.recipe.value);
                 } else {
@@ -42,18 +36,6 @@ class RecipeScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildShimmerEffect({required double height, required double width}) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
-      child: Container(
-        height: height,
-        width: width,
-        color: Colors.white,
       ),
     );
   }
