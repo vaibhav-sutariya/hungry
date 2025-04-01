@@ -9,9 +9,9 @@ import 'package:hungry/view/splash_screen.dart';
 
 Future<void> main() async {
   try {
-    await dotenv.load(fileName: ".env"); // Load environment variables
+    await dotenv.load(fileName: ".env");
   } catch (e) {
-    throw Exception('Error loading .env file: $e'); // Print error if any
+    throw Exception('Error loading .env file: $e');
   }
 
   WidgetsFlutterBinding.ensureInitialized();
