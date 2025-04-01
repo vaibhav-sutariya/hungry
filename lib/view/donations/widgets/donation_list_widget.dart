@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/models/donation_model.dart';
-import 'package:hungry/view/donations/recipe_screen/recipe_screen.dart';
+import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/controllers/donation_view_model/recipe_view_model/recipe_view_model.dart';
 
 class DonationListWidget extends StatelessWidget {
@@ -76,7 +76,9 @@ class DonationListWidget extends StatelessWidget {
       BuildContext context, List<String> ingredients) async {
     final RecipeViewModel viewModel = Get.put(RecipeViewModel());
 
-    Get.to(() => RecipeScreen());
+    Get.toNamed(
+      RouteName.recipeScreen,
+    );
     await viewModel.getRecipe(ingredients);
   }
 }

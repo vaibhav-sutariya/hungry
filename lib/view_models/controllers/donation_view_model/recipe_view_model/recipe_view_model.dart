@@ -26,9 +26,11 @@ class RecipeViewModel extends GetxController {
   }
 
   Future<void> getRecipe(List<String> ingredients) async {
-    if (isRecipeGenerated.value) return;
+    // if (isRecipeGenerated.value) return;
 
     isLoading.value = true;
+    isRecipeGenerated.value = false;
+    recipe.value = '';
     try {
       final prompt =
           "Generate a simple recipe using the following ingredients: ${ingredients.join(', ')}.";
@@ -36,13 +38,13 @@ class RecipeViewModel extends GetxController {
       final response = await generativeModel!.generateContent(content);
 
       recipe.value = response.text ?? 'Failed to generate a recipe.';
+      isRecipeGenerated.value = true;
     } catch (e) {
       log("Error fetching recipe: $e");
 
       recipe.value = 'Error: ${e.toString()}';
     } finally {
       isLoading.value = false;
-      isRecipeGenerated.value = true;
     }
   }
 }
