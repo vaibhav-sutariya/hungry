@@ -176,6 +176,14 @@ class AppRoutes {
           ),
         ),
         // GetPage(
+        //   name: RouteName.recipeScreen,
+        //   page: () => const RecipeScreen(),
+        //   transition: Transition.rightToLeft,
+        //   transitionDuration: const Duration(
+        //     milliseconds: 250,
+        //   ),
+        // ),
+        // GetPage(
         //   name: RouteName.foodConfirmationScreen,
         //   page: () => const FoodConfirmationScreen(
         //     firstName: '',

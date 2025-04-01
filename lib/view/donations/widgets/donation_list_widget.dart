@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/models/donation_model.dart';
-import 'package:hungry/res/colors/app_colors.dart';
+import 'package:hungry/view/donations/recipe_screen/recipe_screen.dart';
 import 'package:hungry/view_models/controllers/donation_view_model/recipe_view_model/recipe_view_model.dart';
 
 class DonationListWidget extends StatelessWidget {
@@ -66,7 +66,7 @@ class DonationListWidget extends StatelessWidget {
                 size: 18,
               ),
               onTap: () =>
-                  _showRecipeDialog(context, viewModel, donation.items),
+                  _navigateToRecipeScreen(context, viewModel, donation.items),
             ),
           );
         },
@@ -74,44 +74,12 @@ class DonationListWidget extends StatelessWidget {
     );
   }
 
-  void _showRecipeDialog(BuildContext context, RecipeViewModel viewModel,
-      List<String> ingredients) {
-    // Call getRecipe to fetch the recipe for the selected donation
-    viewModel.getRecipe(ingredients);
+  void _navigateToRecipeScreen(BuildContext context, RecipeViewModel viewModel,
+      List<String> ingredients) async {
+    Get.to(() => RecipeScreen(viewModel: viewModel));
+    // Fetch the recipe before navigating to the next screen
+    await viewModel.getRecipe(ingredients);
 
-    // Show the recipe dialog with loading indicator and fetched content
-    Get.defaultDialog(
-      backgroundColor: AppColors.kWhiteColor,
-      title: "Generated Recipe",
-      content: Obx(() => viewModel.isLoading.value
-          ? const Center(
-              child:
-                  CircularProgressIndicator()) // Centered spinner during loading
-          : ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height *
-                    0.7, // Constrain the max height of the dialog
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: SingleChildScrollView(
-                  child: Text(
-                    viewModel.recipe.value,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-            )),
-      textConfirm: "Close",
-      buttonColor: AppColors.kPrimaryColor,
-      titleStyle: const TextStyle(
-        color: AppColors.kPrimaryColor,
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-      ),
-      confirmTextColor: AppColors.kWhiteColor,
-      onConfirm: () => Get.back(),
-      radius: 15.0,
-    );
+    // Navigate to the Recipe Screen
   }
 }

@@ -10,6 +10,7 @@ class RecipeViewModel extends GetxController {
 
   var isLoading = false.obs; // Reactive loading state
   var recipe = ''.obs; // Reactive recipe state
+  var isRecipeGenerated = false.obs; // Check if recipe is already generated
 
   @override
   void onInit() {
@@ -25,6 +26,8 @@ class RecipeViewModel extends GetxController {
   }
 
   Future<void> getRecipe(List<String> ingredients) async {
+    if (isRecipeGenerated.value) return; // Don't regenerate if already done
+
     isLoading.value = true; // Set loading to true while fetching
     try {
       final prompt =
@@ -39,6 +42,7 @@ class RecipeViewModel extends GetxController {
       recipe.value = 'Error: ${e.toString()}'; // Handle errors gracefully
     } finally {
       isLoading.value = false; // Set loading to false after completion
+      isRecipeGenerated.value = true; // Mark as generated
     }
   }
 }

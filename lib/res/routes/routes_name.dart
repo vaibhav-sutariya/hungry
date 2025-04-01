@@ -24,4 +24,5 @@ class RouteName {
   static const String donationHistoryScreen = '/donation_history_screen';
   static const String volunteerRegistrationScreen =
       '/volunteer_registration_screen';
+  static const String recipeScreen = '/recipe_screen';
 }
