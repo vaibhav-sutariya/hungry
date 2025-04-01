@@ -9,12 +9,13 @@ import 'package:hungry/view_models/controllers/donation_view_model/recipe_view_m
 import 'package:shimmer/shimmer.dart';
 
 class RecipeScreen extends StatelessWidget {
-  final RecipeViewModel viewModel;
-
-  const RecipeScreen({Key? key, required this.viewModel}) : super(key: key);
+  const RecipeScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final RecipeViewModel viewModel = Get.put(RecipeViewModel());
     return Scaffold(
       appBar: MyAppBar(),
       drawer: MyDrawer(showLogOut: true),

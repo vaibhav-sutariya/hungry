@@ -16,8 +16,6 @@ class DonationListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RecipeViewModel viewModel = Get.put(RecipeViewModel());
-
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -66,7 +64,7 @@ class DonationListWidget extends StatelessWidget {
                 size: 18,
               ),
               onTap: () =>
-                  _navigateToRecipeScreen(context, viewModel, donation.items),
+                  _navigateToRecipeScreen(context, donations[index].items),
             ),
           );
         },
@@ -74,9 +72,11 @@ class DonationListWidget extends StatelessWidget {
     );
   }
 
-  void _navigateToRecipeScreen(BuildContext context, RecipeViewModel viewModel,
-      List<String> ingredients) async {
-    Get.to(() => RecipeScreen(viewModel: viewModel));
+  void _navigateToRecipeScreen(
+      BuildContext context, List<String> ingredients) async {
+    final RecipeViewModel viewModel = Get.put(RecipeViewModel());
+
+    Get.to(() => RecipeScreen());
     await viewModel.getRecipe(ingredients);
   }
 }

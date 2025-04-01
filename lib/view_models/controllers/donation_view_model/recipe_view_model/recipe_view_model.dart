@@ -20,7 +20,7 @@ class RecipeViewModel extends GetxController {
 
   void initialize() {
     generativeModel = GenerativeModel(
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash',
       apiKey: apiKey,
     );
   }
@@ -38,6 +38,7 @@ class RecipeViewModel extends GetxController {
       recipe.value = response.text ?? 'Failed to generate a recipe.';
     } catch (e) {
       log("Error fetching recipe: $e");
+
       recipe.value = 'Error: ${e.toString()}';
     } finally {
       isLoading.value = false;
