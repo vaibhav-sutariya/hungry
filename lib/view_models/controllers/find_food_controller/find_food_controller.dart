@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +25,7 @@ class FindFoodController extends GetxController {
   late BitmapDescriptor markerIcon;
 
   final PanelController panelController = PanelController();
-  final String googleAPIKey = "AIzaSyDq65X-7zP0W7_a8eYY3Yv5DoT-OKOJT2M";
+  final String googleAPIKey = dotenv.env['GOOGLE_MAPS_API_KEY']!;
 
   @override
   void onInit() {
