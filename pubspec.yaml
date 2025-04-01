@@ -58,6 +58,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   carousel_slider: ^5.0.0
   flutter_dotenv: ^5.2.1
+  google_generative_ai: ^0.4.6
 
 dev_dependencies:
   flutter_test:
