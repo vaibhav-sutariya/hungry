@@ -23,15 +23,12 @@ class RecipeScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Obx(() {
-                // Show typing effect or recipe content after generation
                 if (viewModel.isLoading.value) {
                   return Column(
                     children: [
-                      buildShimmerEffect(
-                          height: 20), // Shimmer for chat/description
+                      buildShimmerEffect(height: 20),
                       const SizedBox(height: 16),
-                      buildShimmerEffect(
-                          height: 100), // Shimmer for recipe content
+                      buildShimmerEffect(height: 100),
                     ],
                   );
                 } else if (viewModel.isRecipeGenerated.value) {
@@ -47,7 +44,6 @@ class RecipeScreen extends StatelessWidget {
     );
   }
 
-  // A function to return a shimmer effect for specific areas
   Widget buildShimmerEffect({required double height}) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,

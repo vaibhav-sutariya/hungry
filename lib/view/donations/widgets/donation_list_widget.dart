@@ -77,9 +77,6 @@ class DonationListWidget extends StatelessWidget {
   void _navigateToRecipeScreen(BuildContext context, RecipeViewModel viewModel,
       List<String> ingredients) async {
     Get.to(() => RecipeScreen(viewModel: viewModel));
-    // Fetch the recipe before navigating to the next screen
     await viewModel.getRecipe(ingredients);
-
-    // Navigate to the Recipe Screen
   }
 }
