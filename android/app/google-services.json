@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1053126543711-lff5c1jc42c72g8i4hptobutcaon9q4g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hungry",
+            "certificate_hash": "2e3fa8abb39ac0f15b2718d48cbb2f5955ca4f89"
+          }
+        },
+        {
           "client_id": "1053126543711-6olsoeecuedbopht6jraav1sjsv3iunp.apps.googleusercontent.com",
           "client_type": 3
         }
