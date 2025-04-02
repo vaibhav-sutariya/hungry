@@ -23,6 +23,11 @@ jobs:
         with:
           channel: "stable"
           architecture: x64
+        # Step to create .env file from GitHub Secrets
+      - name: Create .env file
+        run: |
+          echo "API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.GEMINI_API_KEY }}" >> .env
 
       - run: flutter build apk --release --split-per-abi
       - run: |
