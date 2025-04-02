@@ -28,7 +28,7 @@ class SignInWithGoogle extends GetxController {
       if (userCredential.user != null) {
         log('Success: Login Success');
         Get.snackbar('Success', 'Login Success');
-        Get.toNamed(RouteName.bottomBar);
+        Get.offNamed(RouteName.bottomBar);
       }
     } catch (e) {
       log(e.toString());

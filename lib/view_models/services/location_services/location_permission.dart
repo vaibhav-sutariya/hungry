@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 class LocationPermissionServices extends GetxController {
   void getLocationPermission(BuildContext context) async {
     LocationPermission permission = await Geolocator.checkPermission();
+    permission = await Geolocator.requestPermission();
 
     if (permission == LocationPermission.denied) {
       // Show a snackbar to inform the user about the importance of location permission

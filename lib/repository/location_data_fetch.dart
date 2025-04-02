@@ -105,7 +105,7 @@ class LocationDataRepository extends GetxController {
 
   bool _isWithinRange(double? lat, double? lon) {
     double distanceInKm = _calculateDistance(lat, lon);
-    return distanceInKm <= 2000000;
+    return distanceInKm <= 20;
   }
 
   Future<void> fetchLocations() async {

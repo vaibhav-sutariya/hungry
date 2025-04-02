@@ -102,7 +102,7 @@ class MyDrawer extends StatelessWidget {
                   // Sign out the user
                   FirebaseAuth.instance.signOut();
 
-                  Get.toNamed(RouteName.loginScreen);
+                  Get.offNamed(RouteName.loginScreen);
                 },
               ),
           // User is not logged in

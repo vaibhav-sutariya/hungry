@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/view/donations/recipe_screen/widgets/text_shimmer_widget.dart';
@@ -297,8 +298,9 @@ class _TypingEffectWidgetState extends State<TypingEffectWidget> {
       child: RichText(
         text: TextSpan(
           children: _textSpans,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
+            fontFamily: GoogleFonts.mulish().fontFamily,
           ),
         ),
       ),

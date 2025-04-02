@@ -29,7 +29,7 @@ class LoginViewModel extends GetxController {
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
           Get.snackbar('Success:', 'Login Success');
-          Get.toNamed(RouteName.bottomBar);
+          Get.offNamed(RouteName.bottomBar);
         }
       } on FirebaseAuthException catch (e) {
         Get.snackbar('Error:', e.message.toString());

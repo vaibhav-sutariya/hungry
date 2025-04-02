@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hungry/repository/location_data_fetch.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view/donations/widgets/shimmer_widget.dart';
 import 'package:hungry/view/find_food/widgets/list_tile_widget.dart';
 import 'package:hungry/view_models/controllers/find_food_controller/find_food_controller.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -78,7 +79,7 @@ class BottomSlider extends StatelessWidget {
                 () {
                   final dataList = locationDataRepository.combinedDataList;
                   return locationDataRepository.isLoading.value
-                      ? Center(child: CircularProgressIndicator())
+                      ? buildListTileShimmerEffect()
                       : dataList.isEmpty
                           ? const Center(child: Text('No data available'))
                           : ListView.builder(
