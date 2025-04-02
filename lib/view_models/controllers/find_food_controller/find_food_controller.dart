@@ -237,4 +237,11 @@ class FindFoodController extends GetxController {
       mapController.animateCamera(CameraUpdate.newLatLngBounds(bounds, 100));
     });
   }
+
+  // Add this method to your FindFoodController class
+void clearMarkers() {
+  // Clear existing markers from your map
+  markers.clear();
+  update();
+}
 }

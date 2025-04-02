@@ -24,13 +24,43 @@ class LocationDataRepository extends GetxController {
   final RxList<dynamic> combinedDataList = <dynamic>[].obs;
 
   final RxBool isLoading = false.obs;
+  final RxBool dataInitialized =
+      false.obs; // Track if data has been initialized
 
   Position? currentPosition;
 
   @override
   void onInit() {
     super.onInit();
-    _getCurrentLocation();
+    _initializeData();
+  }
+
+  // New method to initialize data only once
+  void _initializeData() {
+    if (!dataInitialized.value) {
+      _getCurrentLocation();
+    }
+  }
+
+  // Method to clear data and reinitialize
+  void refreshData() {
+    // Cancel existing subscriptions
+    _locationSubscription?.cancel();
+    _foodBankSubscription?.cancel();
+
+    // Clear existing data
+    locationList.clear();
+    foodBankList.clear();
+    combinedDataList.clear();
+
+    // Clear markers from the map
+    findFoodController.clearMarkers();
+
+    // Reset initialization flag
+    dataInitialized.value = false;
+
+    // Get location and fetch data again
+    _initializeData();
   }
 
   void _getCurrentLocation() async {
@@ -42,6 +72,7 @@ class LocationDataRepository extends GetxController {
       );
       await fetchLocations();
       await fetchFoodBanks();
+      dataInitialized.value = true; // Mark data as initialized
     } catch (e) {
       log("Error getting user location: $e");
     } finally {
@@ -49,12 +80,13 @@ class LocationDataRepository extends GetxController {
     }
   }
 
-  bool _isWithinRange(double? lat, double? lon) {
-    if (currentPosition == null || lat == null || lon == null) return false;
+  // Modify the _isWithinRange method to return the distance
+  double _calculateDistance(double? lat, double? lon) {
+    if (currentPosition == null || lat == null || lon == null) return 0.0;
 
     if (lat.abs() > 90 || lon.abs() > 180) {
       log("⚠️ Invalid Coordinates - Latitude: $lat, Longitude: $lon");
-      return false;
+      return 0.0;
     }
 
     // Calculate the distance in meters
@@ -66,26 +98,35 @@ class LocationDataRepository extends GetxController {
     );
 
     double distanceInKm = distance / 1000; // Convert meters to kilometers
-    log("Distance (${currentPosition!.latitude} ${currentPosition!.longitude} ) to ($lat, $lon): $distanceInKm km");
+    log("Distance (${currentPosition!.latitude} ${currentPosition!.longitude}) to ($lat, $lon): $distanceInKm km");
 
-    return distanceInKm <= 20; // Ensuring range is <= 20km
+    return distanceInKm;
+  }
+
+  bool _isWithinRange(double? lat, double? lon) {
+    double distanceInKm = _calculateDistance(lat, lon);
+    return distanceInKm <= 2000000;
   }
 
   Future<void> fetchLocations() async {
     try {
       isLoading.value = true;
+
+      // Cancel existing subscription
       _locationSubscription?.cancel();
+
+      // Clear location list before fetching new data
       locationList.clear();
 
       _locationSubscription = _locationsRef.onValue.listen((event) {
         if (event.snapshot.value != null && event.snapshot.value is Map) {
+          // Temporary list to collect all locations before updating the observable list
+          final List<LocationModel> tempLocationList = [];
+
           Map<dynamic, dynamic> locationsMap = event.snapshot.value as Map;
           for (var userData in locationsMap.values) {
-            log("🔥 Raw Firebase location Data: ${userData.toString()}");
             if (userData is Map) {
               for (var data in userData.values) {
-                log("location Inner Data: ${data.toString()}");
-
                 try {
                   final Map<String, dynamic> sanitizedData =
                       _sanitizeLocationData(data);
@@ -94,30 +135,45 @@ class LocationDataRepository extends GetxController {
                   if (locationModel.location != null &&
                       _isWithinRange(locationModel.location!.latitude,
                           locationModel.location!.longitude)) {
-                    if (!locationList.any((l) =>
+                    double distanceInKm = _calculateDistance(
+                        locationModel.location!.latitude,
+                        locationModel.location!.longitude);
+                    locationModel.distance = distanceInKm;
+
+                    // Check for duplicates in the temporary list
+                    bool isDuplicate = tempLocationList.any((l) =>
                         l.location != null &&
                         l.location!.latitude ==
                             locationModel.location!.latitude &&
                         l.location!.longitude ==
-                            locationModel.location!.longitude)) {
-                      locationList.add(locationModel);
-                      combinedDataList.add(locationModel);
+                            locationModel.location!.longitude);
 
-                      if (locationModel.name != null &&
-                          locationModel.address != null) {
-                        findFoodController.addMarker(
-                          locationModel.location!.latitude!,
-                          locationModel.location!.longitude!,
-                          locationModel.name!,
-                          locationModel.address!,
-                        );
-                      }
+                    if (!isDuplicate) {
+                      tempLocationList.add(locationModel);
                     }
                   }
                 } catch (e) {
                   log('Error parsing location data: $e');
                 }
               }
+            }
+          }
+
+          // Update locations and add markers in a single batch
+          locationList.assignAll(tempLocationList);
+
+          // Update combined data list
+          _updateCombinedDataList();
+
+          // Add markers for each location
+          for (var location in tempLocationList) {
+            if (location.name != null && location.address != null) {
+              findFoodController.addMarker(
+                location.location!.latitude!,
+                location.location!.longitude!,
+                location.name!,
+                location.address!,
+              );
             }
           }
         }
@@ -132,50 +188,69 @@ class LocationDataRepository extends GetxController {
   Future<void> fetchFoodBanks() async {
     try {
       isLoading.value = true;
+
+      // Cancel existing subscription
       _foodBankSubscription?.cancel();
+
+      // Clear food bank list before fetching new data
       foodBankList.clear();
 
       _foodBankSubscription = _foodBanksRef.onValue.listen((event) {
         if (event.snapshot.value != null && event.snapshot.value is Map) {
+          // Temporary list to collect all food banks before updating the observable list
+          final List<FoodBankModel> tempFoodBankList = [];
+
           Map<dynamic, dynamic> foodBanksMap = event.snapshot.value as Map;
           for (var userData in foodBanksMap.values) {
             if (userData is Map) {
-              log("🔥 Raw Firebase foodbank Data: ${userData.toString()}");
-
               for (var data in userData.values) {
                 try {
                   final Map<String, dynamic> sanitizedData =
                       _sanitizeFoodBankData(data);
                   final foodBankModel = FoodBankModel.fromJson(sanitizedData);
-                  log("🔥foodbank Inner Data: ${data.toString()}");
 
                   if (foodBankModel.location != null &&
                       _isWithinRange(foodBankModel.location!.latitude,
                           foodBankModel.location!.longitude)) {
-                    if (!foodBankList.any((f) =>
+                    double distanceInKm = _calculateDistance(
+                        foodBankModel.location!.latitude,
+                        foodBankModel.location!.longitude);
+                    foodBankModel.distance = distanceInKm;
+
+                    // Check for duplicates in the temporary list
+                    bool isDuplicate = tempFoodBankList.any((f) =>
                         f.location != null &&
                         f.location!.latitude ==
                             foodBankModel.location!.latitude &&
                         f.location!.longitude ==
-                            foodBankModel.location!.longitude)) {
-                      foodBankList.add(foodBankModel);
-                      combinedDataList.add(foodBankModel);
+                            foodBankModel.location!.longitude);
 
-                      if (foodBankModel.foodBankName != null &&
-                          foodBankModel.address != null) {
-                        findFoodController.addMarker(
-                          foodBankModel.location!.latitude!,
-                          foodBankModel.location!.longitude!,
-                          foodBankModel.foodBankName!,
-                          foodBankModel.address!,
-                        );
-                      }
+                    if (!isDuplicate) {
+                      tempFoodBankList.add(foodBankModel);
                     }
                   }
                 } catch (e) {
                   log('Error parsing food bank data: $e');
                 }
               }
+            }
+          }
+
+          // Update food banks and add markers in a single batch
+          foodBankList.assignAll(tempFoodBankList);
+
+          // Update combined data list
+          _updateCombinedDataList();
+
+          // Add markers for each food bank
+          for (var foodBank in tempFoodBankList) {
+            if (foodBank.foodBankName != null && foodBank.address != null) {
+              findFoodController.addMarker(
+                foodBank.location!.latitude!,
+                foodBank.location!.longitude!,
+                foodBank.foodBankName!,
+                foodBank.address!,
+              );
             }
           }
         }
@@ -185,6 +260,16 @@ class LocationDataRepository extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Update combined data list method
+  void _updateCombinedDataList() {
+    // Clear the combined list first
+    combinedDataList.clear();
+
+    // Add all locations and food banks to combined list
+    combinedDataList.addAll(locationList);
+    combinedDataList.addAll(foodBankList);
   }
 
   @override

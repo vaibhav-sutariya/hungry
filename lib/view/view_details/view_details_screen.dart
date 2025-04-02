@@ -184,8 +184,8 @@ class ViewDetailsScreen extends StatelessWidget {
                         ),
                         Text('Any min. Price for food? : 0 Rs.',
                             style: AppColors.kTextStyleB),
-                        Text(data.latitude.toString()),
-                        Text(data.longitude.toString()),
+                        // Text(data.latitude.toString()),
+                        // Text(data.longitude.toString()),
 
                         const SizedBox(
                           height: 20,
