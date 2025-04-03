@@ -1,16 +1,32 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
+import 'package:hungry/view_models/services/notifications/notification_services.dart';
 import 'package:uuid/uuid.dart';
 
 class AddFoodbankViewModel extends GetxController {
+  NotificationServices notificationServices =
+      Get.put<NotificationServices>(NotificationServices());
+  @override
+  void onInit() {
+    super.onInit();
+    // Initialize any necessary data or services here
+    notificationServices.requestNotificationPermission();
+    notificationServices.forgroundMessage();
+    notificationServices.setupInteractMessage(Get.context!);
+    notificationServices.firebaseInit(Get.context!); // Use Get.context
+    notificationServices.isTokenRefresh();
+  }
+
   // Location services instance
-  LocationServices locationServices = LocationServices();
+  LocationServices locationServices =
+      Get.put<LocationServices>(LocationServices());
 
   // Controllers for form fields
   final foodNGoNameController = TextEditingController().obs;
@@ -60,7 +76,6 @@ class AddFoodbankViewModel extends GetxController {
       Get.snackbar("Error", "You must accept the Terms & Conditions.");
       return;
     }
-
     loading.value = true;
     try {
       Position position = await Geolocator.getCurrentPosition(
@@ -107,10 +122,11 @@ class AddFoodbankViewModel extends GetxController {
           'updatedAt': DateTime.now().toIso8601String(),
         });
 
-        log("Location data saved to Realtime Database");
+        log("food bank data saved to Realtime Database");
+        storeAccessToken();
       }
     } catch (e) {
-      log("Error saving location data to Realtime Database: $e");
+      log("Error saving food bank data to Realtime Database: $e");
     } finally {
       loading.value = false;
     }
@@ -128,5 +144,33 @@ class AddFoodbankViewModel extends GetxController {
     if (errors.contains(error)) {
       errors.remove(error);
     }
+  }
+
+  void storeAccessToken() {
+    notificationServices.getDeviceToken().then((token) async {
+      // Ensure the user is authenticated before storing the token
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? authUserId = auth.currentUser?.uid;
+
+      if (authUserId == null) {
+        log("User not authenticated. Cannot store device token.");
+        return; // Exit function if user is not logged in
+      }
+
+      try {
+        // Store the device token in Firestore
+        await FirebaseFirestore.instance
+            .collection('tokens')
+            .doc(authUserId)
+            .set({'token': token});
+
+        log("Device Token: $token");
+        print('Device token stored successfully in Firestore');
+      } catch (error) {
+        print('Failed to store device token: $error');
+      }
+    }).catchError((error) {
+      log("Error getting device token: $error");
+    });
   }
 }

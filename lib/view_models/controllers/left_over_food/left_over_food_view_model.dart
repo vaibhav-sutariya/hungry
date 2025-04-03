@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,8 +7,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:hungry/view/leftover_food/food_confirmation_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
+import 'package:hungry/view_models/services/notifications/access_token.dart';
 import 'package:uuid/uuid.dart';
 
 class LeftOverFoodViewModel extends GetxController {
@@ -54,14 +57,14 @@ class LeftOverFoodViewModel extends GetxController {
             'latitude': position.latitude,
             'longitude': position.longitude,
           },
-          'createdAt': Timestamp.now(),
-          'updatedAt': Timestamp.now(),
+          'createdAt': DateTime.now().toIso8601String(),
+          'updatedAt': DateTime.now().toIso8601String(),
         });
 
-        log("User data saved to Realtime Database");
+        log("left over data saved to Realtime Database");
       }
     } catch (e) {
-      log("Error saving user data to Realtime Database: $e");
+      log("Error saving left over data to Realtime Database: $e");
     } finally {
       loading.value = false;
       Get.to(() => FoodConfirmationScreen(
@@ -91,5 +94,58 @@ class LeftOverFoodViewModel extends GetxController {
       errors.remove(error);
       // });
     }
+  }
+
+  void sendNotification() {
+    FirebaseFirestore.instance
+        .collection('tokens')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        String token = (doc.data() as Map<String, dynamic>)['token'];
+        log(token);
+        sendNotificationToToken(token);
+      });
+    }).catchError((error) {
+      print("Error retrieving tokens: $error");
+    });
+  }
+
+  void sendNotificationToToken(String token) async {
+    var data = {
+      "message": {
+        "token": token,
+        "notification": {
+          "title":
+              '${fnameController.value.text.trim()} wants to donate their leftover food',
+          "body": 'Address : ${addressController.value.text.trim()}',
+        },
+        "android": {
+          "priority": "HIGH",
+          "notification": {
+            "sound": "default",
+            "visibility": "PUBLIC",
+          },
+        }
+      },
+    };
+
+    await http.post(
+      Uri.parse(
+          'https://fcm.googleapis.com/v1/projects/hunger-cbd8e/messages:send'),
+      body: jsonEncode(data),
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${await getAccessToken()}',
+      },
+    ).then((value) {
+      if (value.statusCode == 200) {
+        log("Notification sent successfully: ${value.body}");
+      } else {
+        log("Failed to send notification: ${value.body}");
+      }
+    }).onError((error, stackTrace) {
+      log("Error sending notification: $error");
+    });
   }
 }

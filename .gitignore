@@ -48,3 +48,6 @@ node_modules/
 
 .env
 google-services.json
+assets/json/hunger-cbd8e-firebase-adminsdk-33yfc-c0834f5953.json
+assets/json/*.json
+

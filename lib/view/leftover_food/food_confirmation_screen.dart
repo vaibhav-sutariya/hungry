@@ -4,8 +4,9 @@ import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
 import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view_models/controllers/left_over_food/left_over_food_view_model.dart';
 
-class FoodConfirmationScreen extends StatefulWidget {
+class FoodConfirmationScreen extends StatelessWidget {
   final String firstName;
   final String phoneNumber;
   final String address;
@@ -22,11 +23,6 @@ class FoodConfirmationScreen extends StatefulWidget {
       required this.persons,
       required this.id});
 
-  @override
-  State<FoodConfirmationScreen> createState() => _FoodConfirmationScreenState();
-}
-
-class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +91,7 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
                                     style: AppColors.kTextStyleB,
                                   ),
                                   TextSpan(
-                                    text: widget.firstName,
+                                    text: firstName,
                                     style: AppColors.kTextStyleN,
                                   ),
                                 ],
@@ -109,7 +105,7 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
                                       text: 'Address: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
-                                      text: widget.address,
+                                      text: address,
                                       style: AppColors.kTextStyleN),
                                 ],
                               ),
@@ -121,7 +117,7 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
                                       text: 'Persons: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
-                                      text: widget.persons,
+                                      text: persons,
                                       style: AppColors.kTextStyleN),
                                 ],
                               ),
@@ -134,7 +130,7 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
                                       text: 'Food Details: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
-                                      text: widget.details,
+                                      text: details,
                                       style: AppColors.kTextStyleN),
                                 ],
                               ),
@@ -147,7 +143,7 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
                                       text: 'Phone: ',
                                       style: AppColors.kTextStyleB),
                                   TextSpan(
-                                      text: widget.phoneNumber,
+                                      text: phoneNumber,
                                       style: AppColors.kTextStyleN),
                                 ],
                               ),
@@ -176,7 +172,7 @@ class _FoodConfirmationScreenState extends State<FoodConfirmationScreen> {
               onPressed: () {
                 Get.toNamed(RouteName.bottomBar);
 
-                // sendNotification();
+                LeftOverFoodViewModel().sendNotification();
               },
               child: const Text(
                 'Confirm',

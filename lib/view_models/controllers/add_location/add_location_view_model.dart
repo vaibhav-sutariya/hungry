@@ -10,7 +10,8 @@ import 'package:hungry/view_models/services/location_services/location_services.
 import 'package:uuid/uuid.dart';
 
 class AddLocationViewModel extends GetxController {
-  LocationServices locationServices = LocationServices();
+  LocationServices locationServices =
+      Get.put<LocationServices>(LocationServices());
   final fnameController = TextEditingController().obs;
   final phoneController = TextEditingController().obs;
   final addressController = TextEditingController().obs;
