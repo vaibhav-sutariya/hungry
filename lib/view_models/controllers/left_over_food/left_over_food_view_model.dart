@@ -96,7 +96,7 @@ class LeftOverFoodViewModel extends GetxController {
     }
   }
 
-  void sendNotification() {
+  void sendNotification(String name, String address) {
     FirebaseFirestore.instance
         .collection('tokens')
         .get()
@@ -104,21 +104,23 @@ class LeftOverFoodViewModel extends GetxController {
       querySnapshot.docs.forEach((doc) {
         String token = (doc.data() as Map<String, dynamic>)['token'];
         log(token);
-        sendNotificationToToken(token);
+        sendNotificationToToken(name, address, token);
       });
     }).catchError((error) {
       print("Error retrieving tokens: $error");
     });
   }
 
-  void sendNotificationToToken(String token) async {
+  void sendNotificationToToken(
+      String name, String address, String token) async {
+    log("Name: $name");
+    log("Address: $address");
     var data = {
       "message": {
         "token": token,
         "notification": {
-          "title":
-              '${fnameController.value.text.trim()} wants to donate their leftover food',
-          "body": 'Address : ${addressController.value.text.trim()}',
+          "title": '${name} wants to donate their leftover food',
+          "body": 'Address : ${address}',
         },
         "android": {
           "priority": "HIGH",

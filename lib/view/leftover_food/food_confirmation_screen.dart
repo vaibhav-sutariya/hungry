@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hungry/res/colors/app_colors.dart';
 import 'package:hungry/res/components/app_bar/app_bar.dart';
 import 'package:hungry/res/components/app_bar/drawer.dart';
-import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/controllers/left_over_food/left_over_food_view_model.dart';
 
 class FoodConfirmationScreen extends StatelessWidget {
@@ -170,9 +168,12 @@ class FoodConfirmationScreen extends StatelessWidget {
                     horizontal: 25.0, vertical: 10.0),
               ),
               onPressed: () {
-                Get.toNamed(RouteName.bottomBar);
+                // Get.toNamed(RouteName.bottomBar);
 
-                LeftOverFoodViewModel().sendNotification();
+                LeftOverFoodViewModel().sendNotification(
+                  firstName,
+                  address,
+                );
               },
               child: const Text(
                 'Confirm',
