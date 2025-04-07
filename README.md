@@ -34,6 +34,7 @@ Millions of people go hungry every day while tons of food go to waste. There’s
 | Firebase         | Authentication, Firestore, and more     |
 | Google Maps API  | Location services and map rendering     |
 | Firebase Cloud Messaging | For real-time notifications     |
+| Gemini AI | For Generate the recipie based on donated ingrediants     |
 
 ---
 
