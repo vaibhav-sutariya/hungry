@@ -133,12 +133,13 @@ Encourages youth, developers, and changemakers to participate in social good.
 
 <br>
 
-###🤝 Contributing
+### 🤝 Contributing
+
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
 <br>
 
-###🙌 Acknowledgements
+### 🙌 Acknowledgements
 Google Developers Groups
 
 Firebase & Google Cloud Platforms
