@@ -118,6 +118,7 @@ flutter run
 
 This video was submitted for the Google Solution Challenge 2025. It explains the motivation, tech stack, problem-solving approach, and a complete walkthrough of the application features.
 
+---
 <br>
 
 ### 🧾 Conclusion
@@ -131,13 +132,14 @@ Fully aligned with the UN’s Sustainable Development Goal 2 – Zero Hunger.
 
 Encourages youth, developers, and changemakers to participate in social good.
 
-
+---
 <br>
 
 ### 🤝 Contributing
 
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
+---
 <br>
 
 ### 🙌 Acknowledgements
