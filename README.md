@@ -92,7 +92,7 @@ flutter run
 
 
 ### Demo Video
-https://github.com/vaibhav-sutariya/hungry/assets/98417187/31650d41-7d05-4143-befc-94195358a2d5
+[https://github.com/vaibhav-sutariya/hungry/assets/98417187/31650d41-7d05-4143-befc-94195358a2d5](https://youtu.be/kiw9dwqDoqo?si=ZKu23KrdYiZts75e)
 
 
 
