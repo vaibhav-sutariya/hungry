@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -5,30 +6,42 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:hungry/main.dart';
 
 class NotificationServices extends GetxController {
   //initialising firebase message plugin
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   //initialising firebase message plugin
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
   //function to initialise flutter local notification plugin to show notifications for android when app is active
   void initLocalNotifications(
       BuildContext context, RemoteMessage message) async {
-    var androidInitializationSettings =
-        const AndroidInitializationSettings('@mipmap/launcher_icon');
-    var iosInitializationSettings = const DarwinInitializationSettings();
+    final AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/launcher_icon');
 
-    var initializationSetting = InitializationSettings(
-        android: androidInitializationSettings, iOS: iosInitializationSettings);
+    final DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestSoundPermission: true,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+    );
 
-    await _flutterLocalNotificationsPlugin.initialize(initializationSetting,
-        onDidReceiveNotificationResponse: (payload) {
-      // handle interaction when app is active for android
-      handleMessage(context, message);
-    });
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS,
+            macOS: null);
+
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) {
+        selectNotification(notificationResponse.payload);
+      },
+    );
   }
 
   void firebaseInit(BuildContext context) {
@@ -112,7 +125,7 @@ class NotificationServices extends GetxController {
         android: androidNotificationDetails, iOS: darwinNotificationDetails);
 
     Future.delayed(Duration.zero, () {
-      _flutterLocalNotificationsPlugin.show(
+      flutterLocalNotificationsPlugin.show(
         0,
         message.notification!.title.toString(),
         message.notification!.body.toString(),
@@ -171,5 +184,67 @@ class NotificationServices extends GetxController {
       badge: true,
       sound: true,
     );
+  }
+}
+
+Future selectNotification(String? payload) async {
+  Map<String, dynamic> myMap = json.decode(payload!);
+  print("payload$payload");
+  print("myMap type${myMap["type"]}");
+  if (myMap["type"].toString().toLowerCase() == "katha" ||
+      myMap["type"].toString().toLowerCase() == "live" ||
+      myMap["type"].toString().toLowerCase() == "sabha") {
+    var title = myMap["title"].toString();
+    var body = myMap["body"].toString();
+    var videoId = myMap["url"].toString();
+    var slug = myMap["slug"].toString();
+    print("video ID$videoId");
+    final Map<String, dynamic> arguments = {
+      'title': title,
+      'body': body,
+      'videoId': videoId,
+      'slug': slug,
+    };
+    navigatorKey.currentState?.pushNamed('/katha', arguments: arguments);
+  } else if (myMap["type"].toString().toLowerCase() == "audio" ||
+      myMap["type"].toString().toLowerCase() == "book") {
+    var title = myMap["title"].toString();
+    var body = myMap["body"].toString();
+    var videoId = myMap["url"].toString();
+    final Map<String, dynamic> arguments = {
+      'title': title,
+      'body': body,
+      'videoId': videoId,
+    };
+    navigatorKey.currentState?.pushNamed('/web', arguments: arguments);
+  } else if (myMap["type"].toString() == "News") {
+    var title = myMap["title"].toString();
+    var body = myMap["body"].toString();
+    var newsId = myMap["id"].toString();
+    var image = myMap["image"].toString();
+    var slug = myMap["slug"].toString();
+    final Map<String, dynamic> arguments = {
+      'title': title,
+      'body': body,
+      'newsId': newsId,
+      'image': image,
+      'slug': slug,
+    };
+    navigatorKey.currentState?.pushNamed('/news', arguments: arguments);
+  } else if (myMap["type"].toString() == "Gvijay") {
+    print("called type${myMap["type"]}");
+    /*  var title = myMap["title"].toString();
+    var body = myMap["body"].toString();
+    var gvijayId = myMap["id"].toString();
+    var image = myMap["image"].toString();*/
+    var pdf = myMap["url"].toString();
+    final Map<String, dynamic> arguments = {
+      /*'title': title,
+      'body': body,
+      'gId': gvijayId,
+      'image': image,*/
+      'pdf': pdf,
+    };
+    navigatorKey.currentState?.pushNamed('/gvijay', arguments: arguments);
   }
 }
