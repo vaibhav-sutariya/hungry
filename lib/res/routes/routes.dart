@@ -9,6 +9,7 @@ import 'package:hungry/view/find_food/find_food_screen.dart';
 import 'package:hungry/view/find_food/see_all_location/see_all_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_confirmation_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_screen.dart';
+import 'package:hungry/view/food_bank/notification/donation_details_screen.dart';
 import 'package:hungry/view/home/home_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 import 'package:hungry/view/login/login_screen.dart';
@@ -121,6 +122,14 @@ class AppRoutes {
         GetPage(
           name: RouteName.seeAllScreen,
           page: () => const SeeAllScreen(),
+          transition: Transition.rightToLeft,
+          transitionDuration: const Duration(
+            milliseconds: 250,
+          ),
+        ),
+        GetPage(
+          name: RouteName.donationDetailsScreen,
+          page: () => DonationDetailsScreen(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,

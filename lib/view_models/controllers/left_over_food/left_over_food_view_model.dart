@@ -59,22 +59,27 @@ class LeftOverFoodViewModel extends GetxController {
           },
           'createdAt': DateTime.now().toIso8601String(),
           'updatedAt': DateTime.now().toIso8601String(),
-        });
+        }).then((value) {
+          log("left over data saved to Realtime Database");
 
-        log("left over data saved to Realtime Database");
+          Get.to(() => FoodConfirmationScreen(
+                firstName: fnameController.value.text,
+                phoneNumber: phoneController.value.text,
+                address: addressController.value.text,
+                details: detailsController.value.text,
+                persons: personNumberController.value.text,
+                id: id,
+              ));
+        });
+      } else {
+        log("User is not logged in");
+        Get.snackbar("Error", "User is not logged in",
+            snackPosition: SnackPosition.TOP);
       }
     } catch (e) {
       log("Error saving left over data to Realtime Database: $e");
     } finally {
       loading.value = false;
-      Get.to(() => FoodConfirmationScreen(
-            firstName: fnameController.value.text,
-            phoneNumber: phoneController.value.text,
-            address: addressController.value.text,
-            details: detailsController.value.text,
-            persons: personNumberController.value.text,
-            id: const Uuid().v4(),
-          ));
     }
   }
 
@@ -96,7 +101,7 @@ class LeftOverFoodViewModel extends GetxController {
     }
   }
 
-  void sendNotification(String name, String address) {
+  void sendNotification(String id, String name, String address) {
     FirebaseFirestore.instance
         .collection('tokens')
         .get()
@@ -104,7 +109,7 @@ class LeftOverFoodViewModel extends GetxController {
       querySnapshot.docs.forEach((doc) {
         String token = (doc.data() as Map<String, dynamic>)['token'];
         log(token);
-        sendNotificationToToken(name, address, token);
+        sendNotificationToToken(id, name, address, token);
       });
     }).catchError((error) {
       print("Error retrieving tokens: $error");
@@ -112,7 +117,7 @@ class LeftOverFoodViewModel extends GetxController {
   }
 
   void sendNotificationToToken(
-      String name, String address, String token) async {
+      String id, String name, String address, String token) async {
     log("Name: $name");
     log("Address: $address");
     var data = {
@@ -121,6 +126,12 @@ class LeftOverFoodViewModel extends GetxController {
         "notification": {
           "title": '${name} wants to donate their leftover food',
           "body": 'Address : ${address}',
+        },
+        "data": {
+          "id": id,
+          "type": "leftover_food",
+          "name": name,
+          "address": address,
         },
         "android": {
           "priority": "HIGH",

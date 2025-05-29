@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -171,42 +172,25 @@ class NotificationServices extends GetxController {
       final data = json.decode(payload) as Map<String, dynamic>;
       final type = (data['type']?.toString().toLowerCase() ?? '');
 
-      final navigationArgs = {
-        'title': data['title']?.toString() ?? '',
-        'body': data['body']?.toString() ?? '',
-        if (data['url'] != null) 'videoId': data['url'].toString(),
-        if (data['slug'] != null) 'slug': data['slug'].toString(),
-        if (data['id'] != null) 'newsId': data['id'].toString(),
-        if (data['image'] != null) 'image': data['image'].toString(),
-        if (data['url'] != null && type == 'gvijay')
-          'pdf': data['url'].toString(),
-      };
-
       String? route;
+      Map<String, dynamic> navigationArgs = {};
       switch (type) {
-        case 'katha':
-        case 'live':
-        case 'sabha':
-          route = '/katha';
+        case 'leftover_food':
+          route = '/donation_details';
+          navigationArgs = {
+            'id': data['id']?.toString() ?? '',
+            'name': data['name']?.toString() ?? '',
+            'address': data['address']?.toString() ?? '',
+          };
           break;
-        case 'audio':
-        case 'book':
-          route = '/web';
-          break;
-        case 'news':
-          route = '/news';
-          break;
-        case 'gvijay':
-          route = '/gvijay';
-          break;
+
         default:
           return;
       }
-
       navigatorKey.currentState?.pushNamed(route, arguments: navigationArgs);
     } catch (e) {
       if (kDebugMode) {
-        print('Error handling notification payload: $e');
+        log('Error handling notification payload: $e');
       }
     }
   }
@@ -222,12 +206,12 @@ class NotificationServices extends GetxController {
 
   void _logNotification(RemoteMessage message) {
     if (message.notification != null) {
-      print('Notification title: ${message.notification!.title}');
-      print('Notification body: ${message.notification!.body}');
+      log('Notification title: ${message.notification!.title}');
+      log('Notification body: ${message.notification!.body}');
     }
     if (message.notification?.android != null) {
-      print('Android count: ${message.notification!.android!.count}');
+      log('Android count: ${message.notification!.android!.count}');
     }
-    print('Notification data: ${message.data}');
+    log('Notification data: ${message.data}');
   }
 }
