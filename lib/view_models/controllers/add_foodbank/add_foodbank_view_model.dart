@@ -11,8 +11,9 @@ import 'package:hungry/view_models/services/notifications/notification_services.
 import 'package:uuid/uuid.dart';
 
 class AddFoodbankViewModel extends GetxController {
-  NotificationServices notificationServices =
-      Get.put<NotificationServices>(NotificationServices());
+  NotificationServices notificationServices = Get.put<NotificationServices>(
+    NotificationServices(),
+  );
   @override
   void onInit() {
     super.onInit();
@@ -23,8 +24,9 @@ class AddFoodbankViewModel extends GetxController {
   }
 
   // Location services instance
-  LocationServices locationServices =
-      Get.put<LocationServices>(LocationServices());
+  LocationServices locationServices = Get.put<LocationServices>(
+    LocationServices(),
+  );
 
   // Controllers for form fields
   final foodNGoNameController = TextEditingController().obs;
@@ -94,9 +96,10 @@ class AddFoodbankViewModel extends GetxController {
         String phone = phoneController.value.text.trim();
         String address = addressController.value.text.trim();
         String volunteer = volunteerController.value.text.trim();
-        String minPeople = acceptingRemainingFood.value
-            ? minPeopleAcceptedController.value.text.trim()
-            : '';
+        String minPeople =
+            acceptingRemainingFood.value
+                ? minPeopleAcceptedController.value.text.trim()
+                : '';
 
         await databaseReference.child('FoodBanks').child(userId).child(id).set({
           'name': fName,
@@ -145,30 +148,28 @@ class AddFoodbankViewModel extends GetxController {
   }
 
   void storeAccessToken() {
-    notificationServices.getDeviceToken().then((token) async {
-      // Ensure the user is authenticated before storing the token
-      FirebaseAuth auth = FirebaseAuth.instance;
-      String? authUserId = auth.currentUser?.uid;
+    notificationServices
+        .getDeviceToken()
+        .then((token) async {
+          // Ensure the user is authenticated before storing the token
+          FirebaseAuth auth = FirebaseAuth.instance;
+          String? authUserId = auth.currentUser?.uid;
 
-      if (authUserId == null) {
-        log("User not authenticated. Cannot store device token.");
-        return; // Exit function if user is not logged in
-      }
+          try {
+            // Store the device token in Firestore
+            await FirebaseFirestore.instance
+                .collection('tokens')
+                .doc(authUserId)
+                .set({'token': token});
 
-      try {
-        // Store the device token in Firestore
-        await FirebaseFirestore.instance
-            .collection('tokens')
-            .doc(authUserId)
-            .set({'token': token});
-
-        log("Device Token: $token");
-        print('Device token stored successfully in Firestore');
-      } catch (error) {
-        print('Failed to store device token: $error');
-      }
-    }).catchError((error) {
-      log("Error getting device token: $error");
-    });
+            log("Device Token: $token");
+            print('Device token stored successfully in Firestore');
+          } catch (error) {
+            print('Failed to store device token: $error');
+          }
+        })
+        .catchError((error) {
+          log("Error getting device token: $error");
+        });
   }
 }

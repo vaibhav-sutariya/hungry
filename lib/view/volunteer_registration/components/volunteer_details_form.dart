@@ -15,8 +15,9 @@ class VolunteerDetailsForm extends StatefulWidget {
 }
 
 class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
-  VolunteerRegistrationViewModel volunteerRegistrationViewModel =
-      Get.put(VolunteerRegistrationViewModel());
+  VolunteerRegistrationViewModel volunteerRegistrationViewModel = Get.put(
+    VolunteerRegistrationViewModel(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -28,23 +29,27 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
             controller: volunteerRegistrationViewModel.fnameController.value,
             labelText: "Full Name",
             hintText: "Enter your full name",
-            suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+            suffixIcon: const CustomSurffixIcon(
+              svgIcon: "assets/icons/User.svg",
+            ),
             // onSaved: (newValue) => firstName = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kNamelNullError);
+                  error: AppColors.kNamelNullError,
+                );
               }
             },
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kNamelNullError)
+            errorText: volunteerRegistrationViewModel.errors.contains(
+              AppColors.kNamelNullError,
+            )
                 ? AppColors.kNamelNullError
                 : null,
             validator: (value) {
               if (value!.isEmpty) {
                 volunteerRegistrationViewModel.addError(
-                    error: AppColors.kNamelNullError);
+                  error: AppColors.kNamelNullError,
+                );
                 return AppColors.kNamelNullError;
               }
               return null;
@@ -64,9 +69,7 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
                         lastDate: DateTime.now(),
                       );
 
-                      if (pickedDate != null) {
-                        volunteerRegistrationViewModel.setDOB(pickedDate);
-                      }
+                      volunteerRegistrationViewModel.setDOB(pickedDate!);
                     },
                     child: Container(
                       height: 50,
@@ -83,9 +86,11 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
                                 ? DateFormat('dd-MM-yyyy').format(
                                     volunteerRegistrationViewModel
                                             .selectedDOB.value ??
-                                        DateTime.now())
-                                : DateFormat('dd-MM-yyyy')
-                                    .format(DateTime.now()),
+                                        DateTime.now(),
+                                  )
+                                : DateFormat(
+                                    'dd-MM-yyyy',
+                                  ).format(DateTime.now()),
                             style: TextStyle(
                               color: AppColors.kTextColor,
                               fontSize: 14,
@@ -129,8 +134,10 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
                             volunteerRegistrationViewModel.setGender(newValue);
                           }
                         },
-                        items: volunteerRegistrationViewModel.genderOptions
-                            .map((String value) {
+                        items:
+                            volunteerRegistrationViewModel.genderOptions.map((
+                          String value,
+                        ) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(
@@ -155,23 +162,27 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
             controller: volunteerRegistrationViewModel.phoneController.value,
             labelText: "Phone Number",
             hintText: "Enter your phone number",
-            suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kPhoneNumberNullError)
+            suffixIcon: const CustomSurffixIcon(
+              svgIcon: "assets/icons/Phone.svg",
+            ),
+            errorText: volunteerRegistrationViewModel.errors.contains(
+              AppColors.kPhoneNumberNullError,
+            )
                 ? AppColors.kPhoneNumberNullError
                 : null,
             // onSaved: (newValue) => volunteerRegistrationViewModel.phone = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kPhoneNumberNullError);
+                  error: AppColors.kPhoneNumberNullError,
+                );
               }
             },
             validator: (value) {
               if (value!.isEmpty) {
                 volunteerRegistrationViewModel.addError(
-                    error: AppColors.kPhoneNumberNullError);
+                  error: AppColors.kPhoneNumberNullError,
+                );
                 return AppColors.kPhoneNumberNullError;
               }
               return null;
@@ -182,23 +193,27 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
             controller: volunteerRegistrationViewModel.emailController.value,
             labelText: "Email Address",
             hintText: "Enter your email address",
-            suffixIcon:
-                const CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kPhoneNumberNullError)
+            suffixIcon: const CustomSurffixIcon(
+              svgIcon: "assets/icons/Phone.svg",
+            ),
+            errorText: volunteerRegistrationViewModel.errors.contains(
+              AppColors.kPhoneNumberNullError,
+            )
                 ? AppColors.kPhoneNumberNullError
                 : null,
             // onSaved: (newValue) => volunteerRegistrationViewModel.phone = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kPhoneNumberNullError);
+                  error: AppColors.kPhoneNumberNullError,
+                );
               }
             },
             validator: (value) {
               if (value!.isEmpty) {
                 volunteerRegistrationViewModel.addError(
-                    error: AppColors.kPhoneNumberNullError);
+                  error: AppColors.kPhoneNumberNullError,
+                );
                 return AppColors.kPhoneNumberNullError;
               }
               return null;
@@ -210,22 +225,26 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
             labelText: "Address",
             hintText: "Enter your Address",
             suffixIcon: const CustomSurffixIcon(
-                svgIcon: "assets/icons/Location point.svg"),
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kAddressNullError)
+              svgIcon: "assets/icons/Location point.svg",
+            ),
+            errorText: volunteerRegistrationViewModel.errors.contains(
+              AppColors.kAddressNullError,
+            )
                 ? AppColors.kAddressNullError
                 : null,
             // onSaved: (newValue) => address = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kAddressNullError);
+                  error: AppColors.kAddressNullError,
+                );
               }
             },
             validator: (value) {
               if (value!.isEmpty) {
                 volunteerRegistrationViewModel.addError(
-                    error: AppColors.kAddressNullError);
+                  error: AppColors.kAddressNullError,
+                );
                 return AppColors.kAddressNullError;
               }
               return null;
@@ -237,22 +256,26 @@ class _VolunteerDetailsFormState extends State<VolunteerDetailsForm> {
             labelText: "Why do you want to be a volunteer?",
             hintText: "Enter reson",
             suffixIcon: const CustomSurffixIcon(
-                svgIcon: "assets/icons/Location point.svg"),
-            errorText: volunteerRegistrationViewModel.errors
-                    .contains(AppColors.kAddressNullError)
+              svgIcon: "assets/icons/Location point.svg",
+            ),
+            errorText: volunteerRegistrationViewModel.errors.contains(
+              AppColors.kAddressNullError,
+            )
                 ? AppColors.kAddressNullError
                 : null,
             // onSaved: (newValue) => address = newValue,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 volunteerRegistrationViewModel.removeError(
-                    error: AppColors.kAddressNullError);
+                  error: AppColors.kAddressNullError,
+                );
               }
             },
             validator: (value) {
               if (value!.isEmpty) {
                 volunteerRegistrationViewModel.addError(
-                    error: AppColors.kAddressNullError);
+                  error: AppColors.kAddressNullError,
+                );
                 return AppColors.kAddressNullError;
               }
               return null;
