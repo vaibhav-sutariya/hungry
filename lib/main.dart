@@ -4,11 +4,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hungry/firebase_options.dart';
 import 'package:hungry/res/routes/routes.dart';
 import 'package:hungry/view/splash_screen.dart';
+import 'package:hungry/view_models/services/notifications/notification_services.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
@@ -21,6 +22,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroudHandler);
+
+  // Initialize NotificationServices
+  final notificationServices = NotificationServices();
+  Get.put(notificationServices); // Register with GetX dependency injection
+  await notificationServices.requestNotificationPermission();
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
     badge: true,
@@ -43,6 +49,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Initialize NotificationServices with context
+    final notificationServices = Get.find<NotificationServices>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notificationServices.initialize(context);
+      notificationServices.setupInteractMessage(context);
+    });
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Hungry',
