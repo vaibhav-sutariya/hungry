@@ -7,16 +7,11 @@ import 'package:hungry/res/components/custom_suffix_icon.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/controllers/add_foodbank/add_foodbank_view_model.dart';
 
-class FoodBankDetailsForm extends StatefulWidget {
-  const FoodBankDetailsForm({super.key});
+class FoodBankDetailsForm extends StatelessWidget {
+  FoodBankDetailsForm({super.key});
 
-  @override
-  State<FoodBankDetailsForm> createState() => _FoodBankDetailsFormState();
-}
-
-class _FoodBankDetailsFormState extends State<FoodBankDetailsForm> {
-  AddFoodbankViewModel addFoodbankViewModel = Get.put(AddFoodbankViewModel());
-
+  final AddFoodbankViewModel addFoodbankViewModel =
+      Get.put(AddFoodbankViewModel());
   @override
   Widget build(BuildContext context) {
     return Form(

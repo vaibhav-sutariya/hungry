@@ -52,7 +52,6 @@ class MyApp extends StatelessWidget {
     final notificationServices = Get.find<NotificationServices>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       notificationServices.initialize(context);
-      notificationServices.setupInteractMessage(context);
     });
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
