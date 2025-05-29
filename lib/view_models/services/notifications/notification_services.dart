@@ -9,175 +9,209 @@ import 'package:get/get.dart';
 import 'package:hungry/main.dart';
 
 class NotificationServices extends GetxController {
-  //initialising firebase message plugin
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  //initialising firebase message plugin
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  //function to initialise flutter local notification plugin to show notifications for android when app is active
-  void initLocalNotifications(
-      BuildContext context, RemoteMessage message) async {
-    final AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+  @override
+  void onInit() {
+    super.onInit();
+    requestNotificationPermission();
+    isTokenRefresh();
+  }
 
-    final DarwinInitializationSettings initializationSettingsIOS =
-        DarwinInitializationSettings(
+  Future<void> initialize(BuildContext context) async {
+    await _setupLocalNotifications();
+    _setupFirebaseMessaging(context);
+    await setupInteractMessage(context);
+  }
+
+  Future<void> _setupLocalNotifications() async {
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/launcher_icon');
+    const iosSettings = DarwinInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: false,
       requestAlertPermission: false,
     );
+    const initializationSettings = InitializationSettings(
+      android: androidSettings,
+      iOS: iosSettings,
+    );
 
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: null);
-
-    await flutterLocalNotificationsPlugin.initialize(
+    await _localNotifications.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse:
-          (NotificationResponse notificationResponse) {
-        selectNotification(notificationResponse.payload);
-      },
+      onDidReceiveNotificationResponse: _handleNotificationResponse,
     );
   }
 
-  void firebaseInit(BuildContext context) {
-    FirebaseMessaging.onMessage.listen((message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification!.android;
-
+  void _setupFirebaseMessaging(BuildContext context) {
+    FirebaseMessaging.onMessage.listen((message) async {
       if (kDebugMode) {
-        print("notifications title:${notification!.title}");
-        print("notifications body:${notification.body}");
-        print('count:${android!.count}');
-        print('data:${message.data.toString()}');
+        _logNotification(message);
       }
 
       if (Platform.isIOS) {
-        forgroundMessage();
+        await _setForegroundPresentationOptions();
       }
 
-      if (Platform.isAndroid) {
-        initLocalNotifications(context, message);
-        showNotification(message);
+      if (Platform.isAndroid && message.notification != null) {
+        await _showNotification(message);
       }
     });
   }
 
-  void requestNotificationPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: true,
-      criticalAlert: true,
-      provisional: true,
-      sound: true,
-    );
+  Future<void> requestNotificationPermission() async {
+    try {
+      final settings = await _messaging.requestPermission(
+        alert: true,
+        announcement: true,
+        badge: true,
+        carPlay: true,
+        criticalAlert: true,
+        provisional: true,
+        sound: true,
+      );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       if (kDebugMode) {
-        print('user granted permission');
+        print('Notification permission: ${settings.authorizationStatus}');
       }
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
+    } catch (e) {
       if (kDebugMode) {
-        print('user granted provisional permission');
-      }
-    } else {
-      //appsetting.AppSettings.openNotificationSettings();
-      if (kDebugMode) {
-        print('user denied permission');
+        print('Error requesting notification permission: $e');
       }
     }
   }
 
-  // function to show visible notification when app is active
-  Future<void> showNotification(RemoteMessage message) async {
-    AndroidNotificationChannel channel = AndroidNotificationChannel(
-        message.notification!.android!.channelId.toString(),
-        message.notification!.android!.channelId.toString(),
-        importance: Importance.max,
-        showBadge: true,
-        playSound: true,
-        enableVibration: true);
+  Future<void> _showNotification(RemoteMessage message) async {
+    if (message.notification == null || message.notification!.android == null)
+      return;
 
-    AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-      channel.id.toString(), channel.name.toString(),
-      channelDescription: 'your channel description',
+    final channel = AndroidNotificationChannel(
+      message.notification!.android!.channelId ?? 'default_channel',
+      message.notification!.android!.channelId ?? 'Default Channel',
+      importance: Importance.max,
+      showBadge: true,
+      playSound: true,
+      enableVibration: true,
+    );
+
+    final androidDetails = AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      channelDescription: 'Channel for app notifications',
       importance: Importance.high,
       priority: Priority.high,
       playSound: true,
       ticker: 'ticker',
-      //     sound: RawResourceAndroidNotificationSound('jetsons_doorbell')
-      //  icon: largeIconPath
     );
 
-    const DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(
-            presentAlert: true, presentBadge: true, presentSound: true);
+    const iosDetails = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
 
-    NotificationDetails notificationDetails = NotificationDetails(
-        android: androidNotificationDetails, iOS: darwinNotificationDetails);
+    final notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
 
-    Future.delayed(Duration.zero, () {
-      flutterLocalNotificationsPlugin.show(
-        0,
-        message.notification!.title.toString(),
-        message.notification!.body.toString(),
-        notificationDetails,
-      );
-    });
+    await _localNotifications.show(
+      0,
+      message.notification!.title ?? 'Notification',
+      message.notification!.body ?? '',
+      notificationDetails,
+      payload: json.encode(message.data),
+    );
   }
 
-  //function to get device token on which we will send the notifications
   Future<String> getDeviceToken() async {
-    String? token = await messaging.getToken();
-    return token.toString();
-    // return token;
+    try {
+      final token = await _messaging.getToken();
+      return token ?? '';
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getting device token: $e');
+      }
+      return '';
+    }
   }
 
-  void isTokenRefresh() async {
-    messaging.onTokenRefresh.listen((event) {
-      event.toString();
+  void isTokenRefresh() {
+    _messaging.onTokenRefresh.listen((token) {
       if (kDebugMode) {
-        print('refresh');
+        print('Token refreshed: $token');
       }
     });
   }
 
-  //handle tap on notification when app is in background or terminated
   Future<void> setupInteractMessage(BuildContext context) async {
-    // when app is terminated
-    RemoteMessage? initialMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
-
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
-      handleMessage(context, initialMessage);
+      _handleMessage(context, initialMessage);
     }
 
-    //when app ins background
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      handleMessage(context, event);
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      _handleMessage(context, message);
     });
   }
 
-  void handleMessage(BuildContext context, RemoteMessage message) {
-    if (message.data['type'] == 'msj') {
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => MessageScreen(
-      //               id: message.data['id'],
-      //             )));
+  void _handleNotificationResponse(NotificationResponse response) {
+    if (response.payload == null) return;
+    _navigateBasedOnPayload(response.payload!);
+  }
+
+  void _handleMessage(BuildContext context, RemoteMessage message) {
+    _navigateBasedOnPayload(json.encode(message.data));
+  }
+
+  void _navigateBasedOnPayload(String payload) {
+    try {
+      final data = json.decode(payload) as Map<String, dynamic>;
+      final type = (data['type']?.toString().toLowerCase() ?? '');
+
+      final navigationArgs = {
+        'title': data['title']?.toString() ?? '',
+        'body': data['body']?.toString() ?? '',
+        if (data['url'] != null) 'videoId': data['url'].toString(),
+        if (data['slug'] != null) 'slug': data['slug'].toString(),
+        if (data['id'] != null) 'newsId': data['id'].toString(),
+        if (data['image'] != null) 'image': data['image'].toString(),
+        if (data['url'] != null && type == 'gvijay')
+          'pdf': data['url'].toString(),
+      };
+
+      String? route;
+      switch (type) {
+        case 'katha':
+        case 'live':
+        case 'sabha':
+          route = '/katha';
+          break;
+        case 'audio':
+        case 'book':
+          route = '/web';
+          break;
+        case 'news':
+          route = '/news';
+          break;
+        case 'gvijay':
+          route = '/gvijay';
+          break;
+        default:
+          return;
+      }
+
+      navigatorKey.currentState?.pushNamed(route, arguments: navigationArgs);
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error handling notification payload: $e');
+      }
     }
   }
 
-  Future forgroundMessage() async {
+  Future<void> _setForegroundPresentationOptions() async {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,
@@ -185,66 +219,15 @@ class NotificationServices extends GetxController {
       sound: true,
     );
   }
-}
 
-Future selectNotification(String? payload) async {
-  Map<String, dynamic> myMap = json.decode(payload!);
-  print("payload$payload");
-  print("myMap type${myMap["type"]}");
-  if (myMap["type"].toString().toLowerCase() == "katha" ||
-      myMap["type"].toString().toLowerCase() == "live" ||
-      myMap["type"].toString().toLowerCase() == "sabha") {
-    var title = myMap["title"].toString();
-    var body = myMap["body"].toString();
-    var videoId = myMap["url"].toString();
-    var slug = myMap["slug"].toString();
-    print("video ID$videoId");
-    final Map<String, dynamic> arguments = {
-      'title': title,
-      'body': body,
-      'videoId': videoId,
-      'slug': slug,
-    };
-    navigatorKey.currentState?.pushNamed('/katha', arguments: arguments);
-  } else if (myMap["type"].toString().toLowerCase() == "audio" ||
-      myMap["type"].toString().toLowerCase() == "book") {
-    var title = myMap["title"].toString();
-    var body = myMap["body"].toString();
-    var videoId = myMap["url"].toString();
-    final Map<String, dynamic> arguments = {
-      'title': title,
-      'body': body,
-      'videoId': videoId,
-    };
-    navigatorKey.currentState?.pushNamed('/web', arguments: arguments);
-  } else if (myMap["type"].toString() == "News") {
-    var title = myMap["title"].toString();
-    var body = myMap["body"].toString();
-    var newsId = myMap["id"].toString();
-    var image = myMap["image"].toString();
-    var slug = myMap["slug"].toString();
-    final Map<String, dynamic> arguments = {
-      'title': title,
-      'body': body,
-      'newsId': newsId,
-      'image': image,
-      'slug': slug,
-    };
-    navigatorKey.currentState?.pushNamed('/news', arguments: arguments);
-  } else if (myMap["type"].toString() == "Gvijay") {
-    print("called type${myMap["type"]}");
-    /*  var title = myMap["title"].toString();
-    var body = myMap["body"].toString();
-    var gvijayId = myMap["id"].toString();
-    var image = myMap["image"].toString();*/
-    var pdf = myMap["url"].toString();
-    final Map<String, dynamic> arguments = {
-      /*'title': title,
-      'body': body,
-      'gId': gvijayId,
-      'image': image,*/
-      'pdf': pdf,
-    };
-    navigatorKey.currentState?.pushNamed('/gvijay', arguments: arguments);
+  void _logNotification(RemoteMessage message) {
+    if (message.notification != null) {
+      print('Notification title: ${message.notification!.title}');
+      print('Notification body: ${message.notification!.body}');
+    }
+    if (message.notification?.android != null) {
+      print('Android count: ${message.notification!.android!.count}');
+    }
+    print('Notification data: ${message.data}');
   }
 }

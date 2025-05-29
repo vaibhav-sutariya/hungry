@@ -18,9 +18,7 @@ class AddFoodbankViewModel extends GetxController {
     super.onInit();
     // Initialize any necessary data or services here
     notificationServices.requestNotificationPermission();
-    notificationServices.forgroundMessage();
     notificationServices.setupInteractMessage(Get.context!);
-    notificationServices.firebaseInit(Get.context!); // Use Get.context
     notificationServices.isTokenRefresh();
   }
 

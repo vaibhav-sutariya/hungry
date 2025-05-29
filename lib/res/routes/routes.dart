@@ -113,9 +113,9 @@ class AppRoutes {
         GetPage(
           name: RouteName.findFoodScreen,
           page: () => const FindFoodScreen(),
-          transition: Transition.downToUp,
+          transition: Transition.rightToLeft,
           transitionDuration: const Duration(
-            milliseconds: 700,
+            milliseconds: 250,
           ),
         ),
         GetPage(
