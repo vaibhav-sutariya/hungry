@@ -26,7 +26,6 @@ Future<void> main() async {
   // Initialize NotificationServices
   final notificationServices = NotificationServices();
   Get.put(notificationServices); // Register with GetX dependency injection
-  await notificationServices.requestNotificationPermission();
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true, // Required to display a heads up notification
     badge: true,
