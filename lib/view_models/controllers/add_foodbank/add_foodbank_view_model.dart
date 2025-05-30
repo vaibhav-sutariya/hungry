@@ -11,18 +11,6 @@ import 'package:hungry/view_models/services/notifications/notification_services.
 import 'package:uuid/uuid.dart';
 
 class AddFoodbankViewModel extends GetxController {
-  NotificationServices notificationServices = Get.put<NotificationServices>(
-    NotificationServices(),
-  );
-  @override
-  void onInit() {
-    super.onInit();
-    // Initialize any necessary data or services here
-    notificationServices.requestNotificationPermission();
-    notificationServices.setupInteractMessage(Get.context!);
-    notificationServices.isTokenRefresh();
-  }
-
   // Location services instance
   LocationServices locationServices = Get.put<LocationServices>(
     LocationServices(),
@@ -96,10 +84,9 @@ class AddFoodbankViewModel extends GetxController {
         String phone = phoneController.value.text.trim();
         String address = addressController.value.text.trim();
         String volunteer = volunteerController.value.text.trim();
-        String minPeople =
-            acceptingRemainingFood.value
-                ? minPeopleAcceptedController.value.text.trim()
-                : '';
+        String minPeople = acceptingRemainingFood.value
+            ? minPeopleAcceptedController.value.text.trim()
+            : '';
 
         await databaseReference.child('FoodBanks').child(userId).child(id).set({
           'name': fName,
@@ -148,28 +135,25 @@ class AddFoodbankViewModel extends GetxController {
   }
 
   void storeAccessToken() {
-    notificationServices
-        .getDeviceToken()
-        .then((token) async {
-          // Ensure the user is authenticated before storing the token
-          FirebaseAuth auth = FirebaseAuth.instance;
-          String? authUserId = auth.currentUser?.uid;
+    NotificationServices().getDeviceToken().then((token) async {
+      // Ensure the user is authenticated before storing the token
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? authUserId = auth.currentUser?.uid;
 
-          try {
-            // Store the device token in Firestore
-            await FirebaseFirestore.instance
-                .collection('tokens')
-                .doc(authUserId)
-                .set({'token': token});
+      try {
+        // Store the device token in Firestore
+        await FirebaseFirestore.instance
+            .collection('tokens')
+            .doc(authUserId)
+            .set({'token': token});
 
-            log("Device Token: $token");
-            print('Device token stored successfully in Firestore');
-          } catch (error) {
-            print('Failed to store device token: $error');
-          }
-        })
-        .catchError((error) {
-          log("Error getting device token: $error");
-        });
+        log("Device Token: $token");
+        print('Device token stored successfully in Firestore');
+      } catch (error) {
+        print('Failed to store device token: $error');
+      }
+    }).catchError((error) {
+      log("Error getting device token: $error");
+    });
   }
 }

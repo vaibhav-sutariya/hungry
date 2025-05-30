@@ -1,7 +1,11 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
+import 'package:hungry/view_models/services/notifications/notification_services.dart';
 
 class LoginViewModel extends GetxController {
   final emailController = TextEditingController().obs;
@@ -31,6 +35,13 @@ class LoginViewModel extends GetxController {
           Get.snackbar('Success:', 'Login Success');
           Get.offNamed(RouteName.bottomBar);
         }
+
+        if (userCredential.user!.email == 'admin@hungry.com') {
+          // Store the access token after successful login
+          storeAccessToken();
+        } else {
+          log('User is not admin, no access token stored');
+        }
       } on FirebaseAuthException catch (e) {
         Get.snackbar('Error:', e.message.toString());
       } catch (e) {
@@ -39,6 +50,29 @@ class LoginViewModel extends GetxController {
         loading.value = false;
       }
     }
+  }
+
+  void storeAccessToken() {
+    NotificationServices().getDeviceToken().then((token) async {
+      // Ensure the user is authenticated before storing the token
+      FirebaseAuth auth = FirebaseAuth.instance;
+      String? authUserId = auth.currentUser?.uid;
+
+      try {
+        // Store the device token in Firestore
+        await FirebaseFirestore.instance
+            .collection('tokens')
+            .doc(authUserId)
+            .set({'token': token});
+
+        log("Device Token: $token");
+        print('Device token stored successfully in Firestore');
+      } catch (error) {
+        print('Failed to store device token: $error');
+      }
+    }).catchError((error) {
+      log("Error getting device token: $error");
+    });
   }
 
   // final _formKey = GlobalKey<FormState>();

@@ -187,7 +187,10 @@ class NotificationServices extends GetxController {
         default:
           return;
       }
-      navigatorKey.currentState?.pushNamed(route, arguments: navigationArgs);
+      navigatorKey.currentState?.pushNamed(
+        route,
+        arguments: navigationArgs,
+      );
     } catch (e) {
       if (kDebugMode) {
         log('Error handling notification payload: $e');

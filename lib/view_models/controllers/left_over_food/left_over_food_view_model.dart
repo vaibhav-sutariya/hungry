@@ -101,6 +101,43 @@ class LeftOverFoodViewModel extends GetxController {
     }
   }
 
+  void sendNotificationToAdmin(String id, String name, String address) async {
+    try {
+      // Fetch the specific document by ID
+      final DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+          .collection('tokens')
+          .doc('g03mKTcwBVX9QE1hCbsG1zRUPhq2') // Admin document ID
+          .get();
+
+      // Check if the document exists
+      if (!docSnapshot.exists) {
+        log('No token found for document ID admin: g03mKTcwBVX9QE1hCbsG1zRUPhq2');
+        return;
+      }
+
+      // Validate document data
+      final data = docSnapshot.data() as Map<String, dynamic>?;
+      if (data == null ||
+          !data.containsKey('token') ||
+          data['token'] is! String) {
+        log('Invalid or missing token in document admin: g03mKTcwBVX9QE1hCbsG1zRUPhq2');
+        return;
+      }
+
+      final String token = data['token'] as String;
+      if (token.isEmpty) {
+        log('Empty token in document admin: g03mKTcwBVX9QE1hCbsG1zRUPhq2');
+        return;
+      }
+
+      log('Sending notification to admin: $token');
+      sendNotificationToToken(id, name, address, token);
+    } catch (error, stackTrace) {
+      log('Error retrieving token or sending notification: $error',
+          error: error, stackTrace: stackTrace);
+    }
+  }
+
   void sendNotification(String id, String name, String address) {
     FirebaseFirestore.instance
         .collection('tokens')

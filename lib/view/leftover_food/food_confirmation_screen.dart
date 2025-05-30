@@ -170,7 +170,7 @@ class FoodConfirmationScreen extends StatelessWidget {
               onPressed: () {
                 // Get.toNamed(RouteName.bottomBar);
 
-                LeftOverFoodViewModel().sendNotification(
+                LeftOverFoodViewModel().sendNotificationToAdmin(
                   id,
                   firstName,
                   address,

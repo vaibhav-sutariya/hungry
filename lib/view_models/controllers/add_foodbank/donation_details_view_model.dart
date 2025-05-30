@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:hungry/models/left_over_food_model.dart';
+import 'package:hungry/view_models/controllers/left_over_food/left_over_food_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DonationDetailsViewModel extends GetxController {
@@ -85,6 +86,32 @@ class DonationDetailsViewModel extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to claim donation: $e');
+    }
+  }
+
+  Future<void> approveDonation() async {
+    if (_food.value == null || _userId == null) {
+      Get.snackbar('Error', 'No food data or user ID available');
+      return;
+    }
+
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await FirebaseDatabase.instance
+            .ref()
+            .child('leftOverFood')
+            .child(_userId!)
+            .child(_food.value!.id)
+            .update({'status': 'approved'});
+        Get.snackbar('Success', 'Donation approved!');
+        LeftOverFoodViewModel().sendNotification(
+            _food.value!.id, _food.value!.fName, _food.value!.address);
+      } else {
+        Get.snackbar('Error', 'User not logged in');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to approve donation: $e');
     }
   }
 

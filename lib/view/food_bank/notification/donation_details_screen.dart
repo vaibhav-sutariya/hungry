@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -270,6 +271,8 @@ class DonationDetailsScreen extends StatelessWidget {
 
   Widget _buildActionButtons(BuildContext context,
       DonationDetailsViewModel controller, LeftoverFood food) {
+    bool isAdmin =
+        FirebaseAuth.instance.currentUser?.email == 'admin@hungry.com';
     return FadeInAnimation(
       delay: const Duration(milliseconds: 400),
       child: Row(
@@ -277,9 +280,11 @@ class DonationDetailsScreen extends StatelessWidget {
         children: [
           _buildActionButton(
             icon: Icons.check_circle_outline,
-            label: 'Claim',
+            label: isAdmin ? 'Approve' : 'Claim',
             color: AppColors.kPrimaryColor,
-            onPressed: () => _showClaimConfirmation(context, controller),
+            onPressed: () => isAdmin
+                ? _showAdminApproveConfirmation(context, controller)
+                : _showClaimConfirmation(context, controller),
           ),
           _buildActionButton(
             icon: Icons.phone,
@@ -352,6 +357,37 @@ class DonationDetailsScreen extends StatelessWidget {
       ],
     );
   }
+}
+
+void _showAdminApproveConfirmation(
+    BuildContext context, DonationDetailsViewModel controller) {
+  Get.defaultDialog(
+    title: 'Confirm Approval',
+    titleStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+    ),
+    content: Text(
+      'Are you sure you want to approve this donation?',
+      textAlign: TextAlign.center,
+    ),
+    actions: [
+      TextButton(
+        onPressed: () => Get.back(),
+        child: Text('Cancel', style: TextStyle(color: Colors.grey)),
+      ),
+      ElevatedButton(
+        onPressed: () {
+          controller.approveDonation();
+          Get.back();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+        child: Text('Approve', style: TextStyle(color: AppColors.kWhiteColor)),
+      ),
+    ],
+  );
 }
 
 class FadeInAnimation extends StatefulWidget {

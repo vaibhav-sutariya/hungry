@@ -17,8 +17,7 @@ class ProfileHeaderWidget extends StatelessWidget {
             radius: 50,
             backgroundImage: user?.photoURL != null
                 ? NetworkImage(user!.photoURL!)
-                : const AssetImage("assets/images/default_avatar.png")
-                    as ImageProvider,
+                : const AssetImage("assets/images/splash.png") as ImageProvider,
           ),
         ),
         const SizedBox(height: 16),
