@@ -10,7 +10,7 @@ import 'package:hungry/view/find_food/see_all_location/see_all_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_confirmation_screen.dart';
 import 'package:hungry/view/food_bank/food_bank_screen.dart';
 import 'package:hungry/view/food_bank/notification/donation_details_screen.dart';
-import 'package:hungry/view/food_bank/registered_food_bank.dart';
+import 'package:hungry/view/food_bank/registered_food_bank/registered_food_bank.dart';
 import 'package:hungry/view/home/home_screen.dart';
 import 'package:hungry/view/leftover_food/submit_leftover_food_screen.dart';
 import 'package:hungry/view/login/login_screen.dart';
@@ -24,7 +24,7 @@ import 'package:hungry/view/search/search_screen.dart';
 import 'package:hungry/view/signup/sign_up_screen.dart';
 import 'package:hungry/view/splash_screen.dart';
 import 'package:hungry/view/view_details/view_details_screen.dart';
-import 'package:hungry/view/volunteer_registration/registered_volunteer_screen.dart';
+import 'package:hungry/view/volunteer_registration/registered_volunteer/registered_volunteer_screen.dart';
 import 'package:hungry/view/volunteer_registration/volunteer_registration_screen.dart';
 
 class AppRoutes {
@@ -197,7 +197,7 @@ class AppRoutes {
         ),
         GetPage(
           name: RouteName.registedFoodBankScreen,
-          page: () => const RegisteredFoodBank(),
+          page: () => RegisteredFoodBank(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,
@@ -205,7 +205,7 @@ class AppRoutes {
         ),
         GetPage(
           name: RouteName.registedVolunteerScreen,
-          page: () => const RegisteredVolunteerScreen(),
+          page: () => RegisteredVolunteerScreen(),
           transition: Transition.rightToLeft,
           transitionDuration: const Duration(
             milliseconds: 250,

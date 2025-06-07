@@ -26,21 +26,21 @@ class _SplashScreenState extends State<SplashScreen> {
       if (user != null) {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-        if (sharedPreferences.getBool('isFoodBank') == true) {
+        if (sharedPreferences.getBool('isFoodBank') == true ||
+            user.email == 'ngo123@gmail.com') {
           log("Food Bank is registered");
           log("Navigating to registered food bank screen");
           log("User ID: ${user.uid}");
           log('${sharedPreferences.getBool('isFoodBank')}');
 
-          Get.toNamed(RouteName.registedFoodBankScreen);
+          Get.offNamed(RouteName.registedVolunteerScreen);
         } else if (sharedPreferences.getBool('isVolunteer') == true) {
           log("Volunteer is registered");
           log("Navigating to registered volunteer screen");
-          Get.toNamed(RouteName.registedVolunteerScreen);
+          Get.offNamed(RouteName.registedVolunteerScreen);
         } else {
-          Get.offNamed(RouteName.homeScreen);
+          Get.offNamed(RouteName.bottomBar);
         }
-        Get.offNamed(RouteName.bottomBar);
       } else {
         Get.toNamed(RouteName.loginScreen);
       }
