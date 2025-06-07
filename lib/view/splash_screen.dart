@@ -33,8 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
           log("User ID: ${user.uid}");
           log('${sharedPreferences.getBool('isFoodBank')}');
 
-          Get.offNamed(RouteName.registedVolunteerScreen);
-        } else if (sharedPreferences.getBool('isVolunteer') == true) {
+          Get.offNamed(RouteName.registedFoodBankScreen);
+        } else if (sharedPreferences.getBool('isVolunteer') == true ||
+            user.email == 'volunteer123@gmail.com') {
           log("Volunteer is registered");
           log("Navigating to registered volunteer screen");
           Get.offNamed(RouteName.registedVolunteerScreen);
