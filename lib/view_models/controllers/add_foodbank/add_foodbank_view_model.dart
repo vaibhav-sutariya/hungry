@@ -8,6 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 import 'package:hungry/view_models/services/notifications/notification_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class AddFoodbankViewModel extends GetxController {
@@ -109,6 +110,9 @@ class AddFoodbankViewModel extends GetxController {
           'createdAt': DateTime.now().toIso8601String(),
           'updatedAt': DateTime.now().toIso8601String(),
         });
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setBool('isFoodBank', true);
 
         log("food bank data saved to Realtime Database");
         storeAccessToken();

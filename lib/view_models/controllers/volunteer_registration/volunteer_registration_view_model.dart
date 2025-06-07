@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hungry/view/volunteer_registration/volunteer_details_confirmation_screen.dart';
 import 'package:hungry/view_models/services/location_services/location_services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class VolunteerRegistrationViewModel extends GetxController {
@@ -76,6 +77,9 @@ class VolunteerRegistrationViewModel extends GetxController {
           'createdAt': DateTime.now().toIso8601String(),
           'updatedAt': DateTime.now().toIso8601String(),
         });
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setBool('isVolunteer', true);
 
         log("Volunteer data saved to Realtime Database");
       }
