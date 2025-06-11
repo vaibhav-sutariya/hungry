@@ -226,6 +226,7 @@ class AppRoutes {
         //     milliseconds: 250,
         //   ),
         // ),
+        // navigation for add location screen
         GetPage(
           name: RouteName.addLocationScreen,
           page: () => const AddLocationScreen(),
