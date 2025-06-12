@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hungry/res/routes/routes_name.dart';
 import 'package:hungry/view_models/services/notifications/notification_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginViewModel extends GetxController {
   final emailController = TextEditingController().obs;
@@ -32,8 +33,22 @@ class LoginViewModel extends GetxController {
         UserCredential userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         if (userCredential.user != null) {
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
           Get.snackbar('Success:', 'Login Success');
-          Get.offNamed(RouteName.bottomBar);
+          if (sharedPreferences.getBool('isFoodBank') == true ||
+              userCredential.user!.email == 'ngo123@gmail.com') {
+            Get.offNamed(
+              RouteName.registedFoodBankScreen,
+            );
+          } else if (sharedPreferences.getBool('isVolunteer') == true ||
+              userCredential.user!.email == 'volunteer123@gmail.com') {
+            Get.offNamed(
+              RouteName.registedVolunteerScreen,
+            );
+          } else {
+            Get.offNamed(RouteName.bottomBar);
+          }
         }
 
         if (userCredential.user!.email == 'admin@hungry.com') {
